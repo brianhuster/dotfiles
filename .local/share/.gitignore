@@ -1,4 +1,5 @@
 *
+.uuid
 !.gitignore
 !fonts
 !fonts/**
