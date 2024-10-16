@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =9
+let g:netrw_dirhist_9='/home/brianhuster/.config/nvim'
+let g:netrw_dirhist_8='/home/brianhuster/.config/vim/tutor/vi'
+let g:netrw_dirhist_7='/usr/local/share/vim/vim91/doc'
+let g:netrw_dirhist_6='/usr/local/share/vim/vim91'
+let g:netrw_dirhist_5='/usr/local/share/vim/vim91/ftplugin'
+let g:netrw_dirhist_4='/usr/local/share/vim/vim91/tutor/en'
+let g:netrw_dirhist_3='/usr/local/share/vim/vim91/autoload'
+let g:netrw_dirhist_2='/usr/local/share/vim/vim91'
+let g:netrw_dirhist_1='/media/brianhuster/D/Projects/neovim/runtime/doc'
+let g:netrw_dirhist_0='/media/brianhuster/D/Projects/test/doc'

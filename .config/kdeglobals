@@ -136,17 +136,19 @@ ForegroundPositive=39,174,96
 ForegroundVisited=155,89,182
 
 [DirSelect Dialog]
-DirSelectDialog Size=980,600
-History Items[$e]=file:///media/brianhuster/D/Projects/live-preview.nvim,file:///media/brianhuster/D/Projects/EGG-js-2,file:///media/brianhuster/D/Projects/markdown-preview.nvim,file:///media/brianhuster/D/Projects/Physics 2,file:$HOME/Downloads,file:///media/brianhuster/D/Projects/gpbl/Sketch_26.1_CameraWebServer,file:///media/brianhuster/D/Projects/gpbl/dataset,file:$HOME/Downloads/Human Dataset v2.v6-experiment-subject-4.yolov9,file:///media/brianhuster/D/Projects/Yolov9-deforestation-dataset,file:$HOME/Downloads/Yolov9-deforestation-dataset/test/images,file:///media/brianhuster/D,file:$HOME/Downloads/Yolov9-deforestation-dataset,file:$HOME/.config/nvim/lua/plugins,file:$HOME/.local/share/nvim/lazy/live-preview.nvim,file:$HOME/.local/share/nvim,file:///media/brianhuster/8000076600076290/Projects/blog-react,file:$HOME/.local/share/nvim/lazy/autosave.nvim,file:$HOME/.local/share/nvim/lazy/live-preview.nvim,file:$HOME/.local/share/nvim/lazy/autosave.nvim,file:$HOME/.config/nvim,file:$HOME/.local/share/nvim/lazy/auto-save.nvim,file:///media/brianhuster/8000076600076290/Projects/test,file:$HOME,file:///media/brianhuster/8000076600076290/Projects/PTsolana-reactfe,file:///media/brianhuster/8000076600076290/Projects/E-Learning-FE,file:///media/brianhuster/8000076600076290/Projects/E-Learning-Quiz-Be,file:///media/brianhuster/8000076600076290/Projects/PTsolana,file:///media/brianhuster/8000076600076290/Projects/EnVizion-Gym-Website,file:///media/brianhuster/8000076600076290/Projects/ParkSecure,file:///media/brianhuster/8000076600076290/Projects/markdown-cv,file:///media/brianhuster/8000076600076290/Projects/live-preview.nvim,file:///media/brianhuster/8000076600076290/Projects/robot,file:///media/brianhuster/8000076600076290,file:///media/brianhuster/8000076600076290/REDSTAR,file:$HOME/Videos,file:///media/brianhuster/8000076600076290/Projects/robot ai/Traffic-Light-1,file:///media/brianhuster/8000076600076290/Projects/robot ai,file:///media/brianhuster
+DirSelectDialog Size=1079,616
+History Items[$e]=file:///media/brianhuster/D/VM/Ubuntu-server,file:///media/brianhuster/D,file:$HOME/Downloads,file:///media/brianhuster/D/CentOS_VM,file:///media/brianhuster/D/VirtualBox,file:///media/brianhuster/D/Projects/live-preview.nvim,file:///media/brianhuster/D/Projects/EGG-js-2,file:///media/brianhuster/D/Projects/markdown-preview.nvim,file:///media/brianhuster/D/Projects/Physics 2,file:$HOME/Downloads,file:///media/brianhuster/D/Projects/gpbl/Sketch_26.1_CameraWebServer,file:///media/brianhuster/D/Projects/gpbl/dataset,file:$HOME/Downloads/Human Dataset v2.v6-experiment-subject-4.yolov9,file:///media/brianhuster/D/Projects/Yolov9-deforestation-dataset,file:$HOME/Downloads/Yolov9-deforestation-dataset/test/images,file:$HOME/Downloads/Yolov9-deforestation-dataset,file:$HOME/.config/nvim/lua/plugins,file:$HOME/.local/share/nvim/lazy/live-preview.nvim,file:$HOME/.local/share/nvim,file:///media/brianhuster/8000076600076290/Projects/blog-react,file:$HOME/.local/share/nvim/lazy/autosave.nvim,file:$HOME/.local/share/nvim/lazy/live-preview.nvim,file:$HOME/.local/share/nvim/lazy/autosave.nvim,file:$HOME/.config/nvim,file:$HOME/.local/share/nvim/lazy/auto-save.nvim,file:///media/brianhuster/8000076600076290/Projects/test,file:$HOME,file:///media/brianhuster/8000076600076290/Projects/PTsolana-reactfe,file:///media/brianhuster/8000076600076290/Projects/E-Learning-FE,file:///media/brianhuster/8000076600076290/Projects/E-Learning-Quiz-Be,file:///media/brianhuster/8000076600076290/Projects/PTsolana,file:///media/brianhuster/8000076600076290/Projects/EnVizion-Gym-Website,file:///media/brianhuster/8000076600076290/Projects/ParkSecure,file:///media/brianhuster/8000076600076290/Projects/markdown-cv,file:///media/brianhuster/8000076600076290/Projects/live-preview.nvim,file:///media/brianhuster/8000076600076290/Projects/robot,file:///media/brianhuster/8000076600076290,file:///media/brianhuster/8000076600076290/REDSTAR,file:$HOME/Videos,file:///media/brianhuster/8000076600076290/Projects/robot ai/Traffic-Light-1,file:///media/brianhuster/8000076600076290/Projects/robot ai,file:///media/brianhuster
 
 [General]
-BrowserApplication=com.microsoft.Edge.desktop
+BrowserApplication=brave_brave.desktop
 ColorSchemeHash=5d8c76989d217fc903db15dbc28829b890161033
-fixed=Hack,12,-1,5,50,0,0,0,0,0
-font=Noto Sans,12,-1,5,50,0,0,0,0,0
-menuFont=Noto Sans,12,-1,5,50,0,0,0,0,0
-smallestReadableFont=Noto Sans,10,-1,5,50,0,0,0,0,0
-toolBarFont=Noto Sans,12,-1,5,50,0,0,0,0,0
+TerminalApplication=env BAMF_DESKTOP_FILE_HINT=/var/lib/snapd/desktop/applications/ghostty_ghostty.desktop /snap/bin/ghostty
+TerminalService=ghostty_ghostty.desktop
+fixed=Hack Nerd Font,14,-1,5,50,0,0,0,0,0
+font=Noto Sans,14,-1,5,50,0,0,0,0,0
+menuFont=Noto Sans,14,-1,5,50,0,0,0,0,0
+smallestReadableFont=Noto Sans,12,-1,5,50,0,0,0,0,0
+toolBarFont=Noto Sans,14,-1,5,50,0,0,0,0,0
 
 [KDE]
 LookAndFeelPackage=org.kubuntu.desktop
@@ -154,8 +156,8 @@ LookAndFeelPackage=org.kubuntu.desktop
 [KFileDialog Settings]
 Allow Expansion=false
 Automatically select filename extension=true
-Breadcrumb Navigation=true
-Decoration position=2
+Breadcrumb Navigation=false
+Decoration position=0
 LocationCombo Completionmode=5
 PathCombo Completionmode=5
 Show Bookmarks=false
@@ -163,13 +165,13 @@ Show Full Path=false
 Show Inline Previews=true
 Show Preview=false
 Show Speedbar=true
-Show hidden files=false
-Sort by=Name
+Show hidden files=true
+Sort by=Date
 Sort directories first=true
 Sort hidden files last=false
-Sort reversed=true
+Sort reversed=false
 Speedbar Width=138
-View Style=DetailTree
+View Style=Simple
 
 [KShortcutsDialog Settings]
 Dialog Size=600,480
@@ -177,7 +179,7 @@ Dialog Size=600,480
 [WM]
 activeBackground=221,227,237
 activeBlend=221,227,237
-activeFont=Noto Sans,12,-1,5,50,0,0,0,0,0
+activeFont=Noto Sans,14,-1,5,50,0,0,0,0,0
 activeForeground=35,38,41
 inactiveBackground=235,239,244
 inactiveBlend=235,239,244

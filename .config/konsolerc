@@ -1,21 +1,30 @@
+[Appearance]
+Font=Hack,14,-1,5,50,0,0,0,0,0
+
 [Desktop Entry]
 DefaultProfile=Brianhuster.profile
 
 [General]
 ConfigVersion=1
 
+[KFileDialog Settings]
+listViewIconSize=64
+
 [MainWindow]
 1280x800 screen: Window-Maximized=true
-1920x1080 screen: Height=684
-1920x1080 screen: Width=969
-1920x1080 screen: XPosition=475
-1920x1080 screen: YPosition=187
+1920x1080 screen: Height=403
+1920x1080 screen: Width=768
+1920x1080 screen: Window-Maximized=true
+1920x1080 screen: XPosition=516
+1920x1080 screen: YPosition=173
+2 screens: Height=444
+2 screens: Width=960
 2 screens: Window-Maximized=true
 2 screens: XPosition=172
 2 screens: YPosition=250
 HDMI-1 eDP-1=eDP-1
 MenuBar=Disabled
-State=AAAA/wAAAAD9AAAAAQAAAAAAAAAAAAAAAPwCAAAAAvsAAAAcAFMAUwBIAE0AYQBuAGEAZwBlAHIARABvAGMAawAAAAAA/////wAAARUBAAAD+wAAACIAUQB1AGkAYwBrAEMAbwBtAG0AYQBuAGQAcwBEAG8AYwBrAAAAAAD/////AAABfAEAAAMAAAeAAAAEGAAAAAQAAAAEAAAACAAAAAj8AAAAAQAAAAIAAAACAAAAFgBtAGEAaQBuAFQAbwBvAGwAQgBhAHIAAAAAAP////8AAAAAAAAAAAAAABwAcwBlAHMAcwBpAG8AbgBUAG8AbwBsAGIAYQByAAAAAAD/////AAAAAAAAAAA=
+State=AAAA/wAAAAD9AAAAAQAAAAAAAAAAAAAAAPwCAAAAAvsAAAAcAFMAUwBIAE0AYQBuAGEAZwBlAHIARABvAGMAawAAAAAA/////wAAAToBAAAD+wAAACIAUQB1AGkAYwBrAEMAbwBtAG0AYQBuAGQAcwBEAG8AYwBrAAAAAAD/////AAABnQEAAAMAAAeAAAAD1AAAAAQAAAAEAAAACAAAAAj8AAAAAQAAAAIAAAACAAAAFgBtAGEAaQBuAFQAbwBvAGwAQgBhAHIAAAAAAP////8AAAAAAAAAAAAAABwAcwBlAHMAcwBpAG8AbgBUAG8AbwBsAGIAYQByAAAAAAD/////AAAAAAAAAAA=
 ToolBarsMovable=Disabled
 default Window-Maximized 1920x1080=true
 default XPosition 1920x1080=844
@@ -28,6 +37,7 @@ eDP-1 XPosition 1920x1080=0
 eDP-1 YPosition 1920x1080=29
 
 [Notification Messages]
+CloseAllTabs=true
 ShowPasteHugeTextWarning=false
 
 [UiSettings]

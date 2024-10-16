@@ -1,0 +1,69 @@
+let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+let &t_SR = "\<Esc>]50;CursorShape=2\x7"
+let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+set ttimeout
+set ttimeoutlen=1
+set listchars=tab:>-,trail:~,extends:>,precedes:<,space:.
+set ttyfast
+let &t_TI = "\<Esc>[>4;2m"
+let &t_TE = "\<Esc>[>4;m"
+
+syntax on
+filetype plugin on
+set termguicolors clipboard=unnamedplus
+packadd! comment
+packadd! matchit
+runtime! ftplugin/man.vim
+if !has('clipboard')
+	echoerr "This Vim is not compiled with clipboard support."
+endif
+
+if !has('lua')
+	echoerr "This Vim is not compiled with Lua support."
+endif
+if !has('python3')
+	let &pythonthreedll = split(system('ldconfig -p | grep libpython3'))[0]
+	if !has('python3')
+		echoerr "This Vim is not compiled with Python3 support."
+	endif
+endif
+
+unlet! skip_defaults_vim
+source $VIMRUNTIME/defaults.vim
+
+nnoremap Y y$
+xnoremap Y y$
+nnoremap [q <cmd>cprev<cr>
+nnoremap ]q <cmd>cnext<cr>
+nnoremap [Q <cmd>crewind<cr>
+nnoremap ]Q <cmd>clast<cr>
+nnoremap [<C-q> <cmd>cpfile<cr>
+nnoremap ]<C-q> <cmd>cnfile<cr>
+nnoremap [l <cmd>lprev<cr>
+nnoremap ]l <cmd>lnext<cr>
+nnoremap [L <cmd>lrewind<cr>
+nnoremap ]L <cmd>llast<cr>
+nnoremap [<C-l> <cmd>lpfile<cr>
+nnoremap ]<C-l> <cmd>lnfile<cr>
+nnoremap [t <cmd>tprev<cr>
+nnoremap ]t <cmd>tnext<cr>
+nnoremap [T <cmd>trewind<cr>
+nnoremap ]T <cmd>tlast<cr>
+nnoremap [<C-t> <cmd>ptprev<cr>
+nnoremap ]<C-t> <cmd>ptnext<cr>
+nnoremap [a <cmd>prev<cr>
+nnoremap ]a <cmd>next<cr>
+nnoremap [A <cmd>rewind<cr>
+nnoremap ]A <cmd>last<cr>
+nnoremap [b <cmd>bprev<cr>
+nnoremap ]b <cmd>bnext<cr>
+nnoremap [B <cmd>brewind<cr>
+nnoremap ]B <cmd>blast<cr>
+
+let s:file = expand('<sfile>')
+function! s:setup()
+	let nvim_config = '~/.config/nvim'
+	execute 'set runtimepath^=' . nvim_config
+	execute 'source' nvim_config . '/init.vim'
+endfunction
+autocmd VimEnter * call s:setup()

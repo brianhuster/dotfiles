@@ -1,0 +1,20 @@
+#!/usr/bin/env -S nvim -l
+
+local uv = vim.uv or vim.loop
+local os = uv.os_uname().sysname:lower()
+local executable = vim.fn.executable
+local title = 'Neovim: Enter password:'
+
+---@type table<string, string[]>
+local commands = {
+	linux = executable 'kdialog' and { 'kdialog', '--password', title }
+		or (executable 'zenity' and { 'zenity', '--password', '--title', title })
+		or {},
+	darwin = { 'osascript', '-e', ('display dialog "%s" default answer "" with hidden answer'):format(title) },
+	windows = {
+		'powershell', '-Command',
+		('&{Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.MessageBox]::Show("%s", "%s", "OKCancel,SystemModal,Password")}')
+			:format(title, title) },
+}
+
+io.stdout:write(vim.fn.system(commands[os]))

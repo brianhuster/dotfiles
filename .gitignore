@@ -1,6 +1,6 @@
 *
 !.gitignore
-!.config/
-!.config/**
-!.local/
-!.local/**
+!.config
+!install.sh
+!.tmux.conf
+!.bashrc

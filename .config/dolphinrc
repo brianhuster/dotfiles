@@ -2,9 +2,9 @@
 update_info=dolphin_detailsmodesettings.upd:rename-leading-padding,dolphin_detailsmodesettings.upd:move-content-display
 
 [ExtractDialog]
-1920x1080 screen: Height=560
+1920x1080 screen: Height=720
 1920x1080 screen: Width=1280
-DirHistory[$e]=/media/brianhuster/D/,/media/brianhuster/8000076600076290/Projects/E-Learning-Quiz-Be/src/database/
+DirHistory[$e]=/media/brianhuster/D/Projects/phat-trien-ung-dung/,$HOME/Applications/,$HOME/Documents/GDevelop projects/,/media/brianhuster/D/Projects/ThreeJS/,/media/brianhuster/D/Projects/,$HOME/Downloads/,/media/brianhuster/D/,/media/brianhuster/8000076600076290/Projects/E-Learning-Quiz-Be/src/database/
 
 [General]
 Version=202
@@ -13,13 +13,14 @@ ViewPropsTimestamp=2024,6,26,20,22,0.145
 [KFileDialog Settings]
 Places Icons Auto-resize=false
 Places Icons Static Size=22
-Recent Files[$e]=file:$HOME,file:$HOME
-Recent URLs[$e]=file:///media/brianhuster/D/
+Recent Files[$e]=file:$HOME/Applications,file:///media/brianhuster/D/Projects/phat-trien-ung-dung
+Recent URLs[$e]=file:///media/brianhuster/D/,file:$HOME/Downloads/,file:///media/brianhuster/D/Projects/,file:$HOME/Documents/,file:$HOME/,file:$HOME/Applications/,file:///media/brianhuster/D/Projects/phat-trien-ung-dung/
 detailViewIconSize=16
+listViewIconSize=64
 
 [KPropertiesDialog]
-1920x1080 screen: Height=458
-1920x1080 screen: Width=385
+1920x1080 screen: Height=711
+1920x1080 screen: Width=599
 eDP-1 Height 1920x1080=616
 eDP-1 Width 1920x1080=438
 

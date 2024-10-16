@@ -247,11 +247,11 @@ show view settings=Meta+A,Meta+A,Cycle Through Dock/Panel Settings Windows
 
 [mediacontrol]
 _k_friendly_name=Media Controller
-mediavolumedown=none,,Media volume down
-mediavolumeup=none,,Media volume up
+mediavolumedown=none,none,Media volume down
+mediavolumeup=none,none,Media volume up
 nextmedia=Media Next,Media Next,Media playback next
 pausemedia=Media Pause,Media Pause,Pause media playback
-playmedia=none,,Play media playback
+playmedia=none,none,Play media playback
 playpausemedia=Media Play,Media Play,Play/Pause media playback
 previousmedia=Media Previous,Media Previous,Media playback previous
 stopmedia=Media Stop,Media Stop,Stop media playback
@@ -341,6 +341,7 @@ activate widget 334=none,none,Activate Application Launcher Widget
 activate widget 344=none,none,Activate Application Launcher Widget
 activate widget 389=none,none,Activate Application Launcher Widget
 activate widget 431=none,none,Activate Application Launcher Widget
+activate widget 474=none,none,Activate Application Launcher Widget
 activate widget 56=none,none,Activate Application Launcher Widget
 activate widget 65=none,none,Activate Simple Application Launcher Widget
 activate widget 72=none,none,Activate Application Launcher Widget

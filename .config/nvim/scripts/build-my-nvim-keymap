@@ -1,0 +1,19 @@
+#!/usr/bin/env -S nvim -l
+local fn = vim.fn
+local in_file = fn.stdpath('config') .. '/keymap/vietnamese-telex-user.txt'
+local out_file = fn.fnamemodify(in_file, ':r') .. '.vim'
+local output = {
+	"scriptencoding utf-8",
+	"let b:keymap_name = 'vi'",
+	"loadkeymap"
+}
+
+for _, v in ipairs(fn.readfile(in_file)) do
+	v = vim.trim(v)
+	if not v:match [[\\]] and #v > 0 then
+		local lhs = vim.split(v, "\t", { plain = true, trimempty = true })[1]
+		vim.list_extend(output, { v, lhs .. lhs:sub(-1) .. "\t" .. lhs })
+	end
+end
+
+fn.writefile(output, out_file)
