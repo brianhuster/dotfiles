@@ -256,7 +256,7 @@ immutability=1
 plugin=org.kde.plasma.clipboard
 
 [Containments][436][Applets][466][Configuration]
-PreloadWeight=90
+PreloadWeight=100
 
 [Containments][436][Applets][467]
 immutability=1
