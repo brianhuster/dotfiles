@@ -1,4 +1,6 @@
 *
 !.gitignore
+!.config/
 !.config/**
+!.local/
 !.local/**

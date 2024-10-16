@@ -1,0 +1,280 @@
+[KPropertiesDialog]
+1920x1080 screen: Height=529
+1920x1080 screen: Width=410
+
+[PlasmaTransientsConfig]
+PreloadWeight=0
+
+[PlasmaViews][Panel 102][Defaults]
+thickness=26
+
+[PlasmaViews][Panel 104][Defaults]
+thickness=27
+
+[PlasmaViews][Panel 106]
+alignment=132
+floating=1
+
+[PlasmaViews][Panel 106][Defaults]
+thickness=27
+
+[PlasmaViews][Panel 124][Defaults]
+thickness=44
+
+[PlasmaViews][Panel 129]
+alignment=132
+panelVisibility=1
+
+[PlasmaViews][Panel 129][Defaults]
+minLength=144
+offset=0
+thickness=54
+
+[PlasmaViews][Panel 129][Horizontal1920]
+minLength=144
+
+[PlasmaViews][Panel 130][Defaults]
+thickness=44
+
+[PlasmaViews][Panel 145][Defaults]
+thickness=44
+
+[PlasmaViews][Panel 149][Defaults]
+thickness=44
+
+[PlasmaViews][Panel 154][Defaults]
+thickness=27
+
+[PlasmaViews][Panel 171][Defaults]
+thickness=26
+
+[PlasmaViews][Panel 174][Defaults]
+thickness=26
+
+[PlasmaViews][Panel 184][Defaults]
+thickness=36
+
+[PlasmaViews][Panel 185]
+panelVisibility=1
+
+[PlasmaViews][Panel 185][Defaults]
+thickness=44
+
+[PlasmaViews][Panel 198]
+alignment=132
+panelVisibility=1
+
+[PlasmaViews][Panel 198][Defaults]
+minLength=144
+offset=0
+thickness=54
+
+[PlasmaViews][Panel 198][Horizontal1920]
+minLength=144
+
+[PlasmaViews][Panel 2][Defaults]
+thickness=44
+
+[PlasmaViews][Panel 201]
+alignment=132
+panelVisibility=1
+
+[PlasmaViews][Panel 201][Defaults]
+minLength=144
+offset=0
+thickness=54
+
+[PlasmaViews][Panel 201][Horizontal1920]
+minLength=144
+
+[PlasmaViews][Panel 209][Defaults]
+offset=0
+thickness=27
+
+[PlasmaViews][Panel 212][Defaults]
+thickness=44
+
+[PlasmaViews][Panel 234][Defaults]
+thickness=44
+
+[PlasmaViews][Panel 237][Defaults]
+thickness=44
+
+[PlasmaViews][Panel 259][Defaults]
+thickness=44
+
+[PlasmaViews][Panel 26][Defaults]
+thickness=26
+
+[PlasmaViews][Panel 262][Defaults]
+thickness=44
+
+[PlasmaViews][Panel 264]
+floating=1
+panelVisibility=1
+
+[PlasmaViews][Panel 264][Defaults]
+thickness=27
+
+[PlasmaViews][Panel 267][Defaults]
+thickness=44
+
+[PlasmaViews][Panel 27]
+alignment=2
+
+[PlasmaViews][Panel 27][Defaults]
+thickness=27
+
+[PlasmaViews][Panel 290]
+panelVisibility=1
+
+[PlasmaViews][Panel 290][Defaults]
+maxLength=2468
+minLength=2468
+offset=0
+thickness=46
+
+[PlasmaViews][Panel 290][Horizontal1920]
+maxLength=2468
+minLength=2468
+
+[PlasmaViews][Panel 291][Defaults]
+thickness=44
+
+[PlasmaViews][Panel 292]
+alignment=132
+
+[PlasmaViews][Panel 292][Defaults]
+thickness=27
+
+[PlasmaViews][Panel 295]
+floating=0
+panelVisibility=0
+
+[PlasmaViews][Panel 295][Defaults]
+thickness=27
+
+[PlasmaViews][Panel 30][Defaults]
+thickness=26
+
+[PlasmaViews][Panel 318][Defaults]
+thickness=44
+
+[PlasmaViews][Panel 319]
+panelVisibility=1
+
+[PlasmaViews][Panel 319][Defaults]
+thickness=27
+
+[PlasmaViews][Panel 328]
+alignment=132
+floating=1
+panelVisibility=1
+
+[PlasmaViews][Panel 328][Defaults]
+maxLength=616
+minLength=100
+thickness=58
+
+[PlasmaViews][Panel 328][Horizontal1920]
+maxLength=616
+minLength=100
+
+[PlasmaViews][Panel 333][Defaults]
+thickness=44
+
+[PlasmaViews][Panel 343][Defaults]
+thickness=44
+
+[PlasmaViews][Panel 357][Defaults]
+thickness=36
+
+[PlasmaViews][Panel 358]
+floating=1
+
+[PlasmaViews][Panel 358][Defaults]
+thickness=27
+
+[PlasmaViews][Panel 360]
+alignment=132
+floating=1
+panelVisibility=1
+
+[PlasmaViews][Panel 360][Defaults]
+maxLength=1920
+minLength=116
+thickness=58
+
+[PlasmaViews][Panel 360][Horizontal1920]
+maxLength=1920
+minLength=116
+
+[PlasmaViews][Panel 388]
+floating=1
+panelVisibility=1
+
+[PlasmaViews][Panel 388][Defaults]
+thickness=57
+
+[PlasmaViews][Panel 430]
+floating=0
+panelVisibility=0
+
+[PlasmaViews][Panel 430][Defaults]
+thickness=57
+
+[PlasmaViews][Panel 53]
+alignment=132
+floating=1
+panelVisibility=1
+
+[PlasmaViews][Panel 53][Defaults]
+minLength=144
+offset=0
+thickness=58
+
+[PlasmaViews][Panel 53][Horizontal1920]
+minLength=144
+
+[PlasmaViews][Panel 55][Defaults]
+thickness=44
+
+[PlasmaViews][Panel 57]
+alignment=132
+panelVisibility=1
+
+[PlasmaViews][Panel 57][Defaults]
+minLength=144
+offset=0
+thickness=54
+
+[PlasmaViews][Panel 57][Horizontal1920]
+minLength=144
+
+[PlasmaViews][Panel 64][Defaults]
+thickness=26
+
+[PlasmaViews][Panel 71][Defaults]
+thickness=44
+
+[PlasmaViews][Panel 80][Defaults]
+thickness=44
+
+[PlasmaViews][Panel 91]
+alignment=132
+panelVisibility=1
+
+[PlasmaViews][Panel 91][Defaults]
+minLength=144
+offset=0
+thickness=54
+
+[PlasmaViews][Panel 91][Horizontal1920]
+minLength=144
+
+[PlasmaViews][Panel 96][Defaults]
+offset=0
+thickness=64
+
+[Updates]
+performed=/usr/share/plasma/shells/org.kde.plasma.desktop/contents/updates/move_desktop_layout_config.js,/usr/share/plasma/shells/org.kde.plasma.desktop/contents/updates/no_middle_click_paste_on_panels.js,/usr/share/plasma/shells/org.kde.plasma.desktop/contents/updates/unlock_widgets.js,/usr/share/plasma/shells/org.kde.plasma.desktop/contents/updates/digitalclock_rename_timezonedisplay_key.js,/usr/share/plasma/shells/org.kde.plasma.desktop/contents/updates/maintain_existing_desktop_icon_sizes.js,/usr/share/plasma/shells/org.kde.plasma.desktop/contents/updates/klipper_clear_config.js,/usr/share/plasma/shells/org.kde.plasma.desktop/contents/updates/obsolete_kickoffrc.js,/usr/share/plasma/shells/org.kde.plasma.desktop/contents/updates/systemloadviewer_systemmonitor.js,/usr/share/plasma/shells/org.kde.plasma.desktop/contents/updates/containmentactions_middlebutton.js,/usr/share/plasma/shells/org.kde.plasma.desktop/contents/updates/keyboardlayout_remove_shortcut.js,/usr/share/plasma/shells/org.kde.plasma.desktop/contents/updates/keyboardlayout_migrateiconsetting.js,/usr/share/plasma/shells/org.kde.plasma.desktop/contents/updates/mediaframe_migrate_useBackground_setting.js,/usr/share/plasma/shells/org.kde.plasma.desktop/contents/updates/digitalclock_migrate_font_settings.js,/usr/share/plasma/shells/org.kde.plasma.desktop/contents/updates/folderview_fix_recursive_screenmapping.js

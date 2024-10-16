@@ -1,0 +1,34 @@
+[Desktop Entry]
+DefaultProfile=Brianhuster.profile
+
+[General]
+ConfigVersion=1
+
+[MainWindow]
+1280x800 screen: Window-Maximized=true
+1920x1080 screen: Height=684
+1920x1080 screen: Width=969
+1920x1080 screen: XPosition=475
+1920x1080 screen: YPosition=187
+2 screens: Window-Maximized=true
+2 screens: XPosition=172
+2 screens: YPosition=250
+HDMI-1 eDP-1=eDP-1
+MenuBar=Disabled
+State=AAAA/wAAAAD9AAAAAQAAAAAAAAAAAAAAAPwCAAAAAvsAAAAcAFMAUwBIAE0AYQBuAGEAZwBlAHIARABvAGMAawAAAAAA/////wAAARUBAAAD+wAAACIAUQB1AGkAYwBrAEMAbwBtAG0AYQBuAGQAcwBEAG8AYwBrAAAAAAD/////AAABfAEAAAMAAAeAAAAEGAAAAAQAAAAEAAAACAAAAAj8AAAAAQAAAAIAAAACAAAAFgBtAGEAaQBuAFQAbwBvAGwAQgBhAHIAAAAAAP////8AAAAAAAAAAAAAABwAcwBlAHMAcwBpAG8AbgBUAG8AbwBsAGIAYQByAAAAAAD/////AAAAAAAAAAA=
+ToolBarsMovable=Disabled
+default Window-Maximized 1920x1080=true
+default XPosition 1920x1080=844
+default YPosition 1920x1080=482
+eDP-1=eDP-1
+eDP-1 Height 1920x1080=1007
+eDP-1 Width 1920x1080=1920
+eDP-1 Window-Maximized 1920x1080=true
+eDP-1 XPosition 1920x1080=0
+eDP-1 YPosition 1920x1080=29
+
+[Notification Messages]
+ShowPasteHugeTextWarning=false
+
+[UiSettings]
+ColorScheme=
