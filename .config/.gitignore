@@ -4,6 +4,7 @@
 !gtk-4.0
 !kate
 !nvim
+!nvim/**
 !dolphinrc
 !gtkrc
 !gtkrc-2.0
