@@ -1,0 +1,6 @@
+*
+!.gitignore
+!fonts
+!fonts/**
+!konsole
+!konsole/**
