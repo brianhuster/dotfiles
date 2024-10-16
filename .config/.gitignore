@@ -1,9 +1,9 @@
 *
 !.gitignore
-!gtk-3.0/**
-!gtk-4.0/**
-!kate/**
-!nvim/**
+!gtk-3.0
+!gtk-4.0
+!kate
+!nvim
 !dolphinrc
 !gtkrc
 !gtkrc-2.0
