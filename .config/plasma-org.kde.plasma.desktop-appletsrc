@@ -158,7 +158,7 @@ plugin=org.kde.plasma.battery
 
 [Containments][430][Applets][462][Configuration]
 PreloadWeight=100
-popupHeight=334
+popupHeight=292
 popupWidth=360
 
 [Containments][430][Applets][462][Configuration][General]

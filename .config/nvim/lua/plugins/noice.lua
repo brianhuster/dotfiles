@@ -1,3 +1,8 @@
+local ui_info = vim.api.nvim_get_ui_info()
+if ui_info.ext_messages then
+	vim.notify("You are using a GUI with ext_messages, so noice.nvim will be disabled")
+	return
+end
 return {
 	"folke/noice.nvim",
 	event = "VeryLazy",
