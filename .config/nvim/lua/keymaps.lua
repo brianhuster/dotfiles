@@ -1,13 +1,13 @@
 function TerminalMode()
 	local buf = vim.api.nvim_get_current_buf()
-	if vim.fn.getbufvar(buf, '&buftype') == 'terminal' then
+	if vim.api.nvim_get_option_value('buflisted', { buf = buf }) == 'terminal' then
 		vim.cmd('startinsert')
 		return
 	end
 	local term_win = -1
-	for win = 1, vim.fn.winnr('$') do
-		buf = vim.fn.winbufnr(win)
-		if vim.fn.getbufvar(buf, '&buftype') == 'terminal' then
+	for win = 1, #vim.api.nvim_tabpage_list_wins(0) do
+		vim.fn.winbufnr(win)
+		if vim.api.nvim_get_option_value('buflisted', { buf = buf }) == 'terminal' then
 			term_win = win
 			break
 		end
@@ -44,5 +44,3 @@ vim.keymap.set('n', '<BS>$', '"_D', { silent = true })
 vim.keymap.set('x', '<BS>$', '"_D', { silent = true })
 vim.keymap.set('n', '<Del>$', '"_D', { silent = true })
 vim.keymap.set('x', '<Del>$', '"_D', { silent = true })
-
---Create keymap for sh<S-Del

@@ -1,6 +1,5 @@
 -- Vô hiệu hóa các plugin mặc định không cần thiết trong Neovim
 local disabled_built_ins = {
-	-- "2html_plugin",
 	"getscript",
 	"getscriptPlugin",
 	"logipat",

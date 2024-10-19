@@ -8,9 +8,7 @@ local function current_ibus_engine()
 end
 
 local function IBusOff()
-	-- Lưu lại engine hiện tại
 	vim.g.ibus_prev_engine = current_ibus_engine()
-	-- Chuyển sang engine tiếng Anh
 	vim.system({ 'ibus', 'engine', 'xkb:us::eng' })
 end
 

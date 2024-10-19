@@ -1,4 +1,3 @@
--- General settings
 vim.opt.mouse = 'a'
 vim.opt.number = true
 vim.opt.expandtab = false
@@ -9,15 +8,14 @@ vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
 vim.opt.history = 5000
 vim.opt.clipboard = 'unnamedplus'
-vim.opt.autowriteall = true -- set autosave
+vim.opt.autowriteall = true
 vim.opt.modeline = false
 vim.g.mapleader = ' '
-vim.cmd([[autocmd BufRead,BufNewFile *.ejs set filetype=html]])
-vim.api.nvim_create_autocmd('BufEnter', {
-	pattern = '*',
-	callback = function()
-		vim.cmd('set number')
-	end
+vim.filetype.add({
+	pattern = {
+		['.*%.ejs'] = 'html',
+		['.*/doc/.+%.txt'] = 'help'
+	}
 })
 vim.api.nvim_create_autocmd('FileType', {
 	pattern = '*',

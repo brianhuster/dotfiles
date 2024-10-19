@@ -1,6 +1,6 @@
 vim.opt.runtimepath:prepend("~/.config/nvim")
+require('keymaps')
 require('settings')
-require('keybindings')
+require('ui')
 require('ibus')
 require('plugins-managers')
-require('ui')
