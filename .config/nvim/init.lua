@@ -3,4 +3,6 @@ require('keymaps')
 require('settings')
 require('ui')
 require('ibus')
-require('plugins-managers')
+if not vim.g.vscode then
+	require('plugins-managers')
+end
