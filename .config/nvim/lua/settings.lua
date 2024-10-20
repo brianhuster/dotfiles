@@ -17,9 +17,3 @@ vim.filetype.add({
 		['.*/doc/.+%.txt'] = 'help'
 	}
 })
-vim.api.nvim_create_autocmd('FileType', {
-	pattern = '*',
-	callback = function()
-		vim.cmd('TSBufEnable highlight')
-	end
-})
