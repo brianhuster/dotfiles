@@ -1,13 +1,12 @@
-function TerminalMode()
-	local buf = vim.api.nvim_get_current_buf()
-	if vim.api.nvim_get_option_value('buflisted', { buf = buf }) == 'terminal' then
+local function TerminalMode()
+	if vim.bo.buftype == 'terminal' then
 		vim.cmd('startinsert')
 		return
 	end
 	local term_win = -1
 	for win = 1, #vim.api.nvim_tabpage_list_wins(0) do
-		vim.fn.winbufnr(win)
-		if vim.api.nvim_get_option_value('buflisted', { buf = buf }) == 'terminal' then
+		vim.api.nvim_set_current_win(vim.api.nvim_tabpage_list_wins(0)[win])
+		if vim.bo.buftype == 'terminal' then
 			term_win = win
 			break
 		end
