@@ -128,7 +128,7 @@ immutability=1
 plugin=org.kde.plasma.weather
 
 [Containments][430][Applets][459][Configuration]
-PreloadWeight=95
+PreloadWeight=100
 configMigrated=true
 
 [Containments][430][Applets][459][Configuration][ConfigDialog]
