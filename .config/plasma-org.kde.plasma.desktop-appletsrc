@@ -52,6 +52,10 @@ global=Alt+F1
 immutability=1
 plugin=org.kde.plasma.icontasks
 
+[Containments][430][Applets][433][Configuration][ConfigDialog]
+DialogHeight=690
+DialogWidth=920
+
 [Containments][430][Applets][433][Configuration][General]
 launchers=preferred://browser,applications:org.kde.discover.desktop,applications:systemsettings.desktop,preferred://filemanager
 
@@ -74,14 +78,6 @@ plugin=org.kde.plasma.digitalclock
 [Containments][430][Applets][449]
 immutability=1
 plugin=org.kde.plasma.minimizeall
-
-[Containments][430][Applets][454]
-immutability=1
-plugin=org.kde.plasma.panelspacer
-
-[Containments][430][Applets][455]
-immutability=1
-plugin=org.kde.plasma.panelspacer
 
 [Containments][430][Applets][456]
 immutability=1
@@ -164,12 +160,20 @@ popupWidth=360
 [Containments][430][Applets][462][Configuration][General]
 showPercentage=true
 
+[Containments][430][Applets][470]
+immutability=1
+plugin=org.kde.plasma.panelspacer
+
+[Containments][430][Applets][471]
+immutability=1
+plugin=org.kde.plasma.panelspacer
+
 [Containments][430][ConfigDialog]
 DialogHeight=100
 DialogWidth=1920
 
 [Containments][430][General]
-AppletOrder=431;459;456;457;454;460;433;434;455;462;435;448;449
+AppletOrder=431;459;456;457;470;460;433;471;434;462;435;448;449
 
 [Containments][436]
 activityId=
@@ -200,6 +204,9 @@ plugin=org.kde.plasma.printmanager
 [Containments][436][Applets][441]
 immutability=1
 plugin=org.kde.plasma.notifications
+
+[Containments][436][Applets][441][Configuration]
+PreloadWeight=55
 
 [Containments][436][Applets][442]
 immutability=1
