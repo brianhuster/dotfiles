@@ -101,6 +101,7 @@ plugin=org.kde.plasma.systemmonitor.cpu
 
 [Containments][473][Applets][498][Configuration]
 CurrentPreset=org.kde.plasma.systemmonitor
+PreloadWeight=55
 
 [Containments][473][Applets][498][Configuration][Appearance]
 chartFace=org.kde.ksysguard.piechart
@@ -112,66 +113,6 @@ cpu/all/usage=61,174,233
 [Containments][473][Applets][498][Configuration][Sensors]
 highPrioritySensorIds=["cpu/all/usage"]
 lowPrioritySensorIds=["cpu/all/cpuCount","cpu/all/coreCount"]
-totalSensors=["cpu/all/usage"]
-
-[Containments][473][Applets][499]
-immutability=1
-plugin=org.kde.plasma.systemmonitor.cpucore
-transient=true
-
-[Containments][473][Applets][499][Configuration]
-CurrentPreset=org.kde.plasma.systemmonitor
-
-[Containments][473][Applets][499][Configuration][Appearance]
-chartFace=org.kde.ksysguard.barchart
-title=Individual Core Usage
-
-[Containments][473][Applets][499][Configuration][SensorColors]
-cpu/cpu0/usage=61,174,233
-cpu/cpu1/usage=61,88,233
-cpu/cpu10/usage=61,233,120
-cpu/cpu11/usage=61,233,206
-cpu/cpu2/usage=120,61,233
-cpu/cpu3/usage=206,61,233
-cpu/cpu4/usage=233,61,174
-cpu/cpu5/usage=233,61,88
-cpu/cpu6/usage=233,120,61
-cpu/cpu7/usage=233,206,61
-cpu/cpu8/usage=174,233,61
-cpu/cpu9/usage=88,233,61
-
-[Containments][473][Applets][499][Configuration][Sensors]
-highPrioritySensorIds=["cpu/cpu.*/usage"]
-totalSensors=["cpu/all/usage"]
-
-[Containments][473][Applets][500]
-immutability=1
-plugin=org.kde.plasma.systemmonitor.cpucore
-transient=true
-
-[Containments][473][Applets][500][Configuration]
-CurrentPreset=org.kde.plasma.systemmonitor
-
-[Containments][473][Applets][500][Configuration][Appearance]
-chartFace=org.kde.ksysguard.barchart
-title=Individual Core Usage
-
-[Containments][473][Applets][500][Configuration][SensorColors]
-cpu/cpu0/usage=61,174,233
-cpu/cpu1/usage=61,88,233
-cpu/cpu10/usage=61,233,120
-cpu/cpu11/usage=61,233,206
-cpu/cpu2/usage=120,61,233
-cpu/cpu3/usage=206,61,233
-cpu/cpu4/usage=233,61,174
-cpu/cpu5/usage=233,61,88
-cpu/cpu6/usage=233,120,61
-cpu/cpu7/usage=233,206,61
-cpu/cpu8/usage=174,233,61
-cpu/cpu9/usage=88,233,61
-
-[Containments][473][Applets][500][Configuration][Sensors]
-highPrioritySensorIds=["cpu/cpu.*/usage"]
 totalSensors=["cpu/all/usage"]
 
 [Containments][473][ConfigDialog]
