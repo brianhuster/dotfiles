@@ -2,5 +2,7 @@ return {
 	'brianhuster/live-preview.nvim',
 	branch = "dev",
 	ft = { 'html', 'markdown', 'asciidoc' },
-	opts = {},
+	opts = {
+		sync_scroll = true,
+	},
 }
