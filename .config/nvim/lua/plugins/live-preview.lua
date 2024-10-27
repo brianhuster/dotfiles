@@ -1,8 +1,8 @@
 return {
 	'brianhuster/live-preview.nvim',
 	branch = "dev",
-	ft = { 'html', 'markdown', 'asciidoc' },
+	-- ft = { 'html', 'markdown', 'asciidoc' },
 	opts = {
-		sync_scroll = true,
-	},
+		sync_scroll = true
+	}
 }

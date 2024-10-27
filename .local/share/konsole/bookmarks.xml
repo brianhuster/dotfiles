@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xbel>
-<xbel xmlns:mime="http://www.freedesktop.org/standards/shared-mime-info" dbusName="konsole" xmlns:kdepriv="http://www.kde.org/kdepriv" xmlns:bookmark="http://www.freedesktop.org/standards/desktop-bookmarks">
+<xbel xmlns:bookmark="http://www.freedesktop.org/standards/desktop-bookmarks" xmlns:mime="http://www.freedesktop.org/standards/shared-mime-info" xmlns:kdepriv="http://www.kde.org/kdepriv" dbusName="konsole">
  <bookmark href="file:///home/brianhuster">
   <title>brianhuster</title>
   <info>
@@ -27,6 +27,14 @@
  </bookmark>
  <bookmark href="file:///media/brianhuster/D/Projects/codeium.vim">
   <title>codeium</title>
+  <info>
+   <metadata owner="http://freedesktop.org">
+    <bookmark:icon name=""/>
+   </metadata>
+  </info>
+ </bookmark>
+ <bookmark href="file:///home/brianhuster/.config/nvim">
+  <title>nvim</title>
   <info>
    <metadata owner="http://freedesktop.org">
     <bookmark:icon name=""/>
