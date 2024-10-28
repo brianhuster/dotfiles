@@ -56,6 +56,9 @@ plugin=org.kde.plasma.pager
 immutability=1
 plugin=org.kde.plasma.icontasks
 
+[Containments][473][Applets][476][Configuration][General]
+launchers=applications:systemsettings.desktop,applications:org.kde.discover.desktop,preferred://browser,preferred://filemanager
+
 [Containments][473][Applets][477]
 immutability=1
 plugin=org.kde.plasma.marginsseparator
@@ -65,7 +68,7 @@ immutability=1
 plugin=org.kde.plasma.systemtray
 
 [Containments][473][Applets][478][Configuration]
-PreloadWeight=90
+PreloadWeight=95
 SystrayContainmentId=479
 
 [Containments][473][Applets][491]
@@ -200,7 +203,7 @@ immutability=1
 plugin=org.kde.plasma.networkmanagement
 
 [Containments][479][Applets][495][Configuration]
-PreloadWeight=75
+PreloadWeight=80
 
 [Containments][479][Applets][496]
 immutability=1
