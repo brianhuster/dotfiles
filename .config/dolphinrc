@@ -2,9 +2,9 @@
 update_info=dolphin_detailsmodesettings.upd:rename-leading-padding,dolphin_detailsmodesettings.upd:move-content-display
 
 [ExtractDialog]
-1920x1080 screen: Height=560
+1920x1080 screen: Height=710
 1920x1080 screen: Width=1280
-DirHistory[$e]=/media/brianhuster/D/,/media/brianhuster/8000076600076290/Projects/E-Learning-Quiz-Be/src/database/
+DirHistory[$e]=$HOME/Downloads/,/media/brianhuster/D/,/media/brianhuster/8000076600076290/Projects/E-Learning-Quiz-Be/src/database/
 
 [General]
 Version=202
@@ -14,7 +14,7 @@ ViewPropsTimestamp=2024,6,26,20,22,0.145
 Places Icons Auto-resize=false
 Places Icons Static Size=22
 Recent Files[$e]=file:$HOME,file:$HOME
-Recent URLs[$e]=file:///media/brianhuster/D/
+Recent URLs[$e]=file:///media/brianhuster/D/,file:$HOME/Downloads/
 detailViewIconSize=16
 
 [KPropertiesDialog]

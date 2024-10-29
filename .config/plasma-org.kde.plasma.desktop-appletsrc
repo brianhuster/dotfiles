@@ -119,12 +119,20 @@ highPrioritySensorIds=["cpu/all/usage"]
 lowPrioritySensorIds=["cpu/all/cpuCount","cpu/all/coreCount"]
 totalSensors=["cpu/all/usage"]
 
+[Containments][473][Applets][502]
+immutability=1
+plugin=org.kde.plasma.icon
+
+[Containments][473][Applets][502][Configuration]
+localPath=/home/brianhuster/.local/share/plasma_icons/firefox_firefox.desktop
+url=file:///var/lib/snapd/desktop/applications/firefox_firefox.desktop
+
 [Containments][473][ConfigDialog]
 DialogHeight=100
 DialogWidth=1920
 
 [Containments][473][General]
-AppletOrder=498;497;474;475;476;477;478;491;492
+AppletOrder=498;497;474;475;502;476;477;478;491;492
 
 [Containments][479]
 activityId=
