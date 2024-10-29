@@ -8,6 +8,7 @@ return {
 		enable_cmp_source = false,
 		virtual_text = {
 			enabled = true,
+			manual = false,
 			key_bindings = {
 				accept = "<M-CR>",
 			}
