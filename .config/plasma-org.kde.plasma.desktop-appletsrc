@@ -68,7 +68,7 @@ immutability=1
 plugin=org.kde.plasma.systemtray
 
 [Containments][473][Applets][478][Configuration]
-PreloadWeight=95
+PreloadWeight=100
 SystrayContainmentId=479
 
 [Containments][473][Applets][491]
@@ -127,12 +127,20 @@ plugin=org.kde.plasma.icon
 localPath=/home/brianhuster/.local/share/plasma_icons/firefox_firefox.desktop
 url=file:///var/lib/snapd/desktop/applications/firefox_firefox.desktop
 
+[Containments][473][Applets][503]
+immutability=1
+plugin=org.kde.plasma.icon
+
+[Containments][473][Applets][503][Configuration]
+localPath=/home/brianhuster/.local/share/plasma_icons/org.kde.konsole.desktop
+url=file:///usr/share/applications/org.kde.konsole.desktop
+
 [Containments][473][ConfigDialog]
 DialogHeight=100
 DialogWidth=1920
 
 [Containments][473][General]
-AppletOrder=498;497;474;475;502;476;477;478;491;492
+AppletOrder=498;497;474;475;502;503;476;477;478;491;492
 
 [Containments][479]
 activityId=
@@ -211,11 +219,14 @@ immutability=1
 plugin=org.kde.plasma.networkmanagement
 
 [Containments][479][Applets][495][Configuration]
-PreloadWeight=80
+PreloadWeight=90
 
 [Containments][479][Applets][496]
 immutability=1
 plugin=org.kde.plasma.bluetooth
+
+[Containments][479][Applets][496][Configuration]
+PreloadWeight=55
 
 [Containments][479][Applets][501]
 immutability=1

@@ -7,7 +7,7 @@ return {
 		enable_chat = true,
 		enable_cmp_source = false,
 		virtual_text = {
-			enabled = true,
+			-- enabled = true,
 			manual = false,
 			key_bindings = {
 				accept = "<M-CR>",

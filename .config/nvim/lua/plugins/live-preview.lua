@@ -1,8 +1,11 @@
 return {
 	'brianhuster/live-preview.nvim',
 	branch = "dev",
-	-- ft = { 'html', 'markdown', 'asciidoc' },
+	dependencies = {
+		{ 'nvim-telescope/telescope.nvim' },
+	},
 	opts = {
-		sync_scroll = true
+		sync_scroll = true,
+		['telescope.autoload'] = true
 	}
 }
