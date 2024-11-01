@@ -199,6 +199,9 @@ plugin=org.kde.plasma.manage-inputmethod
 immutability=1
 plugin=org.kde.plasma.clipboard
 
+[Containments][479][Applets][489][Configuration]
+PreloadWeight=70
+
 [Containments][479][Applets][490]
 immutability=1
 plugin=org.kde.kscreen
@@ -219,7 +222,7 @@ immutability=1
 plugin=org.kde.plasma.networkmanagement
 
 [Containments][479][Applets][495][Configuration]
-PreloadWeight=90
+PreloadWeight=100
 
 [Containments][479][Applets][496]
 immutability=1
@@ -233,7 +236,7 @@ immutability=1
 plugin=org.kde.plasma.mediacontroller
 
 [Containments][479][Applets][501][Configuration]
-PreloadWeight=42
+PreloadWeight=0
 
 [Containments][479][ConfigDialog]
 DialogHeight=690

@@ -5,7 +5,13 @@ return {
 		{ 'nvim-telescope/telescope.nvim' },
 	},
 	opts = {
+		commands = {
+			start = "LiveStart",
+			stop = "LiveStop",
+		},
 		sync_scroll = true,
-		['telescope.autoload'] = true
+		telescope = {
+			autoload = true,
+		}
 	}
 }
