@@ -4,8 +4,6 @@ return {
 	opts = {
 		dynamic_root = false,
 		sync_scroll = true,
-		telescope = {
-			autoload = true,
-		}
+		picker = "fzf-lua",
 	}
 }
