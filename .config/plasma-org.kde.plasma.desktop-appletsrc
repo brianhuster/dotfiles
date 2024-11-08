@@ -85,7 +85,7 @@ plugin=org.kde.plasma.systemmonitor.memory
 
 [Containments][473][Applets][497][Configuration]
 CurrentPreset=org.kde.plasma.systemmonitor
-PreloadWeight=55
+PreloadWeight=60
 
 [Containments][473][Applets][497][Configuration][Appearance]
 chartFace=org.kde.ksysguard.piechart

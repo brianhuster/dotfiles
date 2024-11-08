@@ -1,6 +1,6 @@
 # neovim-config
 
-Support Neovim ^0.11.0 with vim.lsp.completion
+   Support Neovim ^0.11.0 with vim.lsp.completion
 
 ## Keybindings
 
