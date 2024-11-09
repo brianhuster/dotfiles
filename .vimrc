@@ -1,59 +1,37 @@
-function! Terminal()
-  if &buftype == 'terminal'
-    startinsert
-    return
-  endif
-  let term_win = -1
-  for win in range(1, winnr('$'))
-    execute win . 'wincmd w'
-    if &buftype == 'terminal'
-      let term_win = win
-      break
-    endif
-  endfor
-  if term_win == -1
-    belowright split | terminal
-    setlocal nonumber
-    set winheight=12
-  else
-    execute term_win . 'wincmd w'
-  endif
-  startinsert
-endfunction
+lua << EOF
+	vim.keymap = {}
+	vim.keymap.set = function(mode, key, action, opts)
+		if type(action) ~= "string" then
+			return
+		end
+		vim.command(string.format('%snoremap %s %s', mode, key, action))
+	end
 
-" Terminal keybindings
-nnoremap t :call Terminal()<CR>
-xnoremap t :call Terminal()<CR>
-tnoremap <Esc> <C-\><C-n>
+	if not vim.o then
+		--- Credit : SongTianxiang
+		vim.o = setmetatable({}, {
+			__index = function(_, k)
+				local ok, optv = pcall(vim.eval, "&" .. k) -- notice this like
+				if not ok then
+					return error("Unknown option " .. k)
+				end
+				return optv
+			end,
+			__newindex = function(o, k, v)
+				local _ = vim.o[k]
+				if type(v) == "boolean" then
+					k = v and k or "no" .. k
+					vim.command('set ' .. k)
+					return
+				end
+				vim.command('set ' .. k .. '=' .. v)
+			end,
+		})
+	end
+EOF
 
-" Delete selected text without copying it
-nnoremap <BS> "_d
-xnoremap <BS> "_d
-
-" Delete a line without copying it
-nnoremap <BS><BS> "_dd
-xnoremap <BS><BS> "_dd
-
-" Delete until the end of the line without copying it
-nnoremap <Del> "_D
-
+luafile ~/.config/nvim/lua/keymaps.lua
 luafile ~/.config/nvim/lua/settings.lua
-
-augroup BufEnterHandler
-  autocmd!
-  autocmd BufEnter * call s:BufEnterHandler()
-augroup END
-
-function! s:BufEnterHandler()
-  if &buftype == 'terminal'
-    setlocal nonumber
-    set winheight=12
-  elseif &buftype == 'nofile'
-    call feedkeys(escape('<Esc>', '\'), 'n')
-  else
-    set winheight=100
-  endif
-endfunction
 
 if executable('ibus') == 0
   finish
