@@ -6,4 +6,4 @@
 !.tmux.conf
 !.vimrc
 !.vim
-!.vim/*
+!.vim/**
