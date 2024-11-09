@@ -1,4 +1,4 @@
-local function TerminalMode()
+local function terminal()
 	if vim.bo.buftype == 'terminal' then
 		vim.cmd('startinsert')
 		return
@@ -22,8 +22,8 @@ local function TerminalMode()
 end
 
 -- Terminal keybindings
-vim.keymap.set('n', 't', function() TerminalMode() end)
-vim.keymap.set('x', 't', function() TerminalMode() end)
+vim.keymap.set('n', 't', function() terminal() end)
+vim.keymap.set('x', 't', function() terminal() end)
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { silent = true })
 
 -- delete selected text without copying it

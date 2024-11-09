@@ -1,19 +1,43 @@
-vim.opt.mouse = 'a'
-vim.opt.number = true
-vim.opt.expandtab = false
-vim.opt.autoindent = true
-vim.opt.smartindent = true
-vim.opt.cursorline = false
-vim.opt.shiftwidth = 4
-vim.opt.tabstop = 4
-vim.opt.history = 5000
-vim.opt.clipboard = 'unnamedplus'
-vim.opt.autowriteall = true
-vim.opt.modeline = false
+if not vim.o then
+	--- Credit : SongTianxiang
+	vim.o = setmetatable({}, {
+		__index = function(_, k)
+			local ok, optv = pcall(vim.eval, "&" .. k) -- notice this like
+			if not ok then
+				return error("Unknown option " .. k)
+			end
+			return optv
+		end,
+		__newindex = function(o, k, v)
+			local _ = vim.o[k]
+			if type(v) == "boolean" then
+				k = v and k or "no" .. k
+				vim.command('set ' .. k)
+				return
+			end
+			vim.command('set ' .. k .. '=' .. v)
+		end,
+	})
+end
+
+vim.o.mouse = 'a'
+vim.o.number = true
+vim.o.expandtab = false
+vim.o.autoindent = true
+vim.o.smartindent = true
+vim.o.cursorline = false
+vim.o.shiftwidth = 4
+vim.o.tabstop = 4
+vim.o.history = 5000
+vim.o.clipboard = 'unnamedplus'
+vim.o.autowriteall = true
+vim.o.modeline = false
 vim.g.mapleader = ' '
-vim.filetype.add({
-	pattern = {
-		['.*%.ejs'] = 'html',
-		['.*/doc/.+%.txt'] = 'help'
-	}
-})
+if vim.fn.has('nvim') == 1 then
+	vim.filetype.add({
+		pattern = {
+			['.*%.ejs'] = 'html',
+			['.*/doc/.+%.txt'] = 'help'
+		}
+	})
+end
