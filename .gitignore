@@ -5,3 +5,5 @@
 !install.sh
 !.tmux.conf
 !.vimrc
+!.vim
+!.vim/*
