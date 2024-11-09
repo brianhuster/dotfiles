@@ -157,6 +157,9 @@ wallpaperplugin=org.kde.image
 immutability=1
 plugin=org.kde.plasma.volume
 
+[Containments][479][Applets][480][Configuration]
+PreloadWeight=55
+
 [Containments][479][Applets][480][Configuration][General]
 migrated=true
 
@@ -215,7 +218,7 @@ immutability=1
 plugin=org.kde.plasma.battery
 
 [Containments][479][Applets][494][Configuration]
-PreloadWeight=75
+PreloadWeight=85
 
 [Containments][479][Applets][495]
 immutability=1
