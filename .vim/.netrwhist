@@ -1,0 +1,9 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =7
+let g:netrw_dirhist_7='/home/brianhuster/.config/vim'
+let g:netrw_dirhist_6='/home/brianhuster/.config/vim/pack'
+let g:netrw_dirhist_5='/home/brianhuster/.config/vim/pack/brianhuster'
+let g:netrw_dirhist_4='/home/brianhuster/.config/vim/pack/brianhuster/start'
+let g:netrw_dirhist_3='/home/brianhuster/.config/vim/pack/brianhuster'
+let g:netrw_dirhist_2='/home/brianhuster/.config/vim/pack'
+let g:netrw_dirhist_1='/home/brianhuster/.config/vim'

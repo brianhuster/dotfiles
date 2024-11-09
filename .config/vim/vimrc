@@ -10,6 +10,8 @@ lua require('vim')
 luafile ~/.config/nvim/lua/keymaps.lua
 luafile ~/.config/nvim/lua/settings.lua
 
+packadd comment
+
 if executable('ibus') == 0
   finish
 endif
