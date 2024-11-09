@@ -6,6 +6,9 @@ set ttimeoutlen=1
 set listchars=tab:>-,trail:~,extends:>,precedes:<,space:.
 set ttyfast
 
+syntax on
+filetype plugin on
+
 lua require('vim')
 luafile ~/.config/nvim/lua/keymaps.lua
 luafile ~/.config/nvim/lua/settings.lua

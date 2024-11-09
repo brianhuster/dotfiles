@@ -10,6 +10,7 @@ vim.o.history = 5000
 vim.o.clipboard = 'unnamedplus'
 vim.o.autowriteall = true
 vim.o.modeline = false
+vim.o.backspace = 'indent,eol,start'
 vim.g.mapleader = ' '
 if vim.fn.has('nvim') == 1 then
 	vim.filetype.add({

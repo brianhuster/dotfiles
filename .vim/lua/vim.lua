@@ -3,7 +3,12 @@ vim.keymap.set = function(mode, key, action, opts)
 	if type(action) ~= "string" then
 		return
 	end
-	vim.command(string.format('%snoremap %s %s', mode, key, action))
+	vim.command(('%s%smap %s %s %s'):format(
+		mode,
+		opts.noremap and nore or "",
+		opts.silent and "<silent>" or "",
+		key,
+		action))
 end
 
 if not vim.o then
