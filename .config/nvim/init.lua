@@ -4,6 +4,7 @@ if vim.loader then
 end
 require('keymaps')
 require('settings')
+require('ibus')
 require('ui')
 require('plugins-managers')
 require('vscode')

@@ -32,3 +32,20 @@ if not vim.o then
 		end,
 	})
 end
+
+vim.inspect = function(any)
+	if vim.type(any) == 'table' then
+		return vim.fn.execute("echo luaeval('vim.dict(any)')")
+	end
+	if vim.type(any) == 'list' or vim.type(any) == 'dict' then
+		return vim.fn.execute("echo luaeval('any')")
+	end
+	return any
+end
+
+vim.print = function(any)
+	print(vim.inspect(any))
+end
+
+vim.trim = vim.fn.trim
+vim.system = vim.fn.system
