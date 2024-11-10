@@ -48,4 +48,7 @@ vim.print = function(any)
 end
 
 vim.trim = vim.fn.trim
-vim.system = vim.fn.system
+vim.system = function(cmdtbl)
+	local cmd = table.concat(cmdtbl, " ")
+	return vim.fn.system(cmd)
+end

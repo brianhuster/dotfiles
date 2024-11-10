@@ -146,7 +146,6 @@ source "$OSH"/oh-my-bash.sh
 # Example aliases
 # alias bashconfig="mate ~/.bashrc"
 # alias ohmybash="mate ~/.oh-my-bash"
-alias vim="flatpak run org.vim.Vim"
 export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
 
@@ -161,3 +160,5 @@ export EDITOR='flatpak run org.vim.Vim'
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 eval "$(/bin/brew shellenv)"
+
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
