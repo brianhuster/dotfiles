@@ -11,7 +11,6 @@ filetype plugin on
 packadd comment
 
 lua require('vim')
-lua require('copilot')
 luafile ~/.config/nvim/lua/keymaps.lua
 luafile ~/.config/nvim/lua/settings.lua
 luafile ~/.config/nvim/lua/ibus.lua
@@ -26,3 +25,10 @@ if executable('ibus')
 		autocmd ExitPre * lua IbusOn()
 	augroup END
 endif
+
+lua require('copilot')
+packadd copilot.vim
+packadd vim-fugitive
+packadd vim-dadbod
+packadd vim-dadbod-completion
+packadd vim-dadbod-ui
