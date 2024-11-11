@@ -30,12 +30,12 @@ IbusOff()
 if vim.fn.has('nvim') == 1 then
 	vim.api.nvim_create_augroup('IBusHandler', { clear = true })
 	vim.api.nvim_create_autocmd('CmdLineEnter', {
-		pattern = '[/?]',
+		pattern = { '[/?]', '[:s/?]', '[:%s/?]' },
 		callback = IbusOn,
 		group = 'IBusHandler',
 	})
 	vim.api.nvim_create_autocmd('CmdLineLeave', {
-		pattern = '[/?]',
+		pattern = { '[/?]', '[:s/?]', '[:%s/?]' },
 		callback = IbusOff,
 		group = 'IBusHandler',
 	})
