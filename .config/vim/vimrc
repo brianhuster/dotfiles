@@ -11,17 +11,18 @@ filetype plugin on
 packadd comment
 
 lua require('vim')
+lua require('copilot')
 luafile ~/.config/nvim/lua/keymaps.lua
 luafile ~/.config/nvim/lua/settings.lua
 luafile ~/.config/nvim/lua/ibus.lua
 
 if executable('ibus')
 	augroup IBusHandler
-	  autocmd!
-	  autocmd CmdlineEnter [/?] lua IbusOn()
-	  autocmd CmdlineLeave [/?] lua IbusOff()
-	  autocmd InsertEnter * lua IbusOn()
-	  autocmd InsertLeave * lua IbusOff()
-	  autocmd ExitPre * lua IbusOn()
+		autocmd!
+		autocmd CmdLineEnter [/?] :s/ :%s/ call IbusOn()
+		autocmd CmdLineLeave [/?] :s/ :%s/ call IbusOff()
+		autocmd InsertEnter * lua IbusOn()
+		autocmd InsertLeave * lua IbusOff()
+		autocmd ExitPre * lua IbusOn()
 	augroup END
 endif
