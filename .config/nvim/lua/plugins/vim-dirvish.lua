@@ -1,5 +1,5 @@
 return {
-	'kristijanhusak/vim-dirvish-git',
+	'brianhuster/vim-dirvish-git.lua',
 	dependencies = {
 		'justinmk/vim-dirvish',
 	}
