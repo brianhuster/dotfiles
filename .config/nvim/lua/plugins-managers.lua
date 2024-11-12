@@ -10,10 +10,16 @@ local disabled_built_ins = {
 	"netrwPlugin",
 	"netrwSettings",
 	"netrwFileHandlers",
+	"vimball",
+	"vimballPlugin",
 }
 
 for _, plugin in pairs(disabled_built_ins) do
 	vim.g["loaded_" .. plugin] = 1
+end
+
+if vim.fn.has('nvim') == 0 then
+	return
 end
 
 -- Install lazy.nvim if not exists

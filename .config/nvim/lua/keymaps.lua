@@ -1,7 +1,4 @@
 local function terminal()
-	if vim.fn.has('nvim') == 0 then
-		return
-	end
 	if vim.bo.buftype == 'terminal' then
 		vim.cmd('startinsert')
 		return

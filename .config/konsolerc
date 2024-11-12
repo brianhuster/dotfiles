@@ -8,7 +8,6 @@ ConfigVersion=1
 1280x800 screen: Window-Maximized=true
 1920x1080 screen: Height=659
 1920x1080 screen: Width=1315
-1920x1080 screen: Window-Maximized=true
 1920x1080 screen: XPosition=302
 1920x1080 screen: YPosition=198
 2 screens: Window-Maximized=true

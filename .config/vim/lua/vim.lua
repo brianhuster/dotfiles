@@ -11,16 +11,18 @@ vim.keymap.set = function(mode, key, action, opts)
 		action))
 end
 
+local option_index = function(_, k)
+	local ok, optv = pcall(vim.eval, "&" .. k) -- notice this like
+	if not ok then
+		return error("Unknown option " .. k)
+	end
+	return optv
+end
+
 if not vim.o then
 	--- Credit : SongTianxiang
 	vim.o = setmetatable({}, {
-		__index = function(_, k)
-			local ok, optv = pcall(vim.eval, "&" .. k) -- notice this like
-			if not ok then
-				return error("Unknown option " .. k)
-			end
-			return optv
-		end,
+		__index = option_index,
 		__newindex = function(o, k, v)
 			local _ = vim.o[k]
 			if type(v) == "boolean" then
@@ -32,6 +34,21 @@ if not vim.o then
 		end,
 	})
 end
+
+vim.bo = setmetatable({}, {
+	__index = option_index,
+	__newindex = function(o, k, v)
+		local _ = vim.o[k]
+		if type(v) == "boolean" then
+			k = v and k or "no" .. k
+			vim.command('setlocal ' .. k)
+			return
+		end
+		vim.command('setlocal ' .. k .. '=' .. v)
+	end,
+})
+
+vim.wo = vim.bo
 
 vim.inspect = function(any)
 	if vim.type(any) == 'table' then
@@ -52,3 +69,5 @@ vim.system = function(cmdtbl)
 	local cmd = table.concat(cmdtbl, " ")
 	return vim.fn.system(cmd)
 end
+
+vim.cmd = vim.command

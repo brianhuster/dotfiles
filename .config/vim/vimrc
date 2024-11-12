@@ -14,6 +14,7 @@ lua require('vim')
 luafile ~/.config/nvim/lua/keymaps.lua
 luafile ~/.config/nvim/lua/settings.lua
 luafile ~/.config/nvim/lua/ibus.lua
+luafile ~/.config/nvim/lua/plugins-managers.lua
 
 if executable('ibus')
 	augroup IBusHandler
@@ -27,8 +28,10 @@ if executable('ibus')
 endif
 
 lua require('copilot')
-packadd copilot.vim
-packadd vim-fugitive
-packadd vim-dadbod
-packadd vim-dadbod-completion
-packadd vim-dadbod-ui
+packadd lazy/copilot.vim
+packadd lazy/vim-dirvish
+packadd lazy/vim-dirvish-git
+packadd lazy/vim-fugitive
+packadd lazy/vim-dadbod
+packadd lazy/vim-dadbod-completion
+packadd lazy/vim-dadbod-ui
