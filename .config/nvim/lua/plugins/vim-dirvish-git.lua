@@ -1,6 +1,7 @@
 return {
 	'brianhuster/vim-dirvish-git.lua',
+	branch = 'dev',
 	dependencies = {
-		'justinmk/vim-dirvish',
+		'brianhuster/vim-dirvish',
 	}
 }

@@ -19,7 +19,7 @@ wallpaperplugin=org.kde.image
 
 [Containments][472][General]
 ToolBoxButtonState=topcenter
-ToolBoxButtonX=340
+ToolBoxButtonX=479
 
 [Containments][473]
 activityId=
@@ -85,7 +85,7 @@ plugin=org.kde.plasma.systemmonitor.memory
 
 [Containments][473][Applets][497][Configuration]
 CurrentPreset=org.kde.plasma.systemmonitor
-PreloadWeight=70
+PreloadWeight=75
 
 [Containments][473][Applets][497][Configuration][Appearance]
 chartFace=org.kde.ksysguard.piechart
@@ -218,7 +218,7 @@ immutability=1
 plugin=org.kde.plasma.battery
 
 [Containments][479][Applets][494][Configuration]
-PreloadWeight=85
+PreloadWeight=95
 
 [Containments][479][Applets][495]
 immutability=1
