@@ -1,4 +1,4 @@
-vim.keymap.set('i', '<M-CR>', 'copilot#Accept("\\<CR>")', {
+vim.keymap.set('i', '<M-CR>', 'call copilot#Accept("\\<CR>")', {
 	expr = true,
 	replace_keycodes = false
 })

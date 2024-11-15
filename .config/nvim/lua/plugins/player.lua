@@ -1,4 +1,4 @@
 return {
 	"alexxGmZ/player.nvim",
-	opts = {}
+	config = true
 }

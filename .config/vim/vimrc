@@ -6,18 +6,13 @@ set ttimeoutlen=1
 set listchars=tab:>-,trail:~,extends:>,precedes:<,space:.
 set ttyfast
 
-" func set_python(chan, result)
-" 	let paths = split(a:result, '\n')
-" 	let &pythonthreedll = paths[0]
-" endfunc
-
-" call job_start('ldconfig -p | grep libpython3', {'out_cb': 'set_python'})
-
 syntax on
 filetype plugin on
 packadd comment
+runtime! ftplugin/man.vim
 
 lua require('vim')
+lua require('settings')
 luafile ~/.config/nvim/lua/keymaps.lua
 luafile ~/.config/nvim/lua/settings.lua
 luafile ~/.config/nvim/lua/ibus.lua
