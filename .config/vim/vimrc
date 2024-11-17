@@ -1,40 +1,126 @@
-let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-let &t_SR = "\<Esc>]50;CursorShape=2\x7"
-let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-set ttimeout
-set ttimeoutlen=1
-set listchars=tab:>-,trail:~,extends:>,precedes:<,space:.
-set ttyfast
+if !has('nvim')
+	let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+	let &t_SR = "\<Esc>]50;CursorShape=2\x7"
+	let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+	set ttimeout
+	set ttimeoutlen=1
+	set listchars=tab:>-,trail:~,extends:>,precedes:<,space:.
+	set ttyfast
+	
+	set nocompatible
+	set noswapfile
+	syntax on
+	filetype plugin on
+	packadd! comment
+	packadd! matchit
+	runtime! ftplugin/man.vim
+	if !has('lua')
+		echoerr "This Vim is not compiled with Lua support."
+	endif
+	if !has('clipboard')
+		echoerr "This Vim is not compiled with clipboard support."
+	endif
+endif
 
-syntax on
-filetype plugin on
-packadd! comment
-runtime! ftplugin/man.vim
+set mouse=a
+set number
+set noexpandtab
 
-lua require('vim')
-lua require('settings')
-luafile ~/.config/nvim/lua/keymaps.lua
-luafile ~/.config/nvim/lua/settings.lua
-luafile ~/.config/nvim/lua/ibus.lua
-luafile ~/.config/nvim/lua/plugins-managers.lua
+set autoindent
+set smartindent
+set nocursorline
+set shiftwidth=4
+set tabstop=4
+set history=5000
+set clipboard=unnamedplus
+set autowriteall
+set nomodeline
+set backspace=indent,eol,start
+let g:mapleader=" "
+
+nnoremap t :call Terminal()<CR>
+xnoremap t :call Terminal()<CR>
+tnoremap <Esc> <C-\><C-n>
+
+nnoremap <BS> "_d
+xnoremap <BS> "_d
+nnoremap <BS><BS> "_dd
+xnoremap <BS><BS> "_dd
+nnoremap <Del> "_D
+xnoremap <Del> "_D
+nnoremap Y y$
+xnoremap Y y$
+
+
+
+function! IBusOff()
+	let g:ibus_prev_engine = trim(system('ibus engine'))
+	execute 'silent !ibus engine xkb:us::eng'
+endfunction
+
+function! IBusOn()
+	let l:current_engine = trim(system('ibus engine'))
+	if l:current_engine !~? 'xkb:us::eng'
+		let g:ibus_prev_engine = l:current_engine
+	endif
+	execute 'silent !' . 'ibus engine ' . g:ibus_prev_engine
+endfunction
 
 if executable('ibus')
 	augroup IBusHandler
-		autocmd!
-		autocmd CmdLineEnter [/?],[:s/?],[:%s/?] lua IbusOn()
-		autocmd CmdLineLeave [/?],[:s/?],[:%s/?] lua IbusOff()
-		autocmd InsertEnter * lua IbusOn()
-		autocmd InsertLeave * lua IbusOff()
-		autocmd ExitPre * lua IbusOn()
+		autocmd CmdLineEnter [/?] call IBusOn()
+		autocmd CmdLineLeave [/?] call IBusOff()
+		autocmd InsertEnter * call IBusOn()
+		autocmd InsertLeave * call IBusOff()
+		autocmd ExitPre * call IBusOn()
 	augroup END
+	call IBusOff()
 endif
 
-packadd lazy/copilot.vim
-lua require('copilot')
-packadd lazy/autosave.nvim
-packadd lazy/vim-dirvish
-packadd lazy/vim-dirvish-git.lua
-packadd lazy/vim-fugitive
-packadd lazy/vim-dadbod
-packadd lazy/vim-dadbod-completion
-packadd lazy/vim-dadbod-ui
+function! Terminal()
+	if &buftype == 'terminal'
+		startinsert
+		return
+	endif
+	let term_win = -1
+	for win in range(1, winnr('$'))
+		execute win . 'wincmd w'
+		echo &buftype
+		if &buftype == 'terminal'
+			let term_win = win
+			break
+		endif
+	endfor
+	if term_win == -1
+		belowright split | terminal
+		setlocal nonumber
+		set winheight=12
+	else
+		execute term_win . 'wincmd w'
+	endif
+	startinsert
+endfunction
+
+
+if !has('nvim')
+	packadd lazy/copilot.vim
+	let g:copilot_no_tab_map = v:true
+	imap <silent><script><expr> <M-CR> copilot#Accept("\\<CR>")
+	imap <M-w> <Plug>(copilot-accept-word)
+	imap <M-l> <Plug>(copilot-accept-line)
+
+	packadd lazy/vim-dirvish
+	if has('lua')
+		packadd lazy/autosave.nvim
+		if !has('gui_running')
+			packadd lazy/vim-dirvish-git.lua
+		endif
+	endif
+
+	packadd lazy/vim-fugitive
+	set statusline=%<%f\ %h%m%r%{FugitiveStatusline()}%=%-14.(%l,%c%V%)\ %P
+
+	packadd lazy/vim-dadbod
+	packadd lazy/vim-dadbod-completion
+	packadd lazy/vim-dadbod-ui
+endif
