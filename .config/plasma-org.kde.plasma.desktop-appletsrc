@@ -218,7 +218,7 @@ immutability=1
 plugin=org.kde.plasma.battery
 
 [Containments][479][Applets][494][Configuration]
-PreloadWeight=95
+PreloadWeight=100
 
 [Containments][479][Applets][495]
 immutability=1
@@ -249,6 +249,15 @@ DialogWidth=920
 extraItems=org.kde.plasma.volume,org.kde.plasma.keyboardindicator,org.kde.kdeconnect,org.kde.kupapplet,org.kde.plasma.battery,org.kde.plasma.mediacontroller,org.kde.plasma.nightcolorcontrol,org.kde.plasma.printmanager,org.kde.plasma.notifications,org.kde.plasma.devicenotifier,org.kde.plasma.networkmanagement,org.kde.plasma.vault,org.kde.plasma.keyboardlayout,org.kde.plasma.manage-inputmethod,org.kde.plasma.clipboard,org.kde.plasma.bluetooth,org.kde.kscreen
 knownItems=org.kde.plasma.volume,org.kde.plasma.keyboardindicator,org.kde.kdeconnect,org.kde.kupapplet,org.kde.plasma.battery,org.kde.plasma.mediacontroller,org.kde.plasma.nightcolorcontrol,org.kde.plasma.printmanager,org.kde.plasma.notifications,org.kde.plasma.devicenotifier,org.kde.plasma.networkmanagement,org.kde.plasma.vault,org.kde.plasma.keyboardlayout,org.kde.plasma.manage-inputmethod,org.kde.plasma.clipboard,org.kde.plasma.bluetooth,org.kde.kscreen
 shownItems=org.kde.plasma.battery
+
+[Containments][504]
+activityId=0ff518ea-0a5c-4f8f-af53-35ba6ee841fc
+formfactor=0
+immutability=1
+lastScreen=1
+location=0
+plugin=org.kde.plasma.folder
+wallpaperplugin=org.kde.image
 
 [ScreenMapping]
 itemsOnDisabledScreens=

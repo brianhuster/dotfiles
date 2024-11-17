@@ -12,6 +12,10 @@ vim.o.autowriteall = true
 vim.o.modeline = false
 vim.o.backspace = 'indent,eol,start'
 vim.g.mapleader = ' '
+vim.cmd [[
+	aunmenu PopUp
+  	autocmd! nvim_popupmenu
+]]
 if vim.fn.has('nvim') == 1 then
 	vim.filetype.add({
 		pattern = {
