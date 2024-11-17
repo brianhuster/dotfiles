@@ -142,7 +142,7 @@ History Items[$e]=file:///media/brianhuster/D/CentOS_VM,file:///media/brianhuste
 [General]
 BrowserApplication=com.microsoft.Edge.desktop
 ColorSchemeHash=5d8c76989d217fc903db15dbc28829b890161033
-fixed=Hack,12,-1,5,50,0,0,0,0,0
+fixed=Hack,14,-1,5,50,0,0,0,0,0
 font=Noto Sans,12,-1,5,50,0,0,0,0,0
 menuFont=Noto Sans,12,-1,5,50,0,0,0,0,0
 smallestReadableFont=Noto Sans,10,-1,5,50,0,0,0,0,0

@@ -1,7 +1,0 @@
-*
-.uuid
-!.gitignore
-!fonts
-!fonts/**
-!konsole
-!konsole/**
