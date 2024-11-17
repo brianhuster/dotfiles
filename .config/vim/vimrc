@@ -8,7 +8,7 @@ set ttyfast
 
 syntax on
 filetype plugin on
-packadd comment
+packadd! comment
 runtime! ftplugin/man.vim
 
 lua require('vim')
