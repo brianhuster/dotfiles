@@ -104,10 +104,6 @@ endfunction
 
 if !has('nvim')
 	packadd lazy/copilot.vim
-	let g:copilot_no_tab_map = v:true
-	imap <silent><script><expr> <M-CR> copilot#Accept("\\<CR>")
-	imap <M-w> <Plug>(copilot-accept-word)
-	imap <M-l> <Plug>(copilot-accept-line)
 
 	packadd lazy/vim-dirvish
 	if has('lua')

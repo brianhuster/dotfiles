@@ -1,5 +1,11 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhistcnt =3
+let g:netrw_dirhistcnt =9
+let g:netrw_dirhist_9='/home/brianhuster/Downloads/game language 2'
+let g:netrw_dirhist_8='/home/brianhuster/Downloads'
+let g:netrw_dirhist_7='/media/brianhuster/D/Projects'
+let g:netrw_dirhist_6='/media/brianhuster/D/Projects/test'
+let g:netrw_dirhist_5='/media/brianhuster/D/Projects'
+let g:netrw_dirhist_4='/media/brianhuster/D/Projects/vim-dirvish-mani.lua'
 let g:netrw_dirhist_3='/home/brianhuster/.config/vim'
 let g:netrw_dirhist_2='/home/brianhuster/.config'
 let g:netrw_dirhist_1='/home/brianhuster/.config/vim'
