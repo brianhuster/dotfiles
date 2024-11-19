@@ -2,7 +2,7 @@
   "CopilotChat.nvim": { "branch": "canary", "commit": "5236f0eea0a0c7520defbb20d6b926ef2be58d27" },
   "autosave.nvim": { "branch": "dev", "commit": "b15f08a4ee649889cf19dc2a90a0950419cfd3d3" },
   "codecompanion.nvim": { "branch": "main", "commit": "17a9221f18d8f6d3fb7c3086ad677fc16015ede1" },
-  "codeium.nvim": { "branch": "main", "commit": "dddaee0d1e9a1d0bcaea66f08a8103b3cdf26604" },
+  "codeium.vim": { "branch": "main", "commit": "8c01979323b2b480c8bf160d3ff85bd1668baa49" },
   "copilot.vim": { "branch": "release", "commit": "87038123804796ca7af20d1b71c3428d858a9124" },
   "firenvim": { "branch": "master", "commit": "64f9389b88c8b0c7667d45c171a5f25c42d852fb" },
   "fzf-lua": { "branch": "main", "commit": "2a7eb32871a131e24021dd1756865e475fe7e274" },
