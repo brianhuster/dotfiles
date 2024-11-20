@@ -2,46 +2,45 @@ if not vim.g.vscode then
 	return
 end
 
-local M = {}
 
-local augroup = vim.api.nvim_create_augroup
-local keymap = vim.api.nvim_set_keymap
+vim.g.clipboard = vim.g.vscode_clipboard
 
-M.my_vscode = augroup('MyVSCode', {})
+local keymap = vim.keymap.set
+local autocmd = vim.api.nvim_create_autocmd
 
 vim.filetype.add {
 	pattern = {
 		['.*%.ipynb.*'] = 'python',
 		-- uses lua pattern matching
-		-- rathen than naive matching
+		-- rathen than native matching
 	},
 }
 
-local function notify(cmd)
-	return string.format("<cmd>call VSCodeNotify('%s')<CR>", cmd)
-end
+local call = require('vscode').call     -- Synchrnous call to vscode
+local action = require('vscode').action -- Asynchronous call to vscode
 
-local function v_notify(cmd)
-	return string.format("<cmd>call VSCodeNotifyVisual('%s', 1)<CR>", cmd)
-end
+keymap('n', '-', call('workbench.files.action.showActiveFileInExplore'), { silent = true })
+keymap('n', '<Leader>xr', call 'references-view.findReferences', { silent = true })  -- language references
+keymap('n', '<Leader>xd', call 'workbench.actions.view.problems', { silent = true }) -- language diagnostics
+keymap('n', 'grr', call 'editor.action.goToReferences', { silent = true })
+keymap('n', 'grn', call 'editor.action.rename', { silent = true })
+keymap('n', '<Leader>ca', call 'editor.action.refactor', { silent = true })              -- language code actions
 
-keymap('n', '<Leader>xr', notify 'references-view.findReferences', { silent = true })  -- language references
-keymap('n', '<Leader>xd', notify 'workbench.actions.view.problems', { silent = true }) -- language diagnostics
-keymap('n', 'grr', notify 'editor.action.goToReferences', { silent = true })
-keymap('n', 'grn', notify 'editor.action.rename', { silent = true })
-keymap('n', '<Leader>fm', notify 'editor.action.formatDocument', { silent = true })
-keymap('n', '<Leader>ca', notify 'editor.action.refactor', { silent = true })                   -- language code actions
+keymap('n', '<Leader>fg', call 'workbench.action.findInFiles', { silent = true })        -- use ripgrep to search files
+keymap('n', '<Leader>ts', call 'workbench.action.toggleSidebarVisibility', { silent = true })
+keymap('n', '<Leader>th', call 'workbench.action.toggleAuxiliaryBar', { silent = true }) -- toggle docview (help page)
+keymap('n', '<Leader>tp', call 'workbench.action.togglePanel', { silent = true })
+keymap('n', '<Leader>fc', call 'workbench.action.showCommands', { silent = true })       -- find commands
+keymap('n', '<Leader>ff', call 'workbench.action.quickOpen', { silent = true })          -- find files
+keymap('n', 't', call 'workbench.action.terminal.toggleTerminal', { silent = true })     -- terminal window
 
-keymap('n', '<Leader>fg', notify 'workbench.action.findInFiles', { silent = true })             -- use ripgrep to search files
-keymap('n', '<Leader>ts', notify 'workbench.action.toggleSidebarVisibility', { silent = true })
-keymap('n', '<Leader>th', notify 'workbench.action.toggleAuxiliaryBar', { silent = true })      -- toggle docview (help page)
-keymap('n', '<Leader>tp', notify 'workbench.action.togglePanel', { silent = true })
-keymap('n', '<Leader>fc', notify 'workbench.action.showCommands', { silent = true })            -- find commands
-keymap('n', '<Leader>ff', notify 'workbench.action.quickOpen', { silent = true })               -- find files
-keymap('n', '<Leader>tw', notify 'workbench.action.terminal.toggleTerminal', { silent = true }) -- terminal window
+keymap('v', 'gq', action 'editor.action.formatSelection', { silent = true })
+keymap('v', '<Leader>ca', call 'editor.action.refactor', { silent = true })
+keymap('v', '<Leader>fc', call 'workbench.action.showCommands', { silent = true })
 
-keymap('v', '<Leader>fm', v_notify 'editor.action.formatSelection', { silent = true })
-keymap('v', '<Leader>ca', v_notify 'editor.action.refactor', { silent = true })
-keymap('v', '<Leader>fc', v_notify 'workbench.action.showCommands', { silent = true })
-
-return M
+autocmd('BufWritePre', {
+	pattern = '*',
+	callback = function()
+		action('editor.action.formatDocument')
+	end,
+})

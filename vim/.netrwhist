@@ -1,5 +1,6 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhistcnt =9
+let g:netrw_dirhistcnt =0
+let g:netrw_dirhist_0='/home/brianhuster/.config'
 let g:netrw_dirhist_9='/home/brianhuster/Downloads/game language 2'
 let g:netrw_dirhist_8='/home/brianhuster/Downloads'
 let g:netrw_dirhist_7='/media/brianhuster/D/Projects'

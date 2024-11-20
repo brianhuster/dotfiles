@@ -51,8 +51,6 @@ xnoremap <Del> "_D
 nnoremap Y y$
 xnoremap Y y$
 
-
-
 function! IBusOff()
 	let g:ibus_prev_engine = trim(system('ibus engine'))
 	execute 'silent !ibus engine xkb:us::eng'
@@ -108,9 +106,7 @@ if !has('nvim')
 	packadd lazy/vim-dirvish
 	if has('lua')
 		packadd lazy/autosave.nvim
-		if !has('gui_running')
-			packadd lazy/vim-dirvish-git.lua
-		endif
+		packadd lazy/vim-dirvish-git.lua
 	endif
 
 	packadd lazy/vim-fugitive
