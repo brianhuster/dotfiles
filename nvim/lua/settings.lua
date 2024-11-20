@@ -16,11 +16,9 @@ vim.cmd [[
 	aunmenu PopUp
   	autocmd! nvim_popupmenu
 ]]
-if vim.fn.has('nvim') == 1 then
-	vim.filetype.add({
-		pattern = {
-			['.*%.ejs'] = 'html',
-			['.*/doc/.+%.txt'] = 'help'
-		}
-	})
-end
+vim.filetype.add({
+	pattern = {
+		['.*%.ejs'] = 'html',
+		['.*/doc/.+%.txt'] = 'help'
+	}
+})

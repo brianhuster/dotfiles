@@ -1,4 +1,3 @@
--- Vô hiệu hóa các plugin mặc định không cần thiết trong Neovim
 local disabled_built_ins = {
 	"getscript",
 	"getscriptPlugin",
@@ -16,10 +15,6 @@ local disabled_built_ins = {
 
 for _, plugin in pairs(disabled_built_ins) do
 	vim.g["loaded_" .. plugin] = 1
-end
-
-if vim.fn.has('nvim') == 0 then
-	return
 end
 
 -- Install lazy.nvim if not exists

@@ -27,30 +27,28 @@ end
 
 IbusOff()
 
-if vim.fn.has('nvim') == 1 then
-	vim.api.nvim_create_augroup('IBusHandler', { clear = true })
-	vim.api.nvim_create_autocmd('CmdLineEnter', {
-		pattern = { '[/?]', '[:s/?]', '[:%s/?]' },
-		callback = IbusOn,
-		group = 'IBusHandler',
-	})
-	vim.api.nvim_create_autocmd('CmdLineLeave', {
-		pattern = { '[/?]', '[:s/?]', '[:%s/?]' },
-		callback = IbusOff,
-		group = 'IBusHandler',
-	})
-	vim.api.nvim_create_autocmd('InsertEnter', {
-		pattern = '*',
-		callback = IbusOn,
-		group = 'IBusHandler',
-	})
-	vim.api.nvim_create_autocmd('InsertLeave', {
-		pattern = '*',
-		callback = IbusOff,
-		group = 'IBusHandler',
-	})
-	vim.api.nvim_create_autocmd('ExitPre', {
-		callback = IbusOn,
-		group = 'IBusHandler',
-	})
-end
+vim.api.nvim_create_augroup('IBusHandler', { clear = true })
+vim.api.nvim_create_autocmd('CmdLineEnter', {
+	pattern = { '[/?]', '[:s/?]', '[:%s/?]' },
+	callback = IbusOn,
+	group = 'IBusHandler',
+})
+vim.api.nvim_create_autocmd('CmdLineLeave', {
+	pattern = { '[/?]', '[:s/?]', '[:%s/?]' },
+	callback = IbusOff,
+	group = 'IBusHandler',
+})
+vim.api.nvim_create_autocmd('InsertEnter', {
+	pattern = '*',
+	callback = IbusOn,
+	group = 'IBusHandler',
+})
+vim.api.nvim_create_autocmd('InsertLeave', {
+	pattern = '*',
+	callback = IbusOff,
+	group = 'IBusHandler',
+})
+vim.api.nvim_create_autocmd('ExitPre', {
+	callback = IbusOn,
+	group = 'IBusHandler',
+})

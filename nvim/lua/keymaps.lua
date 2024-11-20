@@ -1,3 +1,5 @@
+local map = vim.keymap.set
+
 local function terminal()
 	if vim.bo.buftype == 'terminal' then
 		vim.cmd('startinsert')
@@ -22,17 +24,17 @@ local function terminal()
 end
 
 -- Terminal keybindings
-vim.keymap.set('n', 't', function() terminal() end)
-vim.keymap.set('x', 't', function() terminal() end)
-vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { silent = true })
+map('n', 't', function() terminal() end)
+map('x', 't', function() terminal() end)
+map('t', '<Esc>', '<C-\\><C-n>', { silent = true })
 
 -- delete selected text without copying it
-vim.keymap.set('n', '<BS>', '"_d', { silent = true })
-vim.keymap.set('x', '<BS>', '"_d', { silent = true })
+map('n', '<BS>', '"_d', { silent = true })
+map('x', '<BS>', '"_d', { silent = true })
 
 -- Delete a line without copying it
-vim.keymap.set('n', '<BS><BS>', '"_dd', { silent = true })
-vim.keymap.set('x', '<BS><BS>', '"_dd', { silent = true })
+map('n', '<BS><BS>', '"_dd', { silent = true })
+map('x', '<BS><BS>', '"_dd', { silent = true })
 
 -- Delete until the end of the line without copying it
-vim.keymap.set('n', '<Del>', '"_D', { silent = true })
+map('n', '<Del>', '"_D', { silent = true })
