@@ -1,12 +1,11 @@
 # neovim-config
 
-   Support Neovim ^0.11.0 with vim.lsp.completion
+Support Neovim nightly
 
 ## Keybindings
 
 The configuration includes the following custom keybindings:
 
-- `Alt+E` : Open oil.nvim explorer
 - Press `Backspace` key : delete seleted text without cutting it
 - Press `Backspace` twice : to delete a line without cutting it
 - Press `Delete` key : delete until the end of the lien without cutting it

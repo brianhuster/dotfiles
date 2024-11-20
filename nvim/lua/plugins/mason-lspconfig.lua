@@ -41,6 +41,7 @@ return {
 			"html",
 			"ts_ls",
 			"jsonls",
+			'jdtls',
 			"lua_ls",
 			"marksman",
 			"phpactor",

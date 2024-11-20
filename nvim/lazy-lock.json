@@ -1,6 +1,6 @@
 {
   "CopilotChat.nvim": { "branch": "canary", "commit": "17da917aca96146189badf500a53d6d9aa853648" },
-  "autosave.nvim": { "branch": "dev", "commit": "236f913cd7ae111f130a0cc068f2b84bb74f4df7" },
+  "autosave.nvim": { "branch": "dev", "commit": "b6609a2ee852005c3716be416d4a32f8343c5fa8" },
   "codecompanion.nvim": { "branch": "main", "commit": "9bc511959c295466386ca48a8c8eed623cb07759" },
   "copilot.vim": { "branch": "release", "commit": "87038123804796ca7af20d1b71c3428d858a9124" },
   "firenvim": { "branch": "master", "commit": "64f9389b88c8b0c7667d45c171a5f25c42d852fb" },
@@ -19,6 +19,7 @@
   "nvim-autopairs": { "branch": "master", "commit": "b464658e9b880f463b9f7e6ccddd93fb0013f559" },
   "nvim-dap": { "branch": "master", "commit": "cc92b054720a96170eca6bd9bdedd43d2b0a7a8a" },
   "nvim-dap-ui": { "branch": "master", "commit": "ffa89839f97bad360e78428d5c740fdad9a0ff02" },
+  "nvim-jdtls": { "branch": "master", "commit": "e129398e171e87c0d9e94dd5bea7eb4730473ffc" },
   "nvim-lspconfig": { "branch": "master", "commit": "291a8f1a319dc712db85bcc174b0cf406f0a5b69" },
   "nvim-nio": { "branch": "master", "commit": "a428f309119086dc78dd4b19306d2d67be884eee" },
   "nvim-treesitter": { "branch": "master", "commit": "a3a732107f8b529f97bf4921b3e1af5dcc756bb6" },
