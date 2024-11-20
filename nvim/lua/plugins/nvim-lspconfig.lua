@@ -1,11 +1,12 @@
 return {
 	"neovim/nvim-lspconfig",
 	config = function()
-		vim.api.nvim_create_autocmd('LspAttach', {
+		local api = vim.api
+		api.nvim_create_autocmd('LspAttach', {
 			callback = function(args)
 				local client = vim.lsp.get_client_by_id(args.data.client_id)
 				if client.supports_method('textDocument/implementation') then
-					vim.api.nvim_buf_set_keymap(args.buf, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>',
+					api.nvim_buf_set_keymap(args.buf, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>',
 						{ noremap = true, silent = true })
 				end
 				if client.supports_method('textDocument/completion') and vim.lsp.completion then
@@ -13,16 +14,18 @@ return {
 					vim.o.completeopt = 'menuone,noinsert,fuzzy,noselect'
 				end
 				if client.supports_method('textDocument/formatting') then
-					vim.api.nvim_create_autocmd('BufWritePre', {
+					api.nvim_create_autocmd('BufWritePre', {
 						buffer = args.buf,
 						callback = function()
-							vim.lsp.buf.format({ bufnr = args.buf, id = client.id })
+							if not api.nvim_buf_get_name(0):match("%.min%.") then
+								vim.lsp.buf.format({ bufnr = args.buf, id = client.id })
+							end
 						end,
 					})
 				end
 			end,
 		})
-		vim.api.nvim_create_autocmd({ "CursorMoved" }, {
+		api.nvim_create_autocmd({ "CursorMoved" }, {
 			callback = function()
 				vim.diagnostic.config({
 					virtual_text = false,
