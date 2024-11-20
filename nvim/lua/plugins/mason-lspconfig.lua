@@ -35,6 +35,7 @@ return {
 		local lang_servers = {
 			"arduino_language_server",
 			"bashls",
+			"clangd",
 			"cssls",
 			"tailwindcss",
 			"dockerls",
@@ -70,6 +71,5 @@ return {
 				nvim_builtin_lua_ls()
 			end,
 		}
-		require('lspconfig').ccls.setup {}
 	end,
 }
