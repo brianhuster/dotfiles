@@ -101,18 +101,9 @@ endfunction
 
 
 if !has('nvim')
-	packadd lazy/copilot.vim
-
-	packadd lazy/vim-dirvish
 	if has('lua')
+		packadd lazy/vim-dirvish
 		packadd lazy/autosave.nvim
 		packadd lazy/vim-dirvish-git.lua
 	endif
-
-	packadd lazy/vim-fugitive
-	set statusline=%<%f\ %h%m%r%{FugitiveStatusline()}%=%-14.(%l,%c%V%)\ %P
-
-	packadd lazy/vim-dadbod
-	packadd lazy/vim-dadbod-completion
-	packadd lazy/vim-dadbod-ui
 endif
