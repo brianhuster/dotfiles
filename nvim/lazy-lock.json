@@ -39,7 +39,6 @@
   "vim-dadbod-ui": { "branch": "master", "commit": "28a16902cb2134c934b85da5250033ee43b0dee5" },
   "vim-dirvish": { "branch": "master", "commit": "552ac88b9167857a82750cdd903aeea8ae931b9f" },
   "vim-dirvish-git.lua": { "branch": "dev", "commit": "fc939084f7714e48a3b97219c944778204bca553" },
-  "vim-fugitive": { "branch": "master", "commit": "320b18fba2a4f2fe3c8225c778c687e0d2620384" },
   "volt": { "branch": "main", "commit": "8d35e03c70490190149a77c59155618ef4370721" },
   "which-key.nvim": { "branch": "main", "commit": "68e37e12913a66b60073906f5d3f14dee0de19f2" }
 }
