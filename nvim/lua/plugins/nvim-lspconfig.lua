@@ -1,5 +1,8 @@
 return {
 	"neovim/nvim-lspconfig",
+	dependencies = {
+		'netmute/ctags-lsp.nvim',
+	},
 	config = function()
 		local api = vim.api
 		api.nvim_create_autocmd('LspAttach', {
