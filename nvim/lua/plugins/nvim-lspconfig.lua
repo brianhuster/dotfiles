@@ -14,7 +14,7 @@ return {
 				end
 				if client.supports_method('textDocument/completion') and vim.lsp.completion then
 					vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
-					vim.o.completeopt = 'menuone,noinsert,fuzzy,noselect'
+					vim.o.completeopt = 'menuone,noinsert,fuzzy,noselect,preview'
 				end
 				if client.supports_method('textDocument/formatting') then
 					api.nvim_create_autocmd('BufWritePre', {

@@ -9,6 +9,8 @@
 !nvim/**
 !vim
 !vim/**
+!tmux
+!tmux/**
 !dolphinrc
 !gtkrc
 !gtkrc-2.0

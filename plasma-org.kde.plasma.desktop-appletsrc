@@ -57,7 +57,7 @@ immutability=1
 plugin=org.kde.plasma.icontasks
 
 [Containments][473][Applets][476][Configuration][General]
-launchers=applications:systemsettings.desktop,applications:org.kde.discover.desktop,preferred://browser,preferred://filemanager
+launchers=applications:systemsettings.desktop,applications:org.kde.discover.desktop,preferred://filemanager
 
 [Containments][473][Applets][477]
 immutability=1
@@ -135,12 +135,28 @@ plugin=org.kde.plasma.icon
 localPath=/home/brianhuster/.local/share/plasma_icons/org.kde.konsole.desktop
 url=file:///usr/share/applications/org.kde.konsole.desktop
 
+[Containments][473][Applets][505]
+immutability=1
+plugin=org.kde.plasma.icon
+
+[Containments][473][Applets][505][Configuration]
+localPath=/home/brianhuster/.local/share/plasma_icons/firefox_firefox (1).desktop
+url=file:///var/lib/snapd/desktop/applications/firefox_firefox.desktop
+
+[Containments][473][Applets][506]
+immutability=1
+plugin=org.kde.plasma.icon
+
+[Containments][473][Applets][506][Configuration]
+localPath=/home/brianhuster/.local/share/plasma_icons/chromium_chromium.desktop
+url=file:///var/lib/snapd/desktop/applications/chromium_chromium.desktop
+
 [Containments][473][ConfigDialog]
 DialogHeight=100
 DialogWidth=1920
 
 [Containments][473][General]
-AppletOrder=498;497;474;475;502;503;476;477;478;491;492
+AppletOrder=498;497;474;475;502;503;505;506;476;477;478;491;492
 
 [Containments][479]
 activityId=

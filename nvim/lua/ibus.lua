@@ -3,18 +3,12 @@ if vim.fn.executable('ibus') == 0 then
 end
 
 function IbusGetCurrentEngine()
-	local handle = io.popen('ibus engine')
-	local result
-	if handle then
-		result = handle:read("*a")
-		handle:close()
-	end
-	return result
+	return vim.system({ 'ibus', 'engine' }):wait().stdout
 end
 
 function IbusOff()
 	vim.g.ibus_prev_engine = IbusGetCurrentEngine()
-	vim.system({ 'ibus', 'engine', 'xkb:us::eng' })
+	vim.system({ 'ibus', 'engine', 'xkb:us::eng' }):wait()
 end
 
 function IbusOn()
@@ -22,10 +16,8 @@ function IbusOn()
 	if not current_engine:match('xkb:us::eng') then
 		vim.g.ibus_prev_engine = current_engine
 	end
-	vim.system({ 'ibus', 'engine', vim.trim(vim.g.ibus_prev_engine) })
+	vim.system({ 'ibus', 'engine', vim.trim(vim.g.ibus_prev_engine) }):wait()
 end
-
-IbusOff()
 
 vim.api.nvim_create_augroup('IBusHandler', { clear = true })
 vim.api.nvim_create_autocmd('CmdLineEnter', {
@@ -52,3 +44,6 @@ vim.api.nvim_create_autocmd('ExitPre', {
 	callback = IbusOn,
 	group = 'IBusHandler',
 })
+
+
+IbusOff()

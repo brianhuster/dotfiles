@@ -100,10 +100,8 @@ function! Terminal()
 endfunction
 
 
-if !has('nvim')
-	if has('lua')
-		packadd lazy/vim-dirvish
-		packadd lazy/autosave.nvim
-		packadd lazy/vim-dirvish-git.lua
-	endif
+if has('lua')
+	packadd lazy/vim-dirvish
+	packadd lazy/autosave.nvim
+	packadd lazy/vim-dirvish-git.lua
 endif
