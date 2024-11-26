@@ -143,10 +143,10 @@ History Items[$e]=file:///media/brianhuster/D/CentOS_VM,file:///media/brianhuste
 BrowserApplication=com.microsoft.Edge.desktop
 ColorSchemeHash=5d8c76989d217fc903db15dbc28829b890161033
 fixed=Hack,14,-1,5,50,0,0,0,0,0
-font=Noto Sans,12,-1,5,50,0,0,0,0,0
-menuFont=Noto Sans,12,-1,5,50,0,0,0,0,0
-smallestReadableFont=Noto Sans,10,-1,5,50,0,0,0,0,0
-toolBarFont=Noto Sans,12,-1,5,50,0,0,0,0,0
+font=Noto Sans,14,-1,5,50,0,0,0,0,0
+menuFont=Noto Sans,14,-1,5,50,0,0,0,0,0
+smallestReadableFont=Noto Sans,12,-1,5,50,0,0,0,0,0
+toolBarFont=Noto Sans,14,-1,5,50,0,0,0,0,0
 
 [KDE]
 LookAndFeelPackage=org.kubuntu.desktop
@@ -155,7 +155,7 @@ LookAndFeelPackage=org.kubuntu.desktop
 Allow Expansion=false
 Automatically select filename extension=true
 Breadcrumb Navigation=true
-Decoration position=2
+Decoration position=0
 LocationCombo Completionmode=5
 PathCombo Completionmode=5
 Show Bookmarks=false
@@ -169,7 +169,7 @@ Sort directories first=true
 Sort hidden files last=false
 Sort reversed=false
 Speedbar Width=138
-View Style=DetailTree
+View Style=Simple
 
 [KShortcutsDialog Settings]
 Dialog Size=600,480
@@ -177,7 +177,7 @@ Dialog Size=600,480
 [WM]
 activeBackground=221,227,237
 activeBlend=221,227,237
-activeFont=Noto Sans,12,-1,5,50,0,0,0,0,0
+activeFont=Noto Sans,14,-1,5,50,0,0,0,0,0
 activeForeground=35,38,41
 inactiveBackground=235,239,244
 inactiveBlend=235,239,244

@@ -19,7 +19,7 @@ wallpaperplugin=org.kde.image
 
 [Containments][472][General]
 ToolBoxButtonState=topcenter
-ToolBoxButtonX=479
+ToolBoxButtonX=340
 
 [Containments][473]
 activityId=
@@ -36,8 +36,8 @@ plugin=org.kde.plasma.kickoff
 
 [Containments][473][Applets][474][Configuration]
 PreloadWeight=100
-popupHeight=606
-popupWidth=765
+popupHeight=670
+popupWidth=855
 
 [Containments][473][Applets][474][Configuration][Configuration/General]
 showAppsByName=true
@@ -156,7 +156,7 @@ DialogHeight=100
 DialogWidth=1920
 
 [Containments][473][General]
-AppletOrder=498;497;474;475;502;503;505;506;476;477;478;491;492
+AppletOrder=498;497;474;475;502;506;505;503;476;477;478;491;492
 
 [Containments][479]
 activityId=
@@ -165,8 +165,8 @@ immutability=1
 lastScreen=0
 location=4
 plugin=org.kde.plasma.private.systemtray
-popupHeight=576
-popupWidth=576
+popupHeight=672
+popupWidth=672
 wallpaperplugin=org.kde.image
 
 [Containments][479][Applets][480]
