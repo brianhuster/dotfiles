@@ -1,3 +1,7 @@
+if vim.g.vscode then
+	return
+end
+
 local disabled_built_ins = {
 	"getscript",
 	"getscriptPlugin",
@@ -5,10 +9,10 @@ local disabled_built_ins = {
 	"spellfile_plugin",
 	"compiler",
 	"ftplugin",
-	-- "netrw",
-	-- "netrwPlugin",
-	-- "netrwSettings",
-	-- "netrwFileHandlers",
+	"netrw",
+	"netrwPlugin",
+	"netrwSettings",
+	"netrwFileHandlers",
 	"vimball",
 	"vimballPlugin",
 }
@@ -30,10 +34,6 @@ if not vim.uv.fs_stat(lazypath) then
 	})
 end
 
--- If running in VSCode, skip installing or loading plugins
-if vim.g.vscode then
-	return
-end
 
 vim.opt.rtp:prepend(lazypath)
 
