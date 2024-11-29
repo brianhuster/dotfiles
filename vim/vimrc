@@ -22,6 +22,8 @@ if !has('nvim')
 	endif
 endif
 
+silent language vi_VN.utf-8
+
 set mouse=a
 set number
 set noexpandtab

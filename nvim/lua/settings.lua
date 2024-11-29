@@ -12,6 +12,10 @@ vim.o.autowriteall = true
 vim.o.modeline = false
 vim.o.backspace = 'indent,eol,start'
 vim.g.mapleader = ' '
+vim.cmd.language({
+	args = { 'vi_VN.utf-8' },
+	mods = { silent = true }
+})
 vim.cmd [[
 	aunmenu PopUp
   	autocmd! nvim_popupmenu

@@ -1,9 +1,12 @@
 if vim.fn.executable('ibus') == 0 then
+	vim.notify_once('ibus is not installed, \nChuyển sang bộ gõ tiếng Việt tích hợp sẵn trong Vim', vim.log.levels.WARN)
+	vim.o.keymap = 'vietnamese-telex_utf-8'
 	return
 end
 
 function IbusGetCurrentEngine()
-	return vim.system({ 'ibus', 'engine' }):wait().stdout
+	local result = vim.system({ 'ibus', 'engine' }):wait()
+	return vim.fn.trim(result.stdout)
 end
 
 function IbusOff()
@@ -16,7 +19,7 @@ function IbusOn()
 	if not current_engine:match('xkb:us::eng') then
 		vim.g.ibus_prev_engine = current_engine
 	end
-	vim.system({ 'ibus', 'engine', vim.trim(vim.g.ibus_prev_engine) }):wait()
+	vim.system({ 'ibus', 'engine', vim.g.ibus_prev_engine }):wait()
 end
 
 vim.api.nvim_create_augroup('IBusHandler', { clear = true })
@@ -44,6 +47,5 @@ vim.api.nvim_create_autocmd('ExitPre', {
 	callback = IbusOn,
 	group = 'IBusHandler',
 })
-
 
 IbusOff()
