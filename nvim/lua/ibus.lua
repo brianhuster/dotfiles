@@ -1,5 +1,6 @@
 if vim.fn.executable('ibus') == 0 then
-	vim.notify_once('ibus is not installed, \nChuyển sang bộ gõ tiếng Việt tích hợp sẵn trong Vim', vim.log.levels.WARN)
+	vim.notify_once('ibus is not installed, \nChuyển sang bộ gõ tiếng Việt tích hợp sẵn trong Vim',
+		vim.log.levels.WARN)
 	vim.o.keymap = 'vietnamese-telex_utf-8'
 	return
 end

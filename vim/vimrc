@@ -20,9 +20,15 @@ if !has('nvim')
 	if !has('clipboard')
 		echoerr "This Vim is not compiled with clipboard support."
 	endif
+	if !has('python3')
+		let &pythonthreedll = split(system('ldconfig -p | grep libpython3'))[0]
+		if !has('python3')
+			echoerr "This Vim is not compiled with Python3 support."
+		endif
+	endif
 endif
 
-silent language vi_VN.utf-8
+"silent language vi_VN.utf-8
 
 set mouse=a
 set number
@@ -101,7 +107,10 @@ function! Terminal()
 	startinsert
 endfunction
 
-
+if !has('nvim')
+	packadd lazy/vim-dirvish
+endif
 if has('lua')
 	packadd lazy/autosave.nvim
+	packadd lazy/dirvish-git.nvim
 endif

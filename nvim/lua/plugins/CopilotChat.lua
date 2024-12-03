@@ -1,7 +1,6 @@
 return {
 	{
 		"CopilotC-Nvim/CopilotChat.nvim",
-		branch = "canary",
 		dependencies = {
 			{
 				"github/copilot.vim",
