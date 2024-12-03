@@ -46,6 +46,11 @@ set nomodeline
 set backspace=indent,eol,start
 let g:mapleader=" "
 
+if has('nvim')
+	set foldexpr=v:lua.vim.treesitter.foldexpr()
+	set omnifunc=v:lua.vim.treesitter.query.omnifunc
+endif
+
 nnoremap t :call Terminal()<CR>
 xnoremap t :call Terminal()<CR>
 tnoremap <Esc> <C-\><C-n>
