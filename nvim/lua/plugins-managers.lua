@@ -1,7 +1,3 @@
-if vim.g.vscode then
-	return
-end
-
 local disabled_built_ins = {
 	"getscript",
 	"getscriptPlugin",

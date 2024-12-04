@@ -8,7 +8,6 @@ if !has('nvim')
 	set ttyfast
 	
 	set nocompatible
-	set noswapfile
 	syntax on
 	filetype plugin on
 	packadd! comment
@@ -28,27 +27,32 @@ if !has('nvim')
 	endif
 endif
 
+let did_install_default_menus = 1
+let did_install_syntax_menu = 1
+
 "silent language vi_VN.utf-8
 
 set mouse=a
 set number
 set noexpandtab
-
 set autoindent
 set smartindent
 set nocursorline
 set shiftwidth=4
 set tabstop=4
-set history=5000
 set clipboard=unnamedplus
 set autowriteall
 set nomodeline
 set backspace=indent,eol,start
+set noswapfile
+set backupcopy=yes
 let g:mapleader=" "
 
 if has('nvim')
 	set foldexpr=v:lua.vim.treesitter.foldexpr()
 	set omnifunc=v:lua.vim.treesitter.query.omnifunc
+	aunmenu PopUp
+  	autocmd! nvim_popupmenu
 endif
 
 nnoremap t :call Terminal()<CR>
@@ -79,13 +83,16 @@ endfunction
 
 if executable('ibus')
 	augroup IBusHandler
-		autocmd CmdLineEnter [/?] call IBusOn()
-		autocmd CmdLineLeave [/?] call IBusOff()
+		autocmd CmdLineEnter [/?],[:s/?],[:%s/?] call IBusOn()
+		autocmd CmdLineLeave [/?],[:s/?],[:%s/?] call IBusOff()
 		autocmd InsertEnter * call IBusOn()
 		autocmd InsertLeave * call IBusOff()
 		autocmd ExitPre * call IBusOn()
 	augroup END
 	call IBusOff()
+else
+	echoerr "ibus is not installed. Switch to keymap vietnamese-telex_utf-8."
+	set keymap=vietnamese-telex_utf-8
 endif
 
 function! Terminal()
@@ -113,9 +120,9 @@ function! Terminal()
 endfunction
 
 if !has('nvim')
-	packadd lazy/vim-dirvish
+	packadd! lazy/vim-dirvish
 endif
 if has('lua')
-	packadd lazy/autosave.nvim
-	packadd lazy/dirvish-git.nvim
+	packadd! lazy/autosave.nvim
+	packadd! lazy/dirvish-git.nvim
 endif

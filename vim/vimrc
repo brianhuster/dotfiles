@@ -1,0 +1,1 @@
+source system('nvim -c "=stdpath(\'config\')" -c "qa!"')
