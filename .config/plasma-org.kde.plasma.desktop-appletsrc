@@ -19,7 +19,7 @@ wallpaperplugin=org.kde.image
 
 [Containments][472][General]
 ToolBoxButtonState=topcenter
-ToolBoxButtonX=340
+ToolBoxButtonX=239
 
 [Containments][473]
 activityId=
@@ -47,10 +47,6 @@ favoritesPortedToKAstats=true
 
 [Containments][473][Applets][474][Configuration][Shortcuts]
 global=Alt+F1
-
-[Containments][473][Applets][475]
-immutability=1
-plugin=org.kde.plasma.pager
 
 [Containments][473][Applets][476]
 immutability=1
@@ -152,11 +148,11 @@ localPath=/home/brianhuster/.local/share/plasma_icons/chromium_chromium.desktop
 url=file:///var/lib/snapd/desktop/applications/chromium_chromium.desktop
 
 [Containments][473][ConfigDialog]
-DialogHeight=100
+DialogHeight=109
 DialogWidth=1920
 
 [Containments][473][General]
-AppletOrder=498;497;474;475;502;506;505;503;476;477;478;491;492
+AppletOrder=498;497;474;502;506;505;503;476;477;478;491;492
 
 [Containments][479]
 activityId=

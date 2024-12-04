@@ -6,7 +6,7 @@
   "copilot.vim": { "branch": "release", "commit": "87038123804796ca7af20d1b71c3428d858a9124" },
   "ctags-lsp.nvim": { "branch": "main", "commit": "80d918dbbbdc82ceee4f4132af69ddf1f9129c8e" },
   "diffview.nvim": { "branch": "main", "commit": "4516612fe98ff56ae0415a259ff6361a89419b0a" },
-  "dirvish-do.nvim": { "branch": "main", "commit": "01e285b2cd6e52e7d4c0b470c8af4aea89ec5534" },
+  "dirvish-do.nvim": { "branch": "main", "commit": "cfd3f788f803193602f2506e2aad3821d5307b68" },
   "dirvish-git.nvim": { "branch": "dev", "commit": "134f96922f1ce1f5d5fdec7f2e687bf80d033a85" },
   "firenvim": { "branch": "master", "commit": "64f9389b88c8b0c7667d45c171a5f25c42d852fb" },
   "fzf-lua": { "branch": "main", "commit": "175ddbb9bbe28eef006516f38b126215de1fef57" },
