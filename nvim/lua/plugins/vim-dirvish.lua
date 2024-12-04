@@ -1,5 +1,8 @@
 return {
 	'justinmk/vim-dirvish',
+	config = function()
+		vim.g.dirvish_mode = ':sort ,^.*[\\/],'
+	end,
 	dependencies = {
 		{
 			'brianhuster/dirvish-git.nvim',

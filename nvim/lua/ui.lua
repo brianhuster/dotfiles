@@ -1,9 +1,11 @@
-vim.cmd.colorscheme('default')
+local cmd = vim.cmd
+
+cmd.colorscheme('default')
 
 local nvim_light_blue = "#7fadcc"
-vim.cmd.highlight("Identifier", "guifg=" .. nvim_light_blue)
-vim.cmd.highlight("DiagnosticHint", "guifg=" .. nvim_light_blue)
-vim.cmd.highlight("DiagnosticUnderlineHint", "guifg=" .. nvim_light_blue)
+cmd.highlight("Identifier", "guifg=" .. nvim_light_blue)
+cmd.highlight("DiagnosticHint", "guifg=" .. nvim_light_blue)
+cmd.highlight("DiagnosticUnderlineHint", "guifg=" .. nvim_light_blue)
 
 vim.api.nvim_create_autocmd('BufEnter', {
 	pattern = '*',

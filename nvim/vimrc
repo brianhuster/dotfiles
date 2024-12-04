@@ -13,17 +13,8 @@ if !has('nvim')
 	packadd! comment
 	packadd! matchit
 	runtime! ftplugin/man.vim
-	if !has('lua')
-		echoerr "This Vim is not compiled with Lua support."
-	endif
 	if !has('clipboard')
 		echoerr "This Vim is not compiled with clipboard support."
-	endif
-	if !has('python3')
-		let &pythonthreedll = split(system('ldconfig -p | grep libpython3'))[0]
-		if !has('python3')
-			echoerr "This Vim is not compiled with Python3 support."
-		endif
 	endif
 endif
 
