@@ -58,6 +58,8 @@ if executable('ibus')
 		autocmd CmdLineLeave [/?],[:s/?],[:%s/?] call IBusOff()
 		autocmd InsertEnter * call IBusOn()
 		autocmd InsertLeave * call IBusOff()
+		autocmd FocusGained * call IBusOn()
+		autocmd FocusLost * call IBusOff()
 		autocmd ExitPre * call IBusOn()
 	augroup END
 	call IBusOff()
