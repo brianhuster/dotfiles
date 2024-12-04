@@ -8,8 +8,14 @@ if !has('python3')
 	endif
 endif
 
-let s:vimrc = system('nvim --headless --clean -c "=vim.fn.stdpath([[config]])" -c qa!')
-execute 'source ' . s:vimrc . '/vimrc'
+let s:file = expand('<sfile>')
+
+function! s:setup()
+	let s:nvim_config = trim(systemlist('nvim -l ' . fnamemodify(s:file, ':h') . '/.lua')[0])
+	execute 'source ' . s:nvim_config . '/vimrc'
+endfunction
+
+autocmd VimEnter * call s:setup()
 
 packadd! lazy/vim-dirvish
 let g:dirvish_mode = ':sort ,^.*[\\/],'

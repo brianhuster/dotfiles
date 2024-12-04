@@ -1,5 +1,6 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhistcnt =1
+let g:netrw_dirhistcnt =2
+let g:netrw_dirhist_2='/home/brianhuster/.config/vim'
 let g:netrw_dirhist_1='/home/brianhuster/.config'
 let g:netrw_dirhist_0='/home/brianhuster/.config/fvim'
 let g:netrw_dirhist_9='/home/brianhuster/.config'
@@ -9,4 +10,3 @@ let g:netrw_dirhist_6='/media/brianhuster/D/Projects/dirvish-git.nvim'
 let g:netrw_dirhist_5='/media/brianhuster/D/Projects/dirvish-git.nvim/lua'
 let g:netrw_dirhist_4='/media/brianhuster/D/Projects/dirvish-git.nvim/lua/dirvish-git'
 let g:netrw_dirhist_3='/media/brianhuster/D/Projects/dirvish-git.nvim/lua'
-let g:netrw_dirhist_2='/media/brianhuster/D/Projects/dirvish-git.nvim'

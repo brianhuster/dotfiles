@@ -1,26 +1,3 @@
-if !has('nvim')
-	let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-	let &t_SR = "\<Esc>]50;CursorShape=2\x7"
-	let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-	set ttimeout
-	set ttimeoutlen=1
-	set listchars=tab:>-,trail:~,extends:>,precedes:<,space:.
-	set ttyfast
-	
-	set nocompatible
-	syntax on
-	filetype plugin on
-	packadd! comment
-	packadd! matchit
-	runtime! ftplugin/man.vim
-	if !has('clipboard')
-		echoerr "This Vim is not compiled with clipboard support."
-	endif
-endif
-
-let did_install_default_menus = 1
-let did_install_syntax_menu = 1
-
 "silent language vi_VN.utf-8
 
 set mouse=a
@@ -58,6 +35,9 @@ nnoremap <Del> "_D
 xnoremap <Del> "_D
 nnoremap Y y$
 xnoremap Y y$
+
+let did_install_default_menus = 1
+let did_install_syntax_menu = 1
 
 function! IBusOff()
 	let g:ibus_prev_engine = trim(system('ibus engine'))
@@ -111,9 +91,27 @@ function! Terminal()
 endfunction
 
 if !has('nvim')
+	let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+	let &t_SR = "\<Esc>]50;CursorShape=2\x7"
+	let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+	set ttimeout
+	set ttimeoutlen=1
+	set listchars=tab:>-,trail:~,extends:>,precedes:<,space:.
+	set ttyfast
+
+	set nocompatible
+	syntax on
+	filetype plugin on
+	packadd! comment
+	packadd! matchit
+	runtime! ftplugin/man.vim
+	if !has('clipboard')
+		echoerr "This Vim is not compiled with clipboard support."
+	endif
+
 	packadd! lazy/vim-dirvish
-endif
-if has('lua')
-	packadd! lazy/autosave.nvim
-	packadd! lazy/dirvish-git.nvim
+	if has('lua')
+		packadd! lazy/autosave.nvim
+		packadd! lazy/dirvish-git.nvim
+	endif
 endif

@@ -13,3 +13,5 @@ vim.filetype.add({
 		['.*/doc/.+%.txt'] = 'help'
 	}
 })
+
+
