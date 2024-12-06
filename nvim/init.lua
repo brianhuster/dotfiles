@@ -6,12 +6,10 @@ local vimrc = vim.fs.joinpath(vim.fn.stdpath('config'), 'vimrc')
 vim.cmd.source(vimrc)
 require('ui')
 require('vscode')
-require('plugins-managers')
+require('plugins-manager')
 vim.filetype.add({
 	pattern = {
 		['.*%.ejs'] = 'html',
 		['.*/doc/.+%.txt'] = 'help'
 	}
 })
-
-
