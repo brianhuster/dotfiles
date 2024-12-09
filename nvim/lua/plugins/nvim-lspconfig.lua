@@ -26,6 +26,10 @@ return {
 						end,
 					})
 				end
+				local capabilities = vim.lsp.get_client_by_id(args.data.client_id).server_capabilities
+				if capabilities.renameProvider then
+					vim.keymap.set("n", "grn", function() vim.lsp.buf.rename() end, { buffer = true })
+				end
 			end,
 		})
 		api.nvim_create_autocmd({ "CursorMoved" }, {
