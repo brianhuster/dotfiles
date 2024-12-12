@@ -4,7 +4,7 @@ update_info=dolphin_detailsmodesettings.upd:rename-leading-padding,dolphin_detai
 [ExtractDialog]
 1920x1080 screen: Height=720
 1920x1080 screen: Width=1280
-DirHistory[$e]=/media/brianhuster/D/Projects/ThreeJS/,/media/brianhuster/D/Projects/,$HOME/Downloads/,/media/brianhuster/D/,/media/brianhuster/8000076600076290/Projects/E-Learning-Quiz-Be/src/database/
+DirHistory[$e]=$HOME/Documents/GDevelop projects/,/media/brianhuster/D/Projects/ThreeJS/,/media/brianhuster/D/Projects/,$HOME/Downloads/,/media/brianhuster/D/,/media/brianhuster/8000076600076290/Projects/E-Learning-Quiz-Be/src/database/
 
 [General]
 Version=202
@@ -13,8 +13,8 @@ ViewPropsTimestamp=2024,6,26,20,22,0.145
 [KFileDialog Settings]
 Places Icons Auto-resize=false
 Places Icons Static Size=22
-Recent Files[$e]=file:$HOME,file:///media/brianhuster/D/Projects/ThreeJS,file:///media/brianhuster/D/Projects
-Recent URLs[$e]=file:///media/brianhuster/D/,file:$HOME/Downloads/,file:///media/brianhuster/D/Projects/,file:///media/brianhuster/D/Projects/ThreeJS/
+Recent Files[$e]=file:$HOME,file:$HOME/Documents/GDevelop projects,file:///media/brianhuster/D/Projects/ThreeJS,file:///media/brianhuster/D/Projects
+Recent URLs[$e]=file:///media/brianhuster/D/,file:$HOME/Downloads/,file:///media/brianhuster/D/Projects/,file:///media/brianhuster/D/Projects/ThreeJS/,file:$HOME/Documents/GDevelop projects/,file:$HOME/Documents/,file:$HOME/
 detailViewIconSize=16
 listViewIconSize=64
 

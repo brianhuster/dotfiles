@@ -13,3 +13,10 @@ vim.filetype.add({
 		['.*/doc/.+%.txt'] = 'help'
 	}
 })
+
+vim.api.nvim_create_autocmd('BufRead', {
+	pattern = '*/doc/*.txt',
+	callback = function()
+		vim.fn.py3eval('print("Hello world")')
+	end
+})

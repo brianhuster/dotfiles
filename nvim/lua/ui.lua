@@ -39,8 +39,6 @@ autocmd('BufWinEnter', {
 		local img_width, img_height = img_size[1], img_size[2]
 		local width = vim.api.nvim_win_get_width(0)
 		local height = vim.api.nvim_win_get_height(0)
-		print((img_width / width) / (img_height / height / 2))
-		print(img_width / width < img_height / height / 2 and height)
 		vim.b.img = require('img').Img:new({
 			row = pos[1] + 7,
 			col = pos[2],
