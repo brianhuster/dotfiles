@@ -15,6 +15,5 @@ return {
 				require('netman')
 			end
 		},
-		'bounceme/remote-viewer'
 	}
 }

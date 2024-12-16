@@ -1,6 +1,6 @@
 "silent language vi_VN.utf-8
 
-set mouse=a
+set mouse=nv
 set number
 set noexpandtab
 set autoindent
