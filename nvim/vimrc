@@ -76,7 +76,6 @@ function! Terminal()
 	let term_win = -1
 	for win in range(1, winnr('$'))
 		execute win . 'wincmd w'
-		echo &buftype
 		if &buftype == 'terminal'
 			let term_win = win
 			break

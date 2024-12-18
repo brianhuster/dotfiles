@@ -1,4 +1,9 @@
--- Install lazy.nvim if not exists
+local g = vim.g
+g.loaded_netrw = 1
+g.loaded_netrwPlugin = 1
+g.did_install_default_menus = 1
+g.did_install_syntax_menu = 1
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.uv.fs_stat(lazypath) then
 	vim.fn.system({
@@ -36,4 +41,10 @@ require("lazy").setup({
 		enabled = false
 	},
 	spec = { { import = "plugins" } },
+	change_detection = {
+		-- automatically check for config file changes and reload the ui
+		enabled = false,
+		notify = false, -- get a notification when changes are found
+	},
+
 })

@@ -9,11 +9,11 @@ return {
 			branch = 'dev',
 		},
 		'brianhuster/dirvish-do.nvim',
-		{
-			'miversen33/netman.nvim',
-			config = function()
-				require('netman')
-			end
-		},
+		-- {
+		-- 	'miversen33/netman.nvim',
+		-- 	config = function()
+		-- 		require('netman')
+		-- 	end
+		-- },
 	}
 }
