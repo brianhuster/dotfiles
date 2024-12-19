@@ -91,31 +91,3 @@ function! Terminal()
 	endif
 	startinsert
 endfunction
-
-if !has('nvim')
-	let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-	let &t_SR = "\<Esc>]50;CursorShape=2\x7"
-	let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-	set ttimeout
-	set ttimeoutlen=1
-	set listchars=tab:>-,trail:~,extends:>,precedes:<,space:.
-	set ttyfast
-	let &t_TI = "\<Esc>[>4;2m"
-    let &t_TE = "\<Esc>[>4;m"
-
-	set nocompatible
-	syntax on
-	filetype plugin on
-	packadd! comment
-	packadd! matchit
-	runtime! ftplugin/man.vim
-	if !has('clipboard')
-		echoerr "This Vim is not compiled with clipboard support."
-	endif
-
-	packadd! lazy/vim-dirvish
-	if has('lua')
-		packadd! lazy/autosave.nvim
-		packadd! lazy/dirvish-git.nvim
-	endif
-endif
