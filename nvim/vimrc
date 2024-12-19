@@ -15,6 +15,7 @@ set backspace=indent,eol,start
 set noswapfile
 set backupcopy=yes
 let g:mapleader=" "
+set messagesopt=wait:10000,history:10000
 
 if has('nvim')
 	set foldexpr=v:lua.vim.treesitter.foldexpr()
