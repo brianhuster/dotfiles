@@ -1,5 +1,8 @@
 return {
 	"ibhagwan/fzf-lua",
+	dependencies = {
+		'echanovski/mini.icons'
+	},
 	-- optional for icon support
 	config = function()
 		-- calling `setup` is optional for customization

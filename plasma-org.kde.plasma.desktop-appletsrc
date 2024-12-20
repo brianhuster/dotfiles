@@ -123,14 +123,6 @@ plugin=org.kde.plasma.icon
 localPath=/home/brianhuster/.local/share/plasma_icons/firefox_firefox.desktop
 url=file:///var/lib/snapd/desktop/applications/firefox_firefox.desktop
 
-[Containments][473][Applets][503]
-immutability=1
-plugin=org.kde.plasma.icon
-
-[Containments][473][Applets][503][Configuration]
-localPath=/home/brianhuster/.local/share/plasma_icons/org.kde.konsole.desktop
-url=file:///usr/share/applications/org.kde.konsole.desktop
-
 [Containments][473][Applets][505]
 immutability=1
 plugin=org.kde.plasma.icon
@@ -147,12 +139,20 @@ plugin=org.kde.plasma.icon
 localPath=/home/brianhuster/.local/share/plasma_icons/chromium_chromium.desktop
 url=file:///var/lib/snapd/desktop/applications/chromium_chromium.desktop
 
+[Containments][473][Applets][507]
+immutability=1
+plugin=org.kde.plasma.icon
+
+[Containments][473][Applets][507][Configuration]
+localPath=/home/brianhuster/.local/share/plasma_icons/org.wezfurlong.wezterm.desktop
+url=file:///usr/share/applications/org.wezfurlong.wezterm.desktop
+
 [Containments][473][ConfigDialog]
 DialogHeight=109
 DialogWidth=1920
 
 [Containments][473][General]
-AppletOrder=498;497;474;502;506;505;503;476;477;478;491;492
+AppletOrder=498;497;474;502;506;505;507;476;477;478;491;492
 
 [Containments][479]
 activityId=

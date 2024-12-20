@@ -30,3 +30,5 @@
 !plasma-org.kde.plasma.desktop-appletsrc
 !plasmarc
 !plasmashellrc
+!wezterm
+!wezterm/**
