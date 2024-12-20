@@ -24,8 +24,35 @@ autocmd('BufEnter', {
 	end
 })
 
+--- Image preview
 local img_patterns = { '*.png', '*.jpg', '*.jpeg', '*.gif', '*.webp' }
-vim.cmd.py3('from image import get_image_size')
+vim.cmd('py3 from image import get_image_size')
+
+--- credit: 3rd/image.nvim
+local function get_win_size()
+	local ffi = require('ffi')
+	ffi.cdef([[
+		typedef struct {
+			unsigned short row;
+			unsigned short col;
+			unsigned short xpixel;
+			unsigned short ypixel;
+		} winsize;
+		int ioctl(int fd, int request, winsize *ws);
+	]])
+
+	local TIOCGWINSZ = nil
+	if ffi.os:lower() == 'linux' then
+		TIOCGWINSZ = 0x5413
+	elseif ffi.os:lower() == 'bsd' or ffi.os:lower() == 'macos' then
+		TIOCGWINSZ = 0x40087468
+	end
+
+	---@type {row: number, col: number, xpixel: number, ypixel: number}
+	local ws = ffi.new('winsize')
+	assert(ffi.C.ioctl(0, TIOCGWINSZ, ws) == 0, 'Failed to get window size')
+	return ws
+end
 
 autocmd('BufWinEnter', {
 	pattern = img_patterns,
@@ -38,13 +65,25 @@ autocmd('BufWinEnter', {
 
 		local img_size = vim.fn.py3eval('get_image_size(vim.current.buffer.name)')
 		local img_width, img_height = img_size[1], img_size[2]
-		local width = vim.api.nvim_win_get_width(0)
-		local height = vim.api.nvim_win_get_height(0)
+		local ws = get_win_size()
+		local width = ws.col
+		local height = ws.row
+		local xpixel = ws.xpixel
+		local ypixel = ws.ypixel
+		local winratio = xpixel / ypixel
+		local imgratio = img_width / img_height
+		if winratio < imgratio then
+			height = math.min(height, img_height)
+			width = math.floor(height * winratio)
+		else
+			width = math.min(width, img_width)
+			height = math.floor(width / winratio)
+		end
 		vim.b.img = require('img').Img:new({
 			row = pos[1] + 7,
 			col = pos[2],
-			width = img_width / width >= img_height / height / 2 and width,
-			height = img_width / width < img_height / height / 2 and height
+			width = width,
+			height = height
 		})
 		vim.b.img:show({ filename = bufname })
 	end
