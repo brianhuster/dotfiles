@@ -28,17 +28,17 @@ if !has('python3')
 	endif
 endif
 
-let s:file = expand('<sfile>')
+nnoremap Y y$
+xnoremap Y y$
 
+let s:file = expand('<sfile>')
 function! s:setup()
 	let s:nvim_config = trim(systemlist('nvim -l ' . fnamemodify(s:file, ':h') . '/.lua')[0])
 	execute 'source ' . s:nvim_config . '/vimrc'
 endfunction
-
 autocmd VimEnter * call s:setup()
 
 set packpath+=/usr/share/vim/vimfiles
-
 packadd! lazy/vim-dirvish
 let g:dirvish_mode = ':sort ,^.*[\\/],'
 if has('lua')

@@ -36,8 +36,8 @@ plugin=org.kde.plasma.kickoff
 
 [Containments][473][Applets][474][Configuration]
 PreloadWeight=100
-popupHeight=670
-popupWidth=855
+popupHeight=673
+popupWidth=863
 
 [Containments][473][Applets][474][Configuration][Configuration/General]
 showAppsByName=true
@@ -81,7 +81,7 @@ plugin=org.kde.plasma.systemmonitor.memory
 
 [Containments][473][Applets][497][Configuration]
 CurrentPreset=org.kde.plasma.systemmonitor
-PreloadWeight=80
+PreloadWeight=90
 
 [Containments][473][Applets][497][Configuration][Appearance]
 chartFace=org.kde.ksysguard.piechart
@@ -115,14 +115,6 @@ highPrioritySensorIds=["cpu/all/usage"]
 lowPrioritySensorIds=["cpu/all/cpuCount","cpu/all/coreCount"]
 totalSensors=["cpu/all/usage"]
 
-[Containments][473][Applets][502]
-immutability=1
-plugin=org.kde.plasma.icon
-
-[Containments][473][Applets][502][Configuration]
-localPath=/home/brianhuster/.local/share/plasma_icons/firefox_firefox.desktop
-url=file:///var/lib/snapd/desktop/applications/firefox_firefox.desktop
-
 [Containments][473][Applets][505]
 immutability=1
 plugin=org.kde.plasma.icon
@@ -130,14 +122,6 @@ plugin=org.kde.plasma.icon
 [Containments][473][Applets][505][Configuration]
 localPath=/home/brianhuster/.local/share/plasma_icons/firefox_firefox (1).desktop
 url=file:///var/lib/snapd/desktop/applications/firefox_firefox.desktop
-
-[Containments][473][Applets][506]
-immutability=1
-plugin=org.kde.plasma.icon
-
-[Containments][473][Applets][506][Configuration]
-localPath=/home/brianhuster/.local/share/plasma_icons/chromium_chromium.desktop
-url=file:///var/lib/snapd/desktop/applications/chromium_chromium.desktop
 
 [Containments][473][Applets][507]
 immutability=1
@@ -147,12 +131,44 @@ plugin=org.kde.plasma.icon
 localPath=/home/brianhuster/.local/share/plasma_icons/org.wezfurlong.wezterm.desktop
 url=file:///usr/share/applications/org.wezfurlong.wezterm.desktop
 
+[Containments][473][Applets][508]
+immutability=1
+plugin=org.kde.plasma.icon
+
+[Containments][473][Applets][508][Configuration]
+localPath=/home/brianhuster/.local/share/plasma_icons/firefox_firefox.desktop
+url=file:///var/lib/snapd/desktop/applications/firefox_firefox.desktop
+
+[Containments][473][Applets][509]
+immutability=1
+plugin=org.kde.plasma.icon
+
+[Containments][473][Applets][509][Configuration]
+localPath=/home/brianhuster/.local/share/plasma_icons/chromium_chromium.desktop
+url=file:///var/lib/snapd/desktop/applications/chromium_chromium.desktop
+
+[Containments][473][Applets][510]
+immutability=1
+plugin=org.kde.plasma.icon
+
+[Containments][473][Applets][510][Configuration]
+localPath=/home/brianhuster/.local/share/plasma_icons/onlyoffice-desktopeditors_onlyoffice-desktopeditors.desktop
+url=file:///var/lib/snapd/desktop/applications/onlyoffice-desktopeditors_onlyoffice-desktopeditors.desktop
+
+[Containments][473][Applets][511]
+immutability=1
+plugin=org.kde.plasma.icon
+
+[Containments][473][Applets][511][Configuration]
+localPath=/home/brianhuster/.local/share/plasma_icons/nvim.desktop
+url=file:///usr/local/share/applications/nvim.desktop
+
 [Containments][473][ConfigDialog]
 DialogHeight=109
 DialogWidth=1920
 
 [Containments][473][General]
-AppletOrder=498;497;474;502;506;505;507;476;477;478;491;492
+AppletOrder=498;497;474;505;507;508;509;510;511;476;477;478;491;492
 
 [Containments][479]
 activityId=
