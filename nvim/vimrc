@@ -1,6 +1,6 @@
 "silent language vi_VN.utf-8
 
-set mouse=nv
+set mouse=nvc
 set number
 set noexpandtab
 set autoindent
@@ -16,6 +16,7 @@ set noswapfile
 set backupcopy=yes
 let g:mapleader=" "
 set messagesopt=hit-enter,wait:5000,history:10000
+set completeopt=menuone,noinsert,fuzzy,noselect,preview
 
 if has('nvim')
 	call execute('set rtp^=' . stdpath('config'))

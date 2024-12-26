@@ -5,6 +5,7 @@ local vimrc = vim.fs.joinpath(vim.fn.stdpath('config'), 'vimrc')
 vim.cmd.source(vimrc)
 require('ui')
 require('vscode')
+require('lsp')
 require('plugins-manager')
 vim.filetype.add({
 	pattern = {
