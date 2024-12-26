@@ -18,6 +18,7 @@ let g:mapleader=" "
 set messagesopt=hit-enter,wait:5000,history:10000
 
 if has('nvim')
+	call execute('set rtp^=' . stdpath('config'))
 	set foldexpr=v:lua.vim.treesitter.foldexpr()
 	set omnifunc=v:lua.vim.treesitter.query.omnifunc
 	aunmenu PopUp
