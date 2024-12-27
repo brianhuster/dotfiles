@@ -1,7 +1,6 @@
-local wezterm = require 'wezterm'
+local wezterm = require 'wezterm';
 
 return {
-	use_ime = true,
 	keys = {
 		{
 			key = 'Enter',
@@ -9,4 +8,5 @@ return {
 			action = wezterm.action.DisableDefaultAssignment,
 		},
 	},
+	use_ime = true,
 }

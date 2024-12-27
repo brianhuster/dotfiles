@@ -35,6 +35,7 @@ let s:file = expand('<sfile>')
 function! s:setup()
 	let s:nvim_config = trim(systemlist('nvim -l ' . fnamemodify(s:file, ':h') . '/.lua')[0])
 	execute 'source ' . s:nvim_config . '/vimrc'
+	execute 'set runtimepath+=' . s:nvim_config
 endfunction
 autocmd VimEnter * call s:setup()
 
