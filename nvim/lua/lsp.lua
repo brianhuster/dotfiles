@@ -8,11 +8,11 @@ api.nvim_create_autocmd('LspAttach', {
 				{ noremap = true, silent = true })
 		end
 		if client.supports_method('textDocument/completion') and vim.lsp.completion then
-			vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
+			-- vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
 			vim.bo.omnifunc = 'v:lua.vim.lsp.omnifunc'
-		else
-			vim.cmd [[autocmd! InsertCharPre <buffer> call InsAutocomplete()]]
+			vim.cmd([[autocmd! InsertCharPre <buffer> call InsAutocomplete()]])
 		end
+
 		if client.supports_method('textDocument/formatting') then
 			api.nvim_create_autocmd('BufWritePre', {
 				buffer = args.buf,

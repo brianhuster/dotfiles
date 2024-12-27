@@ -42,7 +42,6 @@ xnoremap <Del> "_D
 let did_install_default_menus = 1
 let did_install_syntax_menu = 1
 
-
 " IBus handler
 function! IBusOff()
 	let g:ibus_prev_engine = trim(system('ibus engine'))
@@ -76,7 +75,7 @@ endif
 function! Terminal()
 	if &buftype == 'terminal'
 		startinsert
-		return
+		return	
 	endif
 	let term_win = -1
 	for win in range(1, winnr('$'))
@@ -99,14 +98,14 @@ endfunction
 
 " Auto completion in insert mode
 function! InsAutocomplete() abort
-	if pumvisible() == 1 || state("m") == "m"
+	if pumvisible() || state("m") == "m"
 		return
 	endif
-	let l:trigger_keymap = &ft == "vim" ? "\<C-x>\<C-v>" : "\<C-x>\<C-n>"
-	if &omnifunc 
-		let l:trigger_keymap = "\<C-x>\<C-o>"
-	endif
-	call feedkeys(l:trigger_keymap, "m")
+	let l:completion_trigger_key = &omnifunc != '' ? "\<C-x>\<C-o>" : "\<C-x>\<C-n>"
+	if exists('b:completion_trigger_key')
+		let l:completion_trigger_key = b:completion_trigger_key
+	end
+	call feedkeys(l:completion_trigger_key, "m")
 endfunction
 
 if !has('nvim-0.11')
