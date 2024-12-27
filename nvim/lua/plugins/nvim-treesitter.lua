@@ -3,11 +3,6 @@ return {
 	run = ":TSUpdate",
 	lazy = false,
 	build = function()
-		vim.cmd.TSInstall('all')
+		vim.cmd.TSInstall 'all'
 	end,
-	opts = {
-		highlight = {
-			enable = true,
-		},
-	}
 }

@@ -26,6 +26,8 @@ if has('nvim')
   	autocmd! nvim_popupmenu
 endif
 
+
+" Key mappings
 nnoremap t :call Terminal()<CR>
 xnoremap t :call Terminal()<CR>
 tnoremap <Esc> <C-\><C-n>
@@ -40,6 +42,8 @@ xnoremap <Del> "_D
 let did_install_default_menus = 1
 let did_install_syntax_menu = 1
 
+
+" IBus handler
 function! IBusOff()
 	let g:ibus_prev_engine = trim(system('ibus engine'))
 	execute 'silent !ibus engine xkb:us::eng'
@@ -91,3 +95,20 @@ function! Terminal()
 	endif
 	startinsert
 endfunction
+
+
+" Auto completion in insert mode
+function! InsAutocomplete() abort
+	if pumvisible() == 1 || state("m") == "m"
+		return
+	endif
+	let l:trigger_keymap = &ft == "vim" ? "\<C-x>\<C-v>" : "\<C-x>\<C-n>"
+	if &omnifunc 
+		let l:trigger_keymap = "\<C-x>\<C-o>"
+	endif
+	call feedkeys(l:trigger_keymap, "m")
+endfunction
+
+if !has('nvim-0.11')
+	autocmd! InsertCharPre <buffer> call InsAutocomplete()
+endif
