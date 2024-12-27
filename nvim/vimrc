@@ -16,14 +16,16 @@ set noswapfile
 set backupcopy=yes
 let g:mapleader=" "
 set messagesopt=hit-enter,wait:5000,history:10000
-set completeopt=menuone,noinsert,fuzzy,noselect,preview
+set completeopt=menuone,noinsert,fuzzy,noselect,preview,popup
+set dictionary=/usr/share/dict/words
 
 if has('nvim')
 	call execute('set rtp^=' . stdpath('config'))
 	set foldexpr=v:lua.vim.treesitter.foldexpr()
 	set omnifunc=v:lua.vim.treesitter.query.omnifunc
-	aunmenu PopUp
-  	autocmd! nvim_popupmenu
+	" Disable popup menu when clicking right mouse
+	"aunmenu PopUp
+	" 	autocmd! nvim_popupmenu
 endif
 
 
@@ -101,11 +103,16 @@ function! InsAutocomplete() abort
 	if pumvisible() || state("m") == "m"
 		return
 	endif
-	let l:completion_trigger_key = &omnifunc != '' ? "\<C-x>\<C-o>" : "\<C-x>\<C-n>"
-	if exists('b:completion_trigger_key')
-		let l:completion_trigger_key = b:completion_trigger_key
+	let l:completion_keymap = &omnifunc != '' ? "\<C-x>\<C-o>" : "\<C-x>\<C-n>"
+	if exists('b:completion_keymap')
+		let l:completion_keymap = b:completion_keymap
 	end
-	call feedkeys(l:completion_trigger_key, "m")
+	if exists('b:completion_triggers')
+		if index(b:completion_triggers, v:char) == -1
+			return
+		end
+	endif
+	call feedkeys(l:completion_keymap, "m")
 endfunction
 
 if !has('nvim-0.11')

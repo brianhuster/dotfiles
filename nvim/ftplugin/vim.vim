@@ -1,1 +1,1 @@
-let b:completion_trigger_key = "\<C-x>\<C-v>"
+let b:completion_keymap = "\<C-x>\<C-v>"
