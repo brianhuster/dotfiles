@@ -1,11 +1,14 @@
 local cmd = vim.cmd
+local api = vim.api
 
-cmd.colorscheme('default')
+cmd.colorscheme 'default'
 
-local nvim_light_blue = "#7fadcc"
-cmd.highlight("Identifier", "guifg=" .. nvim_light_blue)
-cmd.highlight("DiagnosticHint", "guifg=" .. nvim_light_blue)
-cmd.highlight("DiagnosticUnderlineHint", "guifg=" .. nvim_light_blue)
+local light_blue_alternative = "#FFDAB9"
+local hl = api.nvim_set_hl
+hl(0, "Identifier", { fg = light_blue_alternative })
+hl(0, "DiagnosticHint", { fg = light_blue_alternative })
+hl(0, "DiagnosticUnderlineHint", { fg = light_blue_alternative })
+
 local autocmd = vim.api.nvim_create_autocmd
 if not autocmd then return end
 
@@ -26,7 +29,7 @@ autocmd('BufEnter', {
 
 --- Image preview
 local img_patterns = { '*.png', '*.jpg', '*.jpeg', '*.gif', '*.webp' }
-vim.cmd('py3 from image import get_image_size')
+cmd.py3 'from image import get_image_size'
 
 --- credit: 3rd/image.nvim
 local function get_win_size()
@@ -57,11 +60,11 @@ end
 autocmd('BufWinEnter', {
 	pattern = img_patterns,
 	callback = function()
-		local pos = vim.api.nvim_win_get_position(0)
-		local bufname = vim.api.nvim_buf_get_name(0)
-		vim.api.nvim_buf_delete(0, {})
-		vim.cmd.enew()
-		vim.api.nvim_buf_set_name(0, bufname)
+		local pos = api.nvim_win_get_position(0)
+		local bufname = api.nvim_buf_get_name(0)
+		api.nvim_buf_delete(0, {})
+		cmd.enew()
+		api.nvim_buf_set_name(0, bufname)
 
 		local img_size = vim.fn.py3eval('get_image_size(vim.current.buffer.name)')
 		local img_width, img_height = img_size[1], img_size[2]
