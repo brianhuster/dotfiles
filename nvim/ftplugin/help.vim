@@ -1,6 +1,6 @@
 setlocal ts=8
 if has('vim9script')
-	import "./markdown.vim"
+	import "./txt.vim"
 elseif has('nvim')
-	call execute('source ' . stdpath('config') . '/ftplugin/markdown.vim')
+	call execute('source ' . stdpath('config') . '/ftplugin/txt.vim')
 end
