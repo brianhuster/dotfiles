@@ -18,7 +18,8 @@ let g:mapleader=" "
 set messagesopt=hit-enter,wait:5000,history:10000
 set completeopt=menuone,noinsert,fuzzy,noselect,preview,popup
 set dictionary=/usr/share/dict/words
-colorscheme evening
+
+let g:python3_host_prog = 'python3'
 
 if has('nvim')
 	call execute('set rtp^=' . stdpath('config'))

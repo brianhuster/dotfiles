@@ -15,13 +15,10 @@ if not autocmd then return end
 autocmd('BufEnter', {
 	pattern = '*',
 	callback = function()
-		if vim.bo.buftype == 'terminal' then
+		if vim.bo.buftype == 'terminal' and vim.bo.ft ~= 'fzf' then
 			vim.wo.number = false
 			vim.o.winheight = 12
 		else
-			if vim.bo.buftype == 'nofile' then
-				vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Esc>', true, true, true), 'n', true)
-			end
 			vim.o.winheight = 100
 		end
 	end

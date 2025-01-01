@@ -1,7 +1,13 @@
 return {
 	"ibhagwan/fzf-lua",
 	dependencies = {
-		'echanovski/mini.icons'
+		'echanovski/mini.icons',
+		{
+			'junegunn/fzf',
+			build = function()
+				vim.fn['fzf#install']()
+			end
+		},
 	},
 	-- optional for icon support
 	config = function()
