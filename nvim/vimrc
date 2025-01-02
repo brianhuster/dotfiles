@@ -102,7 +102,7 @@ endfunction
 
 " Auto completion in insert mode
 function! InsAutocomplete() abort
-	if pumvisible() || state("m") == "m"
+	if pumvisible() || state("m") == "m" || &l:omnifunc == 'v:lua.vim.lsp.omnifunc'
 		return
 	endif
 	let l:completion_keymap = &omnifunc != '' ? "\<C-x>\<C-o>" : "\<C-x>\<C-n>"

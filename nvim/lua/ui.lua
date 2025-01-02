@@ -1,15 +1,9 @@
 local cmd = vim.cmd
 local api = vim.api
 
-cmd.colorscheme 'default'
+cmd.colorscheme 'an'
 
-local light_blue_alternative = "#FFDAB9"
-local hl = api.nvim_set_hl
-hl(0, "Identifier", { fg = light_blue_alternative })
-hl(0, "DiagnosticHint", { fg = light_blue_alternative })
-hl(0, "DiagnosticUnderlineHint", { fg = light_blue_alternative })
-
-local autocmd = vim.api.nvim_create_autocmd
+local autocmd = api.nvim_create_autocmd
 if not autocmd then return end
 
 autocmd('BufEnter', {
