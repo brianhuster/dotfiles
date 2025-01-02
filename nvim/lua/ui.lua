@@ -18,9 +18,7 @@ autocmd('BufEnter', {
 	end
 })
 
---- Image preview
 local img_patterns = { '*.png', '*.jpg', '*.jpeg', '*.gif', '*.webp' }
-cmd.py3 'from image import get_image_size'
 
 --- credit: 3rd/image.nvim
 local function get_win_size()
@@ -51,6 +49,8 @@ end
 autocmd('BufWinEnter', {
 	pattern = img_patterns,
 	callback = function()
+		--- Image preview
+		cmd.py3 'from image import get_image_size'
 		local pos = api.nvim_win_get_position(0)
 		local bufname = api.nvim_buf_get_name(0)
 		api.nvim_buf_delete(0, {})

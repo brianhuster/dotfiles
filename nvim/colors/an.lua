@@ -1,4 +1,6 @@
 vim.cmd.highlight 'clear'
+vim.o.bg = 'dark'
+vim.o.termguicolors = true
 
 local hl = vim.api.nvim_set_hl
 
