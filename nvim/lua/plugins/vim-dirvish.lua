@@ -12,7 +12,10 @@ return {
 			'brianhuster/dirvish-git.nvim',
 			branch = 'dev',
 		},
-		'brianhuster/dirvish-do.nvim',
+		{
+			'brianhuster/dirvish-do.nvim',
+			branch = 'dev',
+		},
 		'echasnovski/mini.icons'
 		-- {
 		-- 	'miversen33/netman.nvim',

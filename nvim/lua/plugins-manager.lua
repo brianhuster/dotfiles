@@ -17,7 +17,7 @@ if not vim.uv.fs_stat(lazypath) then
 end
 
 
-vim.cmd('rtp^=' .. lazypath)
+vim.cmd.set('rtp^=' .. lazypath)
 
 require("lazy").setup({
 	ui = {
