@@ -12,7 +12,6 @@ set clipboard=unnamedplus
 set autowriteall
 set nomodeline
 set backspace=indent,eol,start
-set noswapfile
 set backupcopy=yes
 let g:mapleader=" "
 set messagesopt=hit-enter,wait:5000,history:10000
@@ -26,10 +25,11 @@ if has('nvim')
 	set foldexpr=v:lua.vim.treesitter.foldexpr()
 	set omnifunc=v:lua.vim.treesitter.query.omnifunc
 	" Disable popup menu when clicking right mouse
-	"aunmenu PopUp
-	" 	autocmd! nvim_popupmenu
+	aunmenu PopUp
+		autocmd! nvim_popupmenu
 endif
 
+au InsertLeavePre * if &modifiable | silent! write | endif
 
 " Key mappings
 nnoremap t :call Terminal()<CR>

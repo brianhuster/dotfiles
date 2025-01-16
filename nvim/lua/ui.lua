@@ -21,7 +21,7 @@ autocmd('BufEnter', {
 local img_patterns = { '*.png', '*.jpg', '*.jpeg', '*.gif', '*.webp' }
 
 --- credit: 3rd/image.nvim
-local function get_win_size()
+local function get_win_size(a, b)
 	local ffi = require('ffi')
 	ffi.cdef([[
 		typedef struct {
