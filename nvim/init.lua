@@ -7,6 +7,7 @@ require('ui')
 require('vscode')
 require('lsp')
 require('plugins-manager')
+require('treesitter')
 vim.filetype.add({
 	pattern = {
 		['.*%.ejs'] = 'html',
