@@ -49,6 +49,8 @@ imap <2-MiddleMouse> <Nop>
 imap <3-MiddleMouse> <Nop>
 imap <4-MiddleMouse> <Nop>
 
+cnoremap <C-S-v> <C-r>+
+
 let did_install_default_menus = 1
 let did_install_syntax_menu = 1
 
@@ -104,7 +106,6 @@ function! Terminal()
 	endif
 	startinsert
 endfunction
-
 
 " Auto completion in insert mode
 function! InsAutocomplete() abort
