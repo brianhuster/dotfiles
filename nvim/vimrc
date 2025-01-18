@@ -24,9 +24,6 @@ if has('nvim')
 	call execute('set rtp^=' . stdpath('config'))
 	set foldexpr=v:lua.vim.treesitter.foldexpr()
 	set omnifunc=v:lua.vim.treesitter.query.omnifunc
-	" Disable popup menu when clicking right mouse
-	aunmenu PopUp
-		autocmd! nvim_popupmenu
 endif
 
 au InsertLeavePre * if &modifiable | silent! write | endif
@@ -42,6 +39,15 @@ nnoremap <BS><BS> "_dd
 xnoremap <BS><BS> "_dd
 nnoremap <Del> "_D
 xnoremap <Del> "_D
+
+map <MiddleMouse> <Nop>
+map <2-MiddleMouse> <Nop>
+map <3-MiddleMouse> <Nop>
+map <4-MiddleMouse> <Nop>
+imap <MiddleMouse> <Nop>
+imap <2-MiddleMouse> <Nop>
+imap <3-MiddleMouse> <Nop>
+imap <4-MiddleMouse> <Nop>
 
 let did_install_default_menus = 1
 let did_install_syntax_menu = 1
