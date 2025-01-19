@@ -3,17 +3,13 @@ local api = vim.api
 api.nvim_create_autocmd('LspAttach', {
 	callback = function(args)
 		local client = vim.lsp.get_client_by_id(args.data.client_id)
-		if client.supports_method('textDocument/implementation') then
-			api.nvim_buf_set_keymap(args.buf, 'n', 'gri', '<cmd>lua vim.lsp.buf.implementation()<CR>',
-				{ noremap = true, silent = true })
-		end
-		if client.supports_method('textDocument/completion') and vim.lsp.completion then
+		if client and client:supports_method('textDocument/completion') and vim.lsp.completion then
 			vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
 			vim.bo.omnifunc = 'v:lua.vim.lsp.omnifunc'
 			vim.cmd([[autocmd! InsertCharPre <buffer> call InsAutocomplete()]])
 		end
 
-		if client.supports_method('textDocument/formatting') then
+		if client and client:supports_method('textDocument/formatting') then
 			api.nvim_create_autocmd('BufWritePre', {
 				buffer = args.buf,
 				callback = function()
@@ -35,6 +31,6 @@ api.nvim_create_autocmd({ "CursorMoved" }, {
 		vim.diagnostic.config({
 			virtual_text = false,
 		})
-		vim.diagnostic.open_float(nil, { focusable = false })
+		vim.diagnostic.open_float(nil, { focusable = true })
 	end,
 })

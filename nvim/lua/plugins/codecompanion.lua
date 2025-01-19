@@ -3,6 +3,8 @@ return {
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		"nvim-treesitter/nvim-treesitter",
+		"github/copilot.vim"
 	},
-	config = true
+	config = true,
+	cmd = "CodeCompanionChat",
 }

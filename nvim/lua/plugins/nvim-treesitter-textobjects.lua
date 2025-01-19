@@ -1,6 +1,7 @@
 return {
 	'nvim-treesitter/nvim-treesitter-textobjects',
 	branch = 'main',
+	event = 'BufRead',
 	config = function()
 		-- configuration
 		require("nvim-treesitter-textobjects").setup {
@@ -51,13 +52,23 @@ return {
 			require "nvim-treesitter-textobjects.select".select_textobject("@class.inner", "textobjects")
 		end)
 		-- You can also use captures from other query groups like `locals.scm`
-		vim.keymap.set({ "x", "o" }, "as", function()
+		vim.keymap.set({ "x", "o" }, "al", function()
 			require "nvim-treesitter-textobjects.select".select_textobject("@local.scope", "locals")
 		end)
+		vim.keymap.set({ "x", "o" }, "ic", function()
+			require "nvim-treesitter-textobjects.select".select_textobject("@comment.inner", 'textobjects')
+		end)
+		vim.keymap.set({ "x", "o" }, "ac", function()
+			require "nvim-treesitter-textobjects.select".select_textobject("@comment.outer", 'textobjects')
+		end)
 
-		local ts_repeat_move = require "nvim-treesitter-textobjects.repeatable_move"
+		local ts_repeat_move = "nvim-treesitter-textobjects.repeatable_move"
 
-		vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move_next)
-		vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_previous)
+		vim.keymap.set({ "n", "x", "o" }, ";", function()
+			require(ts_repeat_move).repeat_last_move_next()
+		end)
+		vim.keymap.set({ "n", "x", "o" }, ",", function()
+			require(ts_repeat_move).repeat_last_move_previous()
+		end)
 	end
 }

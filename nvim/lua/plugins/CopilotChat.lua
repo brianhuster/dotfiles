@@ -23,9 +23,15 @@ return {
 			{ "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
 		},
 		build = "make tiktoken", -- Only on MacOS or Linux
-		opts = {
-			debug = true,       -- Enable debugging
-			-- See Configuration section for rest
-		},
+		cmd = 'CopilotChat',
+		opts = { debug = true }
+		-- config = function()
+		-- 	vim.api.nvim_create_user_command('CopilotChat', function()
+		-- 		require 'CopilotChat'.setup {
+		-- 			debug = true
+		-- 		}
+		-- 		require 'CopilotChat'.open()
+		-- 	end, {})
+		-- end
 	},
 }

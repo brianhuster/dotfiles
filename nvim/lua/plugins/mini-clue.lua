@@ -1,9 +1,12 @@
 return {
 	'echasnovski/mini.clue',
 	config = function()
-		local miniclue = require 'mini.clue'
-		require 'mini.clue'.setup {
-			{ mode = 'i', keys = '<C-x>' },
+		local miniclue = require('mini.clue')
+		miniclue.setup({
+			triggers = {
+				-- Built-in completion
+				{ mode = 'i', keys = '<C-x>' },
+			},
 
 			clues = {
 				-- Enhance this by adding descriptions for <Leader> mapping groups
@@ -13,6 +16,7 @@ return {
 				miniclue.gen_clues.registers(),
 				miniclue.gen_clues.windows(),
 				miniclue.gen_clues.z(),
-			}, }
+			},
+		})
 	end
 }

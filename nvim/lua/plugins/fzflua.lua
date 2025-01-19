@@ -12,7 +12,7 @@ return {
 	-- optional for icon support
 	config = function()
 		-- calling `setup` is optional for customization
-		vim.keymap.set('n', '<leader>ff', require('fzf-lua').files, {})
-		vim.keymap.set('n', '<leader>fg', require('fzf-lua').live_grep, {})
+		vim.keymap.set('n', '<leader>ff', function() require('fzf-lua').files() end, {})
+		vim.keymap.set('n', '<leader>fg', function() require('fzf-lua').live_grep() end, {})
 	end
 }

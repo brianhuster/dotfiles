@@ -1,7 +1,8 @@
 return {
 	'folke/which-key.nvim',
 	opts = {
-		preset = "helix"
+		preset = "helix",
+		triggers = { "<auto>", 'nxso' }
 	},
 	lazy = false
 }
