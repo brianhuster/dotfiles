@@ -26,7 +26,7 @@ if has('nvim')
 	set omnifunc=v:lua.vim.treesitter.query.omnifunc
 endif
 
-au InsertLeavePre * if &modifiable | silent! write | endif
+au InsertLeavePre,TextChanged,TextChangedP * if &modifiable | silent! write | endif
 
 " Key mappings
 nnoremap t :call Terminal()<CR>
@@ -87,7 +87,7 @@ endif
 function! Terminal()
 	if &buftype == 'terminal'
 		startinsert
-		return	
+		return
 	endif
 	let term_win = -1
 	for win in range(1, winnr('$'))
