@@ -3,8 +3,17 @@ if vim.loader then
 end
 local vimrc = vim.fn.stdpath('config') .. '/vimrc'
 vim.cmd.source(vimrc)
-require('ui')
-require('vscode')
-require('lsp')
-require('plugins-manager')
-require('treesitter')
+require 'ui'
+require 'vscode'
+require 'lsp'
+require 'treesitter'
+
+vim.api.nvim_create_autocmd('BufRead', {
+	pattern = '*.txt',
+	callback = function(arg)
+		print("arg.file", arg.file)
+		if arg.file:match('/doc/*.txt$') then
+			vim.bo.filetype = 'help'
+		end
+	end
+})
