@@ -31,6 +31,15 @@ api.nvim_create_autocmd({ "CursorMoved" }, {
 		vim.diagnostic.config({
 			virtual_text = false,
 		})
-		vim.diagnostic.open_float(nil, { focusable = true })
+		vim.diagnostic.open_float(nil, { focusable = false })
 	end,
 })
+
+api.nvim_create_user_command("CopyDiagnostic", function()
+	local diagnostics = vim.diagnostic.get(0, { lnum = vim.fn.line('.') })
+	local messages = {}
+	for _, diagnostic in ipairs(diagnostics) do
+		table.insert(messages, diagnostic.message or '')
+	end
+	vim.fn.setreg(vim.v.register, table.concat(messages, "\n"))
+end, {})

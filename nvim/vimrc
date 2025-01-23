@@ -26,7 +26,8 @@ if has('nvim')
 	set omnifunc=v:lua.vim.treesitter.query.omnifunc
 endif
 
-au InsertLeavePre,TextChanged,TextChangedP * if &modifiable | silent! write | endif
+" au InsertLeavePre,TextChanged,TextChangedP * if &modifiable | silent! write | endif
+autocmd! FocusGained,BufEnter * checktime
 
 " Key mappings
 nnoremap t :call Terminal()<CR>

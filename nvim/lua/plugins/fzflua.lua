@@ -1,7 +1,7 @@
 return {
 	"ibhagwan/fzf-lua",
 	dependencies = {
-		'echanovski/mini.icons',
+		'echasnovski/mini.icons',
 		{
 			'junegunn/fzf',
 			build = function()

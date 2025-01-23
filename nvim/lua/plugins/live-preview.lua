@@ -12,8 +12,7 @@ return {
 	-- },
 	config = function()
 		require('livepreview.config').set {
-			dynamic_root = false,
-			sync_scroll = true,
+			sync_scroll = false,
 			picker = "fzf-lua",
 			browser = "firefox",
 		}

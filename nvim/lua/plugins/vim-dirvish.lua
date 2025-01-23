@@ -2,26 +2,23 @@ return {
 	'justinmk/vim-dirvish',
 	config = function()
 		vim.g.dirvish_mode = ':sort ,^.*[\\/],'
-		-- vim.fn['dirvish#add_icon_fn'](function(path)
-		-- 	local icon = require('mini.icons').get
-		-- 	return path:sub(-1) == '/' and icon('directory', '') or icon('file', path)
+		-- vim.fn['dirvish#add_icon_fn'](function(p)
+		-- 	return p:sub(-1) == '/' and '📂' or '📄'
 		-- end)
+		vim.cmd [[
+			command! -nargs=? -complete=dir Explore Dirvish <args>
+			command! -nargs=? -complete=dir Sexplore belowright split | silent Dirvish <args>
+			command! -nargs=? -complete=dir Vexplore leftabove vsplit | silent Dirvish <args>
+		]]
 	end,
 	dependencies = {
-		{
-			'brianhuster/dirvish-git.nvim',
-			branch = 'dev',
-		},
 		{
 			'brianhuster/dirvish-do.nvim',
 			branch = 'dev',
 		},
-		'echasnovski/mini.icons'
-		-- {
-		-- 	'miversen33/netman.nvim',
-		-- 	config = function()
-		-- 		require('netman')
-		-- 	end
-		-- },
+		{
+			'brianhuster/dirvish-git.nvim',
+			branch = 'dev'
+		},
 	}
 }

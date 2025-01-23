@@ -12,7 +12,7 @@ return {
 				smart_rename = {
 					enable = true,
 					keymaps = {
-						smart_rename = "grn",
+						smart_rename = "<leader>rn",
 					},
 				},
 				navigation = {
