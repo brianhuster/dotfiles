@@ -45,6 +45,6 @@ packadd! lazy/vim-dirvish
 let g:dirvish_mode = ':sort ,^.*[\\/],'
 if has('lua')
 	packadd! lazy/dirvish-git.nvim
-	packadd! lazy/autosave.nvim
+	" packadd! lazy/autosave.nvim
 	packadd! lazy/copilot.vim
 endif

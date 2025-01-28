@@ -53,7 +53,7 @@ immutability=1
 plugin=org.kde.plasma.icontasks
 
 [Containments][473][Applets][476][Configuration][General]
-launchers=applications:systemsettings.desktop,applications:org.kde.discover.desktop,preferred://filemanager
+launchers=applications:systemsettings.desktop,preferred://filemanager,applications:org.kde.discover.desktop
 
 [Containments][473][Applets][477]
 immutability=1
@@ -101,7 +101,7 @@ plugin=org.kde.plasma.systemmonitor.cpu
 
 [Containments][473][Applets][498][Configuration]
 CurrentPreset=org.kde.plasma.systemmonitor
-PreloadWeight=75
+PreloadWeight=85
 
 [Containments][473][Applets][498][Configuration][Appearance]
 chartFace=org.kde.ksysguard.piechart
@@ -123,14 +123,6 @@ plugin=org.kde.plasma.icon
 localPath=/home/brianhuster/.local/share/plasma_icons/firefox_firefox (1).desktop
 url=file:///var/lib/snapd/desktop/applications/firefox_firefox.desktop
 
-[Containments][473][Applets][507]
-immutability=1
-plugin=org.kde.plasma.icon
-
-[Containments][473][Applets][507][Configuration]
-localPath=/home/brianhuster/.local/share/plasma_icons/org.wezfurlong.wezterm.desktop
-url=file:///usr/share/applications/org.wezfurlong.wezterm.desktop
-
 [Containments][473][Applets][508]
 immutability=1
 plugin=org.kde.plasma.icon
@@ -138,14 +130,6 @@ plugin=org.kde.plasma.icon
 [Containments][473][Applets][508][Configuration]
 localPath=/home/brianhuster/.local/share/plasma_icons/firefox_firefox.desktop
 url=file:///var/lib/snapd/desktop/applications/firefox_firefox.desktop
-
-[Containments][473][Applets][509]
-immutability=1
-plugin=org.kde.plasma.icon
-
-[Containments][473][Applets][509][Configuration]
-localPath=/home/brianhuster/.local/share/plasma_icons/chromium_chromium.desktop
-url=file:///var/lib/snapd/desktop/applications/chromium_chromium.desktop
 
 [Containments][473][Applets][510]
 immutability=1
@@ -163,12 +147,28 @@ plugin=org.kde.plasma.icon
 localPath=/home/brianhuster/.local/share/plasma_icons/nvim.desktop
 url=file:///usr/local/share/applications/nvim.desktop
 
+[Containments][473][Applets][512]
+immutability=1
+plugin=org.kde.plasma.icon
+
+[Containments][473][Applets][512][Configuration]
+localPath=/home/brianhuster/.local/share/plasma_icons/org.kde.konsole.desktop
+url=file:///usr/share/applications/org.kde.konsole.desktop
+
+[Containments][473][Applets][513]
+immutability=1
+plugin=org.kde.plasma.icon
+
+[Containments][473][Applets][513][Configuration]
+localPath=/home/brianhuster/.local/share/plasma_icons/brave_brave.desktop
+url=file:///var/lib/snapd/desktop/applications/brave_brave.desktop
+
 [Containments][473][ConfigDialog]
 DialogHeight=109
 DialogWidth=1920
 
 [Containments][473][General]
-AppletOrder=498;497;474;505;507;508;509;510;511;476;477;478;491;492
+AppletOrder=498;497;474;505;508;510;511;512;513;476;477;478;491;492
 
 [Containments][479]
 activityId=
@@ -186,7 +186,7 @@ immutability=1
 plugin=org.kde.plasma.volume
 
 [Containments][479][Applets][480][Configuration]
-PreloadWeight=55
+PreloadWeight=60
 
 [Containments][479][Applets][480][Configuration][General]
 migrated=true
@@ -240,6 +240,9 @@ plugin=org.kde.kscreen
 [Containments][479][Applets][493]
 immutability=1
 plugin=org.kde.plasma.nightcolorcontrol
+
+[Containments][479][Applets][493][Configuration]
+PreloadWeight=42
 
 [Containments][479][Applets][494]
 immutability=1

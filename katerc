@@ -128,7 +128,7 @@ Word Completion Minimal Word Length=3
 Word Completion Remove Tail=true
 
 [KTextEditor::Search]
-Search History=body,print,dark,light,ligh,100ms,health,time,leader,sitter,coc,ejs,some,some-lua,some-la,prettier,url,live,58
+Search History=prefis,launcher,ball,body,print,dark,light,ligh,100ms,health,time,leader,sitter,coc,ejs,some,some-lua,some-la,prettier,url,live,58
 
 [MainWindow]
 1920x1080 screen: Height=1025
@@ -148,3 +148,26 @@ showFullPathOnRoots=false
 showToolbar=true
 sortRole=0
 viewShade=211,190,222
+
+[lspclient]
+AllowedServerCommandLines=/usr/bin/perl -MPerl::LanguageServer -e Perl::LanguageServer::run --
+AutoHover=true
+AutoImport=true
+BlockedServerCommandLines=
+CompletionDocumentation=true
+CompletionParens=true
+Diagnostics=true
+FormatOnSave=false
+HighlightGoto=true
+IncrementalSync=false
+InlayHints=false
+Messages=true
+ReferencesDeclaration=true
+SemanticHighlighting=true
+ServerConfiguration=
+SignatureHelp=true
+SymbolDetails=false
+SymbolExpand=true
+SymbolSort=false
+SymbolTree=true
+TypeFormatting=false

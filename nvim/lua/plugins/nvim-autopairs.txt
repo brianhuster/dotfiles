@@ -6,8 +6,7 @@ return {
     },
     config = function()
         local npairs = require('nvim-autopairs')
-        npairs.setup({ map_cr = false })
-
+        npairs.setup({ map_cr = true })
         -- skip it, if you use another global object
     end,
 }
