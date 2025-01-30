@@ -1,7 +1,7 @@
 return {
 	"Davidyz/VectorCode",
 	dependencies = { "nvim-lua/plenary.nvim" },
-	opts = { 
+	opts = {
 		n_query = 1, -- number of retrieved documents
 		notify = true, -- enable notifications
 		timeout_ms = 5000, -- timeout in milliseconds for the query operation.

@@ -1,1 +1,4 @@
-return { 'brianhuster/autosave.nvim' }
+return {
+	'brianhuster/autosave.nvim',
+	event = "BufRead",
+}

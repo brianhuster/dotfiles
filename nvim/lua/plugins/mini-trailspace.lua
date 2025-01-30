@@ -1,1 +1,5 @@
-return { 'echasnovski/mini.trailspace', config = true }
+return {
+	'echasnovski/mini.trailspace',
+	config = true,
+	event = 'BufRead',
+}

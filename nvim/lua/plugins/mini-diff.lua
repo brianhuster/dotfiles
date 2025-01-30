@@ -1,4 +1,5 @@
 return {
 	'echasnovski/mini.diff',
-	config = true
+	config = true,
+	event = 'BufRead',
 }

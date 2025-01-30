@@ -1,1 +1,1 @@
-return { 'brianhuster/nvim-treesitter-endwise' }
+return { 'brianhuster/nvim-treesitter-endwise', event = 'InsertEnter' }

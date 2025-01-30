@@ -1,4 +1,5 @@
 return {
 	'kylechui/nvim-surround',
-	opts = true
+	opts = true,
+	event = "BufRead",
 }
