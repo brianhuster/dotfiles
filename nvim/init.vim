@@ -51,7 +51,7 @@ imap <2-MiddleMouse> <Nop>
 imap <3-MiddleMouse> <Nop>
 imap <4-MiddleMouse> <Nop>
 
-cnoremap <C-S-v> <C-r>+
+cnoremap <C-v> <C-r>+
 
 let did_install_default_menus = 1
 let did_install_syntax_menu = 1
@@ -132,23 +132,13 @@ endif
 
 if has('nvim')
 	lua << EOF
--- if vim.loader then
--- 	vim.loader.enable()
--- end
--- local vimrc = vim.fn.stdpath('config') .. '/vimrc'
--- vim.cmd.source(vimrc)
-require 'ui'
-require 'vscode'
-require 'lsp'
-require 'treesitter'
-
-vim.api.nvim_create_autocmd('BufRead', {
-	pattern = '*.txt',
-	callback = function(arg)
-		if arg.file:match('/doc/.*.txt$') then
-			vim.bo.filetype = 'help'
-		end
+	if vim.loader then
+		vim.loader.enable()
 	end
-})
+	require 'ui'
+	require 'vscode'
+	require 'lsp'
+	require 'treesitter'
 EOF
+	au BufRead */doc/*.txt setlocal ft=help
 endif
