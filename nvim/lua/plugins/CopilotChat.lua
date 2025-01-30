@@ -5,7 +5,7 @@ return {
 			{ "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
 		},
 		build = "make tiktoken", -- Only on MacOS or Linux
-		-- cmd = 'CopilotChat',
+		cmd = 'CopilotChat',
 		opts = { debug = true }
 	},
 }
