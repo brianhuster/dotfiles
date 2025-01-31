@@ -40,7 +40,7 @@ require("lazy").setup({
 	readme = {
 		enabled = false
 	},
-	spec = { { import = "plugins" } },
+	spec = { { import = "an.plugins" } },
 	change_detection = {
 		-- automatically check for config file changes and reload the ui
 		enabled = false,

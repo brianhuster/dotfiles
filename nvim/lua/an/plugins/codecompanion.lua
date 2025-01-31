@@ -6,6 +6,5 @@ return {
 		"nvim-treesitter/nvim-treesitter",
 		"github/copilot.vim"
 	},
-	cmd = "CodeCompanion",
-	-- config = true
+	cmd = "CodeCompanionSetup",
 }

@@ -135,10 +135,10 @@ if has('nvim')
 	if vim.loader then
 		vim.loader.enable()
 	end
-	require 'ui'
-	require 'vscode'
-	require 'lsp'
-	require 'treesitter'
+	require 'an.ui'
+	require 'an.vscode'
+	require 'an.lsp'
+	require 'an.treesitter'
 EOF
 	au BufRead */doc/*.txt setlocal ft=help
 endif

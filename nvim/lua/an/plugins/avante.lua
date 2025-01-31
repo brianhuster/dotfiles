@@ -1,6 +1,6 @@
 return {
 	"yetone/avante.nvim",
-	cmd = "Packadd avante.nvim",
+	cmd = "Avante",
 	version = false, -- set this if you want to always pull the latest change,
 	opts = {
 		provider = "copilot",
