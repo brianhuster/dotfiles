@@ -6,6 +6,9 @@ return {
 			'junegunn/fzf',
 			build = function()
 				vim.fn['fzf#install']()
+			end,
+			config = function()
+				vim.g.loaded_fzf = 1
 			end
 		},
 	},

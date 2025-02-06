@@ -26,14 +26,24 @@ api.nvim_create_autocmd('LspAttach', {
 	end,
 })
 
-api.nvim_create_autocmd({ "CursorMoved" }, {
-	callback = function()
-		vim.diagnostic.config({
-			virtual_text = false,
-		})
-		vim.diagnostic.open_float(nil, { focusable = false })
-	end,
-})
+if vim.fn.has('nvim-0.11') == 1 then
+	vim.diagnostic.config({
+		virtual_lines = {
+			current_line = true
+		},
+		underline = true
+	})
+else
+	vim.diagnostic.config({
+		virtual_text = false,
+		-- float = true
+	})
+	api.nvim_create_autocmd({ "CursorMoved" }, {
+		callback = function()
+			vim.diagnostic.open_float(nil, { focusable = false })
+		end
+	})
+end
 
 api.nvim_create_user_command("CopyDiagnostic", function()
 	local diagnostics = vim.diagnostic.get(0, { lnum = vim.fn.line('.') })

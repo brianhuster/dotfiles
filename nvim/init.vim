@@ -135,6 +135,7 @@ if has('nvim')
 	if vim.loader then
 		vim.loader.enable()
 	end
+	vim.o.exrc = true
 	require 'an.ui'
 	require 'an.vscode'
 	require 'an.lsp'
