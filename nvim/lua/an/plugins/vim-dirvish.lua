@@ -1,18 +1,13 @@
 ---@TODO: try another icon plugin
 
 return {
-	dir = '/media/brianhuster/D/Projects/vim-dirvish',
+	'brianhuster/vim-dirvish',
 	-- 'justinmk/vim-dirvish',
 	config = function()
 		vim.g.dirvish_mode = ':sort ,^.*[\\/],'
 		vim.fn['dirvish#add_icon_fn'](function(p)
 			local get = require('mini.icons').get
-			local icon, hl, _
-			if p:sub(-1) == '/' then
-				icon, hl = get('directory', p)
-			else
-				icon, hl = get('file', p)
-			end
+			local icon, hl = get(p:sub(-1) == '/' and 'directory' or 'file', p)
 			icon = icon .. ' '
 			return { icon = icon, hl = hl }
 		end)
