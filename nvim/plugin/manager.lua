@@ -46,5 +46,4 @@ require("lazy").setup({
 		enabled = false,
 		notify = false, -- get a notification when changes are found
 	},
-
 })

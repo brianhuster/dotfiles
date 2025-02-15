@@ -45,9 +45,9 @@ return {
 			'jdtls',
 			"lua_ls",
 			"marksman",
-			"phpactor",
 			"pylsp",
 			"volar",
+			"gopls"
 		}
 		require('mason').setup({
 			ui = {

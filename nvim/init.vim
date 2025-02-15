@@ -131,15 +131,7 @@ if !has('nvim-0.11')
 endif
 
 if has('nvim')
-	lua << EOF
-	if vim.loader then
-		vim.loader.enable()
-	end
-	vim.o.exrc = true
-	require 'an.ui'
-	require 'an.vscode'
-	require 'an.lsp'
-	require 'an.treesitter'
-EOF
+	set exrc
 	au BufRead */doc/*.txt setlocal ft=help
+	source <script>:p:h/nvim.lua
 endif
