@@ -4,30 +4,32 @@ local M = {}
 --- @param fname string
 --- @return string
 function M.includeexpr(fname)
+	local sep = package.config:sub(1, 1)
+
+	---@param prefix string
+	---@return string[]
+	local function templates(prefix)
+		local dir = prefix .. sep .. "lua" .. sep
+		return { dir .. "?.lua", dir .. "?" .. sep .. "init.lua" }
+	end
+
+	local paths = templates(vim.b.root_dir or '.')
 	local module = fname:gsub("%.", "/")
-	local paths = vim.split(package.path, ";")
 	local rtp = vim.split(vim.o.rtp, ",")
 	for _, path in ipairs(rtp) do
-		vim.list_extend(paths, { path .. "/lua/?.lua", path .. "/lua/?/init.lua" })
+		vim.list_extend(paths, templates(path))
 	end
 	local packstart = vim.fn.globpath(vim.o.packpath, "pack/*/start/*", nil, true)
 	for _, path in ipairs(packstart) do
-		vim.list_extend(paths, { path .. "/lua/?.lua", path .. "/lua/?/init.lua" })
+		vim.list_extend(paths, templates(path))
 	end
+	vim.list_extend(paths, vim.split(package.path, ";"))
 	for _, template in ipairs(paths) do
 		local expanded = template:gsub("?", module)
 		if vim.fn.filereadable(expanded) == 1 then
 			return expanded
 		end
 	end
-end
-
-function M.omnifunc(findstart, base)
-	if findstart == 1 then
-		return vim.lsp.omnifunc(findstart, base) or vim.lua_omnifunc(findstart)
-	end
-	local matches = vim.lsp.omnifunc(findstart, base)
-	return vim.list_extend(matches, vim.lua_omnifunc(findstart, base))
 end
 
 ---@param keyword string

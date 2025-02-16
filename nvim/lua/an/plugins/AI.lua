@@ -81,7 +81,34 @@ return {
 			"nvim-treesitter/nvim-treesitter",
 			"github/copilot.vim"
 		},
-		opts = {}
+		config = function()
+			local codecompanion = require 'codecompanion'
+			local OPENAI_API_KEY = 'cmd:pass show openai/yahoomail/apikey'
+
+			codecompanion.setup({
+				adapters = {
+					openai_gpt_4o = function()
+						return adapters.extend('openai', {
+							env = { api_key = OPENAI_API_KEY },
+							schema = {
+								model = { default = 'gpt-4o' },
+								max_tokens = { default = 2048 },
+								temperature = { default = 0.2 },
+								top_p = { default = 0.1 },
+							},
+						})
+					end,
+					openai_o3_mini = function()
+						return adapters.extend('openai', {
+							env = { api_key = OPENAI_API_KEY },
+							schema = {
+								model = { default = 'o3-mini-2025-01-31' },
+							},
+						})
+					end,
+				},
+			})
+		end
 	},
 	-- {
 	-- 	'Exafunction/codeium.nvim',
