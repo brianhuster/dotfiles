@@ -15,7 +15,7 @@ return {
 				replace_keycodes = false
 			})
 			vim.g.copilot_no_tab_map = true
-			vim.cmd [[aut BufEnter * let b:copilot_enabled = v:false]]
+			vim.cmd [[au BufEnter * let b:copilot_enabled = v:false]]
 		end,
 	},
 	{
