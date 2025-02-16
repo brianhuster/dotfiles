@@ -81,94 +81,68 @@ return {
 			"nvim-treesitter/nvim-treesitter",
 			"github/copilot.vim"
 		},
+		opts = {}
+	},
+	{
+		'Exafunction/codeium.nvim',
+		event = 'InsertEnter',
 		config = function()
-			local codecompanion = require 'codecompanion'
-			local OPENAI_API_KEY = 'cmd:pass show openai/yahoomail/apikey'
+			require("codeium").setup({
+				-- Optionally disable cmp source if using virtual text only
+				enable_cmp_source = false,
+				virtual_text = {
+					enabled = true,
 
-			codecompanion.setup({
-				adapters = {
-					openai_gpt_4o = function()
-						return adapters.extend('openai', {
-							env = { api_key = OPENAI_API_KEY },
-							schema = {
-								model = { default = 'gpt-4o' },
-								max_tokens = { default = 2048 },
-								temperature = { default = 0.2 },
-								top_p = { default = 0.1 },
-							},
-						})
-					end,
-					openai_o3_mini = function()
-						return adapters.extend('openai', {
-							env = { api_key = OPENAI_API_KEY },
-							schema = {
-								model = { default = 'o3-mini-2025-01-31' },
-							},
-						})
-					end,
-				},
+					-- These are the defaults
+
+					-- Set to true if you never want completions to be shown automatically.
+					manual = false,
+					-- A mapping of filetype to true or false, to enable virtual text.
+					filetypes = {},
+					-- Whether to enable virtual text of not for filetypes not specifically listed above.
+					default_filetype_enabled = true,
+					-- How long to wait (in ms) before requesting completions after typing stops.
+					idle_delay = 75,
+					-- Priority of the virtual text. This usually ensures that the completions appear on top of
+					-- other plugins that also add virtual text, such as LSP inlay hints, but can be modified if
+					-- desired.
+					virtual_text_priority = 65535,
+					-- Set to false to disable all key bindings for managing completions.
+					map_keys = true,
+					-- The key to press when hitting the accept keybinding but no completion is showing.
+					-- Defaults to \t normally or <c-n> when a popup is showing.
+					accept_fallback = nil,
+					-- Key bindings for managing completions in virtual text mode.
+					key_bindings = {
+						-- Accept the current completion.
+						accept = "<M-CR>",
+						-- Accept the next word.
+						accept_word = "<M-w>",
+						-- Accept the next line.
+						accept_line = "<M-l>",
+						-- Clear the virtual text.
+						clear = "<C-]>",
+						-- Cycle to the next completion.
+						next = "<M-]>",
+						-- Cycle to the previous completion.
+						prev = "<M-[>",
+					}
+				}
 			})
+			vim.cmd ":highlight link CodeiumSuggestion Comment"
 		end
 	},
 	-- {
-	-- 	'Exafunction/codeium.nvim',
-	-- 	event = 'InsertEnter',
+	-- 	'brianhuster/supermaven-nvim',
 	-- 	config = function()
-	-- 		require("codeium").setup({
-	-- 			-- Optionally disable cmp source if using virtual text only
-	-- 			enable_cmp_source = false,
-	-- 			virtual_text = {
-	-- 				enabled = true,
-	--
-	-- 				-- These are the defaults
-	--
-	-- 				-- Set to true if you never want completions to be shown automatically.
-	-- 				manual = false,
-	-- 				-- A mapping of filetype to true or false, to enable virtual text.
-	-- 				filetypes = {},
-	-- 				-- Whether to enable virtual text of not for filetypes not specifically listed above.
-	-- 				default_filetype_enabled = true,
-	-- 				-- How long to wait (in ms) before requesting completions after typing stops.
-	-- 				idle_delay = 75,
-	-- 				-- Priority of the virtual text. This usually ensures that the completions appear on top of
-	-- 				-- other plugins that also add virtual text, such as LSP inlay hints, but can be modified if
-	-- 				-- desired.
-	-- 				virtual_text_priority = 65535,
-	-- 				-- Set to false to disable all key bindings for managing completions.
-	-- 				map_keys = true,
-	-- 				-- The key to press when hitting the accept keybinding but no completion is showing.
-	-- 				-- Defaults to \t normally or <c-n> when a popup is showing.
-	-- 				accept_fallback = nil,
-	-- 				-- Key bindings for managing completions in virtual text mode.
-	-- 				key_bindings = {
-	-- 					-- Accept the current completion.
-	-- 					accept = "<M-CR>",
-	-- 					-- Accept the next word.
-	-- 					accept_word = "<M-w>",
-	-- 					-- Accept the next line.
-	-- 					accept_line = "<M-l>",
-	-- 					-- Clear the virtual text.
-	-- 					clear = "<C-]>",
-	-- 					-- Cycle to the next completion.
-	-- 					next = "<M-]>",
-	-- 					-- Cycle to the previous completion.
-	-- 					prev = "<M-[>",
-	-- 				}
-	-- 			}
-	-- 		})
-	-- 	end
-	-- },
-	{
-		'brianhuster/supermaven-nvim',
-		config = function()
-			require 'supermaven-nvim'.setup {
-				keymaps = {
-					accept_suggestion = "<M-CR>",
-					accept_word = "<M-w>",
-				},
-			}
-			require("supermaven-nvim.api").use_free_version()
-		end,
-		event = 'InsertEnter',
-	}
+	-- 		require 'supermaven-nvim'.setup {
+	-- 			keymaps = {
+	-- 				accept_suggestion = "<M-CR>",
+	-- 				accept_word = "<M-w>",
+	-- 			},
+	-- 		}
+	-- 		require("supermaven-nvim.api").use_free_version()
+	-- 	end,
+	-- 	event = 'InsertEnter',
+	-- }
 }
