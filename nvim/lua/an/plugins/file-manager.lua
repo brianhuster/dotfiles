@@ -1,5 +1,3 @@
----@TODO: try another icon plugin
-
 return {
 	'brianhuster/vim-dirvish',
 	-- 'justinmk/vim-dirvish',
@@ -30,5 +28,12 @@ return {
 		-- 	'brianhuster/dirvish-git.nvim',
 		-- 	branch = 'dev'
 		-- },
-	}
+	},
+	-- 	{
+	-- 	'miversen33/netman.nvim',
+	-- 	config = function()
+	-- 		require('netman')
+	-- 	end,
+	-- 	cmd = 'Netman'
+	-- }
 }

@@ -1,3 +1,0 @@
-return {
-	'brianhuster/compick.nvim',
-}

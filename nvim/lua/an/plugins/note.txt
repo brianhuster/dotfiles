@@ -1,4 +1,4 @@
-return {
+return {{
 	"Al0den/notion.nvim",
 	lazy = false, --Should work when lazy loaded, not tested
 	dependencies = {
@@ -8,4 +8,6 @@ return {
 	config = function()
 		require "notion".setup()
 	end,
+},
+{ 'dhruvasagar/vim-dotoo' }
 }

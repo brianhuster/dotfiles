@@ -51,14 +51,44 @@ local function js_debug_adapter()
 end
 
 return {
-	"rcarriga/nvim-dap-ui",
-	dependencies = {
-		"mfussenegger/nvim-dap",
-		"nvim-neotest/nvim-nio",
+	{
+		"rcarriga/nvim-dap-ui",
+		dependencies = {
+			"mfussenegger/nvim-dap",
+			"nvim-neotest/nvim-nio",
+		},
+		config = function()
+			require("dapui").setup()
+			js_debug_adapter()
+			set_key_map()
+		end
 	},
-	config = function()
-		require("dapui").setup()
-		js_debug_adapter()
-		set_key_map()
-	end
+	{
+		"leoluz/nvim-dap-go",
+		ft = { "go" },
+		config = function()
+			require("dap-go").setup()
+		end
+	},
+	{
+		--- Debug Nvim Lua code
+		"jbyuki/one-small-step-for-vimkind",
+		dependencies = {
+			"mfussenegger/nvim-dap",
+		},
+		config = function()
+			local dap = require "dap"
+			dap.configurations.lua = {
+				{
+					type = 'nlua',
+					request = 'attach',
+					name = "Attach to running Neovim instance",
+				}
+			}
+
+			dap.adapters.nlua = function(callback, config)
+				callback({ type = 'server', host = config.host or "127.0.0.1", port = config.port or 8086 })
+			end
+		end
+	}
 }
