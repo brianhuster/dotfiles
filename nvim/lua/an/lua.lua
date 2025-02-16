@@ -59,7 +59,7 @@ local function lookup_help(keyword, opts)
 	end
 end
 
-function M.keywordprg()
+function M.keywordexpr()
 	local temp_isk = vim.o.iskeyword
 	vim.cmd("set iskeyword+=.")
 	local _, cword = pcall(vim.fn.expand, "<cword>")
@@ -68,11 +68,11 @@ function M.keywordprg()
 	local list_of_opts = {
 		-- Nvim API
 		{ regex = [[nvim_.\+]],                                                         suffix = '()' },
-		-- Vim API
+		-- Vimscript functions
 		{ regex = [[\(vim\.fn\.\)\@<=\w\+]],                                            suffix = '()' },
-		-- Vim option
+		-- Options
 		{ regex = [[\(vim\.\(o\|go\|bo\|wo\|opt\|opt_local\|opt_global\)\.\)\@<=\w\+]], prefix = "'", suffix = "'" },
-		-- Vim variable
+		-- Vimscript variables
 		{
 			---@param keyword string
 			---@return string?
@@ -82,12 +82,13 @@ function M.keywordprg()
 				return keyword:sub(match_start - 1, match_start - 1) .. ':' .. keyword:sub(match_start + 1, match_end)
 			end
 		},
-		-- Vim command
+		-- Ex commands
 		{ regex = [[\(vim\.cmd\.\)\@<=\w\+]], prefix = ":" },
 		-- Luv
 		{ regex = [[\(vim\.uv\.\)\@<=\w\+]],  suffix = '()' },
 		-- Luaref
 		{ prefix = 'lua-' },
+		-- Other
 		{}
 	}
 	local success
