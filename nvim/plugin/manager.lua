@@ -1,8 +1,7 @@
-local g = vim.g
-g.loaded_netrw = 1
-g.loaded_netrwPlugin = 1
-g.did_install_default_menus = 1
-g.did_install_syntax_menu = 1
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+vim.g.did_install_default_menus = 1
+vim.g.did_install_syntax_menu = 1
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.uv.fs_stat(lazypath) then

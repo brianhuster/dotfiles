@@ -1,3 +1,5 @@
+vim.g.var = 1
+
 return {
 	"yetone/avante.nvim",
 	cmd = "Avante",

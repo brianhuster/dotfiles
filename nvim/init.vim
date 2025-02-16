@@ -24,7 +24,6 @@ let g:python3_host_prog = 'python3'
 if has('nvim')
 	call execute('set rtp^=' . stdpath('config'))
 	set foldexpr=v:lua.vim.treesitter.foldexpr()
-	set omnifunc=v:lua.vim.treesitter.query.omnifunc
 endif
 
 " au InsertLeavePre,TextChanged,TextChangedP * if &modifiable | silent! write | endif
