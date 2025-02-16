@@ -1,6 +1,9 @@
 vim.bo.omnifunc = "v:lua.vim.lua_omnifunc"
 vim.bo.include = [[\v<((do|load)file|require)[^''"]*[''"]\zs[^''"]+]]
 vim.bo.includeexpr = "v:lua.require'an.lua'.includeexpr(v:fname)"
+if not vim.b.root_dir then
+	vim.b.root_dir = require('an.lua').find_root(vim.api.nvim_buf_get_name(0))
+end
 
 if vim.fn.maparg('K', 'n') == '' then
 	vim.keymap.set('n', 'K', function() require('an.lua').keywordexpr() end,

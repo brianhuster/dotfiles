@@ -1,5 +1,31 @@
 local M = {}
 
+---@source https://github.com/neovim/nvim-lspconfig/blob/master/lua/lspconfig/configs/lua_ls.lua
+---@param fname string
+---@return string
+function M.find_root(fname)
+	local root_markers = {
+		'.luarc.json',
+		'.luarc.jsonc',
+		'.luacheckrc',
+		'.stylua.toml',
+		'stylua.toml',
+		'selene.toml',
+		'selene.yml',
+	}
+	local root = vim.fs.root(fname, root_markers)
+	if root and root ~= vim.env.HOME then
+		return root
+	end
+	local root_lua = vim.fs.root(fname, 'lua') or ''
+	local root_git = vim.fs.root(fname, '.git') or ''
+	if #root_lua == 0 and #root_git == 0 then
+		return '.'
+	end
+	return #root_lua >= #root_git and root_lua or root_git
+end
+
+
 --- Search module path for matching Lua scripts.
 --- @param fname string
 --- @return string
