@@ -1,45 +1,45 @@
 return {
-	-- {
-	-- 	"github/copilot.vim",
-	-- 	config = function()
-	-- 		vim.keymap.set('i', '<M-CR>', 'copilot#Accept("\\<CR>")', {
-	-- 			expr = true,
-	-- 			replace_keycodes = false
-	-- 		})
-	-- 		vim.keymap.set('i', '<M-w>', '<Plug>(copilot-accept-word)', {
-	-- 			expr = true,
-	-- 			replace_keycodes = false
-	-- 		})
-	-- 		vim.keymap.set('i', '<M-l>', '<Plug>(copilot-accept-line)', {
-	-- 			expr = true,
-	-- 			replace_keycodes = false
-	-- 		})
-	-- 		vim.g.copilot_no_tab_map = true
-	-- 		vim.cmd [[aut BufEnter * let b:copilot_enabled = v:false]]
-	-- 	end,
-	-- },
-	-- {
-	-- 	"CopilotC-Nvim/CopilotChat.nvim",
-	-- 	dependencies = {
-	-- 		{ "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
-	-- 	},
-	-- 	build = "make tiktoken", -- Only on MacOS or Linux
-	-- 	cmd = 'CopilotChat',
-	-- 	opts = {}
-	-- },
-	-- {
-	-- 	"Davidyz/VectorCode",
-	-- 	dependencies = { "nvim-lua/plenary.nvim" },
-	-- 	opts = {
-	-- 		n_query = 1, -- number of retrieved documents
-	-- 		notify = true, -- enable notifications
-	-- 		timeout_ms = 5000, -- timeout in milliseconds for the query operation.
-	-- 		exclude_this = true, -- exclude the buffer from which the query is called.
-	-- 		-- This avoids repetition when you change some code but
-	-- 		-- the embedding has not been updated.
-	-- 	},
-	-- 	cond = function() return vim.fn.executable('vectorcode') == 1 end,
-	-- },
+	{
+		"github/copilot.vim",
+		config = function()
+			vim.keymap.set('i', '<M-CR>', 'copilot#Accept("\\<CR>")', {
+				expr = true,
+				replace_keycodes = false
+			})
+			vim.keymap.set('i', '<M-w>', '<Plug>(copilot-accept-word)', {
+				expr = true,
+				replace_keycodes = false
+			})
+			vim.keymap.set('i', '<M-l>', '<Plug>(copilot-accept-line)', {
+				expr = true,
+				replace_keycodes = false
+			})
+			vim.g.copilot_no_tab_map = true
+			vim.cmd [[aut BufEnter * let b:copilot_enabled = v:false]]
+		end,
+	},
+	{
+		"CopilotC-Nvim/CopilotChat.nvim",
+		dependencies = {
+			{ "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
+		},
+		build = "make tiktoken", -- Only on MacOS or Linux
+		cmd = 'CopilotChat',
+		opts = {}
+	},
+	{
+		"Davidyz/VectorCode",
+		dependencies = { "nvim-lua/plenary.nvim" },
+		opts = {
+			n_query = 1, -- number of retrieved documents
+			notify = true, -- enable notifications
+			timeout_ms = 5000, -- timeout in milliseconds for the query operation.
+			exclude_this = true, -- exclude the buffer from which the query is called.
+			-- This avoids repetition when you change some code but
+			-- the embedding has not been updated.
+		},
+		cond = function() return vim.fn.executable('vectorcode') == 1 end,
+	},
 	{
 		"yetone/avante.nvim",
 		version = false, -- set this if you want to always pull the latest change,
@@ -74,15 +74,15 @@ return {
 			},
 		},
 	},
-	-- {
-	-- 	"olimorris/codecompanion.nvim",
-	-- 	dependencies = {
-	-- 		"nvim-lua/plenary.nvim",
-	-- 		"nvim-treesitter/nvim-treesitter",
-	-- 		"github/copilot.vim"
-	-- 	},
-	-- 	opts = {}
-	-- },
+	{
+		"olimorris/codecompanion.nvim",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-treesitter/nvim-treesitter",
+			"github/copilot.vim"
+		},
+		opts = {}
+	},
 	-- {
 	-- 	'Exafunction/codeium.nvim',
 	-- 	event = 'InsertEnter',
@@ -131,17 +131,17 @@ return {
 	-- 		})
 	-- 	end
 	-- },
-	-- {
-	-- 	'brianhuster/supermaven-nvim',
-	-- 	config = function()
-	-- 		require 'supermaven-nvim'.setup {
-	-- 			keymaps = {
-	-- 				accept_suggestion = "<M-CR>",
-	-- 				accept_word = "<M-w>",
-	-- 			},
-	-- 		}
-	-- 		require("supermaven-nvim.api").use_free_version()
-	-- 	end,
-	-- 	event = 'InsertEnter',
-	-- }
+	{
+		'brianhuster/supermaven-nvim',
+		config = function()
+			require 'supermaven-nvim'.setup {
+				keymaps = {
+					accept_suggestion = "<M-CR>",
+					accept_word = "<M-w>",
+				},
+			}
+			require("supermaven-nvim.api").use_free_version()
+		end,
+		event = 'InsertEnter',
+	}
 }
