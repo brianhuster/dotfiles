@@ -28,7 +28,7 @@ end
 
 --- Search module path for matching Lua scripts.
 --- @param fname string
---- @return string
+--- @return string?
 function M.includeexpr(fname)
 	local sep = package.config:sub(1, 1)
 

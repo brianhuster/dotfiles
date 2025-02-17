@@ -347,10 +347,11 @@ arithmetic should work the same across all platforms as far as possible:
     constants. FP numbers are limited to 53 bits of precision, anyway. E.g.
     (2^30+1)^2 does not return an odd number when computed with doubles.
 
-BTW: The `tr_i` function shown here |lua-bit-shortcuts| is one of the non-linear functions of the
-(flawed) MD5 cryptographic hash and relies on modular arithmetic for correct
-operation. The result is fed back to other bitwise operations (not shown) and
-does not need to be normalized until the last step.
+BTW: The `tr_i` function shown here |lua-bit-shortcuts| is one of the
+non-linear functions of the (flawed) MD5 cryptographic hash and relies on
+modular arithmetic for correct operation. The result is fed back to other
+bitwise operations (not shown) and does not need to be normalized until the
+last step.
 
 
 Restricted and undefined behaviors ~
@@ -374,8 +375,7 @@ strongly advised not to rely on undefined or implementation-defined behavior.
 	Non-integral numbers may be rounded or truncated in an
 	implementation-defined way. This means the result could differ between
 	different BitOp versions, different Lua VMs, on different platforms or
-	even between interpreted vs. compiled code (as in |lua-luajit|).
-
+	even between interpreted vs. compiled code (as in |LuaJIT|).
 	Avoid passing fractional numbers to bitwise functions. Use
 	`math.floor()` or `math.ceil()` to get defined behavior.
 
