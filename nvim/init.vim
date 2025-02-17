@@ -21,17 +21,12 @@ set noswapfile
 
 let g:python3_host_prog = 'python3'
 
-if has('nvim')
-	call execute('set rtp^=' . stdpath('config'))
-	set foldexpr=v:lua.vim.treesitter.foldexpr()
-endif
-
 " au InsertLeavePre,TextChanged,TextChangedP * if &modifiable | silent! write | endif
 autocmd! FocusGained,BufEnter * checktime
 
 " Key mappings
-nnoremap t :call Terminal()<CR>
-xnoremap t :call Terminal()<CR>
+nnoremap t <cmd>call an#Terminal()<CR>
+xnoremap t <cmd>call an#Terminal()<CR>
 tnoremap <Esc> <C-\><C-n>
 
 nnoremap <BS> "_d
@@ -55,81 +50,25 @@ cnoremap <C-v> <C-r>+
 let did_install_default_menus = 1
 let did_install_syntax_menu = 1
 
-" IBus handler
-function! IBusOff()
-	let g:ibus_prev_engine = trim(system('ibus engine'))
-	execute 'silent !ibus engine xkb:us::eng'
-endfunction
-
-function! IBusOn()
-	let l:current_engine = trim(system('ibus engine'))
-	if l:current_engine !~? 'xkb:us::eng'
-		let g:ibus_prev_engine = l:current_engine
-	endif
-	execute 'silent !' . 'ibus engine ' . g:ibus_prev_engine
-endfunction
-
 if executable('ibus')
 	augroup IBusHandler
-		autocmd CmdLineEnter [/?],[s/],[%s/] call IBusOn()
-		autocmd CmdLineLeave [/?],[:s/?],[:%s/?] call IBusOff()
-		autocmd InsertEnter * call IBusOn()
-		autocmd InsertLeave * call IBusOff()
-		autocmd FocusGained * call IBusOn()
-		autocmd FocusLost * call IBusOff()
-		autocmd ExitPre * call IBusOn()
+		autocmd CmdLineEnter [/?],[s/],[%s/] call ibus#On()
+		autocmd CmdLineLeave [/?],[:s/?],[:%s/?] call ibus#Off()
+		autocmd InsertEnter * call ibus#On()
+		autocmd InsertLeave * call ibus#Off()
+		autocmd FocusGained * call ibus#On()
+		autocmd FocusLost * call ibus#Off()
+		autocmd ExitPre * call ibus#On()
 	augroup END
-	call IBusOff()
+	call ibus#Off()
 else
 	echoerr "ibus is not installed. Switch to keymap vietnamese-telex_utf-8."
 	set keymap=vietnamese-telex_utf-8
 endif
 
-function! Terminal()
-	if &buftype == 'terminal'
-		startinsert
-		return
-	endif
-	let term_win = -1
-	for win in range(1, winnr('$'))
-		execute win . 'wincmd w'
-		if &buftype == 'terminal'
-			let term_win = win
-			break
-		endif
-	endfor
-	if term_win == -1
-		belowright split | terminal
-		setlocal nonumber
-		set winheight=12
-	else
-		execute term_win . 'wincmd w'
-	endif
-	startinsert
-endfunction
-
-" Auto completion in insert mode
-function! InsAutocomplete() abort
-	if pumvisible() || state("m") == "m" || &l:omnifunc == 'v:lua.vim.lsp.omnifunc'
-		return
-	endif
-	let l:completion_keymap = &omnifunc != '' ? "\<C-x>\<C-o>" : "\<C-x>\<C-n>"
-	if exists('b:completion_keymap')
-		let l:completion_keymap = b:completion_keymap
-	end
-	if exists('b:completion_triggers')
-		if index(b:completion_triggers, v:char) == -1
-			return
-		end
-	endif
-	call feedkeys(l:completion_keymap, "m")
-endfunction
-
-if !has('nvim-0.11')
-	autocmd! InsertCharPre <buffer> call InsAutocomplete()
-endif
-
 if has('nvim')
+	call execute('set rtp^=' . stdpath('config'))
+	set foldexpr=v:lua.vim.treesitter.foldexpr()
 	set exrc
 	au BufRead */doc/*.txt setlocal ft=help
 	source <script>:p:h/nvim.lua

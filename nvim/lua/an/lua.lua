@@ -29,6 +29,9 @@ end
 ---@return string?
 function M.includeexpr(fname)
 	local module = fname:gsub('%.', '/')
+	if vim.fn.filereadable('./' .. module .. 'lua') == 1 then
+		return './' .. module .. 'lua'
+	end
 	local runtime = {
 		vim.b.root_dir or '.',
 		unpack(vim.api.nvim_list_runtime_paths())
@@ -87,6 +90,7 @@ local function lookup_help(keyword, opts)
 	end
 end
 
+---@TODO: Support Vimscript better, possibly using Treesitter node
 function M.keywordexpr()
 	local temp_isk = vim.o.iskeyword
 	vim.cmd("set iskeyword+=.")
