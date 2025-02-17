@@ -25,35 +25,35 @@ function M.find_root(fname)
 	return #root_lua >= #root_git and root_lua or root_git
 end
 
-
---- Search module path for matching Lua scripts.
---- @param fname string
---- @return string?
+---@param fname string
+---@return string?
 function M.includeexpr(fname)
-	local sep = package.config:sub(1, 1)
+	local module = fname:gsub('%.', '/')
+	local runtime = {
+		vim.b.root_dir or '.',
+		unpack(vim.api.nvim_list_runtime_paths())
+	}
 
 	---@param prefix string
 	---@return string[]
 	local function templates(prefix)
-		local dir = prefix .. sep .. "lua" .. sep
-		return { dir .. "?.lua", dir .. "?" .. sep .. "init.lua" }
+		return vim.tbl_map(function(v)
+			return prefix .. '/lua/' .. module .. v
+		end, { '.lua', '/init.lua' })
 	end
 
-	local paths = templates(vim.b.root_dir or '.')
-	local module = fname:gsub("%.", "/")
-	local rtp = vim.split(vim.o.rtp, ",")
-	for _, path in ipairs(rtp) do
-		vim.list_extend(paths, templates(path))
+	for _, dir in ipairs(runtime) do
+		for _, file in ipairs(templates(dir)) do
+			if vim.fn.filereadable(file) == 1 then
+				return file
+			end
+		end
 	end
-	local packstart = vim.fn.globpath(vim.o.packpath, "pack/*/start/*", nil, true)
-	for _, path in ipairs(packstart) do
-		vim.list_extend(paths, templates(path))
-	end
-	vim.list_extend(paths, vim.split(package.path, ";"))
-	for _, template in ipairs(paths) do
-		local expanded = template:gsub("?", module)
-		if vim.fn.filereadable(expanded) == 1 then
-			return expanded
+
+	for _, template in ipairs(vim.split(package.path, ";")) do
+		local file = template:gsub("?", module)
+		if vim.fn.filereadable(file) == 1 then
+			return file
 		end
 	end
 end

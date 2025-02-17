@@ -1,4 +1,4 @@
-*luabit.txt*           Nvim
+*lua-bit.txt*           Nvim
                                                                 *lua-bit*
 
                              LUA REFERENCE MANUAL
@@ -21,7 +21,7 @@ on bitwise operations (https://en.wikipedia.org/wiki/Bitwise_operation) first.
 
 ------------------------------------------------------------------------------
 Loading the BitOp module
-								*lua-bit-module*
+                                                               *lua-bit-module*
 
 The suggested way to use the BitOp module is to add the following to the start
 of every Lua file that needs one of its functions: >lua
@@ -35,7 +35,7 @@ ensures the module is only loaded once, in any case.
 
 ------------------------------------------------------------------------------
 Defining Shortcuts ~
-							    *lua-bit-shortcuts*
+                                                            *lua-bit-shortcuts*
 
 It's a common (but not a required) practice to cache often used module
 functions in locals. This serves as a shortcut to save some typing and also
@@ -81,7 +81,7 @@ on all platforms:
 <
 ------------------------------------------------------------------------------
 Bit operations
-								    *lua-bitop*
+                                                                    *lua-bitop*
 
 y = bit.tobit(x)                                                   *bit.tobit()*
     Normalizes a number to the numeric range for bit operations and returns
@@ -280,11 +280,11 @@ simple solutions:
 	bit.rshift(x, 1) == 0x7fffffff
 <
 ==============================================================================
-OPERATIONAL SEMANTICS AND RATIONALE			    *lua-bit-semantics*
+OPERATIONAL SEMANTICS AND RATIONALE                        *lua-bit-semantics*
 
 
 Input and Output Ranges ~
-							    *lua-bit-io-ranges*
+                                                          *lua-bit-io-ranges*
 
 Bitwise operations cannot sensibly be applied to FP numbers (or their
 underlying bit patterns). They must be converted to integers before operating
@@ -305,7 +305,7 @@ the result type as an unsigned number would not be cross-platform safe. All
 bit operations are thus defined to return results in the range of signed 32
 bit numbers (converted to the Lua number type).
 
-							*lua-bit-hex-literals*
+                                                        *lua-bit-hex-literals*
 Hexadecimal literals are treated as unsigned numbers by the Lua parser before
 converting them to the Lua number type. This means they can be out of the
 range of signed 32 bit integers if the Lua number type has a greater range.
@@ -318,7 +318,7 @@ all operations.
 
 
 Modular Arithmetic ~
-							*lua-bit-modular-arith*
+                                                        *lua-bit-modular-arith*
 
 Arithmetic operations on n-bit integers are usually based on the rules of
 modular arithmetic modulo 2^n. Numbers wrap around when the mathematical result
@@ -332,20 +332,20 @@ Arithmetic modulo 2^32 is trivially available if the Lua number type is a 32
 bit integer. Otherwise normalization steps must be inserted. Modular
 arithmetic should work the same across all platforms as far as possible:
 
-    For the default number type of double, arguments can be in the range of
-    ±2^51 and still be safely normalized across all platforms by taking their
-    least-significant 32 bits. The limit is derived from the way doubles are
-    converted to integers.
+- For the default number type of double, arguments can be in the range of
+  ±2^51 and still be safely normalized across all platforms by taking their
+  least-significant 32 bits. The limit is derived from the way doubles are
+  converted to integers.
 
-    The function bit.tobit can be used to explicitly normalize numbers to
-    implement modular addition or subtraction. E.g. >lua
-	bit.tobit(0xffffffff + 1)
-    returns 0 on all platforms.
+- The function bit.tobit can be used to explicitly normalize numbers to
+  implement modular addition or subtraction. E.g. >lua
+		bit.tobit(0xffffffff + 1)
+  returns 0 on all platforms.
 
-    The limit on the argument range implies that modular multiplication is
-    usually restricted to multiplying already normalized numbers with small
-    constants. FP numbers are limited to 53 bits of precision, anyway. E.g.
-    (2^30+1)^2 does not return an odd number when computed with doubles.
+- The limit on the argument range implies that modular multiplication is
+  usually restricted to multiplying already normalized numbers with small
+  constants. FP numbers are limited to 53 bits of precision, anyway. E.g.
+  (2^30+1)^2 does not return an odd number when computed with doubles.
 
 BTW: The `tr_i` function shown here |lua-bit-shortcuts| is one of the
 non-linear functions of the (flawed) MD5 cryptographic hash and relies on
@@ -355,38 +355,37 @@ last step.
 
 
 Restricted and undefined behaviors ~
-							*lua-bit-restrictions*
+                                                      *lua-bit-restrictions*
 
 The following rules are intended to give a precise and useful definition (for
 the programmer), yet give the implementation (interpreter and compiler) the
 maximum flexibility and the freedom to apply advanced optimizations. It's
 strongly advised not to rely on undefined or implementation-defined behavior.
 
-    All kinds of floating-point numbers are acceptable to the bitwise
-    operations. None of them cause an error, but some may invoke undefined
-    behavior:
+- All kinds of floating-point numbers are acceptable to the bitwise
+  operations. None of them cause an error, but some may invoke undefined
+  behavior:
 
-	-0 is treated the same as +0 on input and is never returned as a
-	result.
+	- -0 is treated the same as +0 on input and is never returned as a result.
 
-	Passing ±Inf, NaN or numbers outside the range of ±251 as input yields
-	an undefined result.
+	- Passing ±Inf, NaN or numbers outside the range of ±2^51 as input yields
+	  an undefined result.
 
-	Non-integral numbers may be rounded or truncated in an
-	implementation-defined way. This means the result could differ between
-	different BitOp versions, different Lua VMs, on different platforms or
-	even between interpreted vs. compiled code (as in |LuaJIT|).
-	Avoid passing fractional numbers to bitwise functions. Use
-	`math.floor()` or `math.ceil()` to get defined behavior.
+	- Non-integral numbers may be rounded or truncated in an
+	  implementation-defined way. This means the result could differ between
+	  different BitOp versions, different Lua VMs, on different platforms or
+	  even between interpreted vs. compiled code (as in |LuaJIT|). Avoid
+	  passing fractional numbers to bitwise functions. Use `math.floor()` or
+	  `math.ceil()` to get defined behavior.
 
-    Lua provides auto-coercion of string arguments to numbers by default. This
-    behavior is deprecated for bitwise operations.
+- Lua provides auto-coercion of string arguments to numbers by default. This
+  behavior is deprecated for bitwise operations.
 
 ==============================================================================
-COPYRIGHT						*lua-bit-copyright*
+COPYRIGHT                                                   *lua-bit-copyright*
 
 Lua BitOp is Copyright (C) 2008-2012 Mike Pall.
 Lua BitOp is free software, released under the MIT license.
 
 ==============================================================================
- vim:tw=78:ts=8:sw=4:sts=4:et:ft=help:norl:
+ vim:tw=78:ts=4:sw=4:sts=4:et:ft=help:norl:
