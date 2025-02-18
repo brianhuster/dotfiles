@@ -10,7 +10,7 @@
 Lua BitOp is a C extension module for Lua 5.1/5.2 which adds bitwise
 operations on numbers.
 
-					Type |gO| to see the table of contents.
+                                        Type |gO| to see the table of contents.
 
 ==============================================================================
 API FUNCTIONS                                                    *lua-bit-api*
@@ -34,7 +34,7 @@ part of your application has already loaded the module). The require function
 ensures the module is only loaded once, in any case.
 
 ------------------------------------------------------------------------------
-Defining Shortcuts ~
+Defining Shortcuts
                                                             *lua-bit-shortcuts*
 
 It's a common (but not a required) practice to cache often used module
@@ -90,17 +90,17 @@ y = bit.tobit(x)                                                   *bit.tobit()*
     details.
 
     Example: >lua
-	print(0xffffffff)                --> 4294967295 (*)
-	print(bit.tobit(0xffffffff))     --> -1
-	printx(bit.tobit(0xffffffff))    --> 0xffffffff
-	print(bit.tobit(0xffffffff + 1)) --> 0
-	print(bit.tobit(2^40 + 1234))    --> 1234
+        print(0xffffffff)                --> 4294967295 (*)
+        print(bit.tobit(0xffffffff))     --> -1
+        printx(bit.tobit(0xffffffff))    --> 0xffffffff
+        print(bit.tobit(0xffffffff + 1)) --> 0
+        print(bit.tobit(2^40 + 1234))    --> 1234
 <
     (*) See the treatment of |lua-bit-hex-literals| for an explanation why the
     printed numbers in the first two lines differ (if your Lua installation
     uses a double number type).
 
-y = bit.tohex(x [,n])						*bit.tohex()*
+y = bit.tohex(x [,n])                                           *bit.tohex()*
     Converts its first argument to a hex string. The number of hex digits is
     given by the absolute value of the optional second argument. Positive
     numbers between 1 and 8 generate lowercase hex digits. Negative numbers
@@ -108,37 +108,37 @@ y = bit.tohex(x [,n])						*bit.tohex()*
     used. The default is to generate 8 lowercase hex digits.
 
     Example: >lua
-	print(bit.tohex(1))              --> 00000001
-	print(bit.tohex(-1))             --> ffffffff
-	print(bit.tohex(0xffffffff))     --> ffffffff
-	print(bit.tohex(-1, -8))         --> FFFFFFFF
-	print(bit.tohex(0x21, 4))        --> 0021
-	print(bit.tohex(0x87654321, 4))  --> 4321
+        print(bit.tohex(1))              --> 00000001
+        print(bit.tohex(-1))             --> ffffffff
+        print(bit.tohex(0xffffffff))     --> ffffffff
+        print(bit.tohex(-1, -8))         --> FFFFFFFF
+        print(bit.tohex(0x21, 4))        --> 0021
+        print(bit.tohex(0x87654321, 4))  --> 4321
 <
-y = bit.bnot(x)							*bit.bnot()*
+y = bit.bnot(x)                                                 *bit.bnot()*
     Returns the bitwise `not` of its argument.
 
     Example: >lua
-	print(bit.bnot(0))            --> -1
-	printx(bit.bnot(0))           --> 0xffffffff
-	print(bit.bnot(-1))           --> 0
-	print(bit.bnot(0xffffffff))   --> 0
-	printx(bit.bnot(0x12345678))  --> 0xedcba987
+        print(bit.bnot(0))            --> -1
+        printx(bit.bnot(0))           --> 0xffffffff
+        print(bit.bnot(-1))           --> 0
+        print(bit.bnot(0xffffffff))   --> 0
+        printx(bit.bnot(0x12345678))  --> 0xedcba987
 <
-y = bit.bor(x1 [,x2...])					*bit.bor()*
-y = bit.band(x1 [,x2...])					*bit.band()*
-y = bit.bxor(x1 [,x2...])					*bit.bxor()*
+y = bit.bor(x1 [,x2...])                                        *bit.bor()*
+y = bit.band(x1 [,x2...])                                       *bit.band()*
+y = bit.bxor(x1 [,x2...])                                       *bit.bxor()*
     Returns either the bitwise `or`, bitwise `and`, or bitwise `xor` of all of its
     arguments. Note that more than two arguments are allowed.
 
     Example: >lua
-	print(bit.bor(1, 2, 4, 8))                --> 15
-	printx(bit.band(0x12345678, 0xff))        --> 0x00000078
-	printx(bit.bxor(0xa5a5f0f0, 0xaa55ff00))  --> 0x0ff00ff0
+        print(bit.bor(1, 2, 4, 8))                --> 15
+        printx(bit.band(0x12345678, 0xff))        --> 0x00000078
+        printx(bit.bxor(0xa5a5f0f0, 0xaa55ff00))  --> 0x0ff00ff0
 <
-y = bit.lshift(x, n)						*bit.lshift()*
-y = bit.rshift(x, n)						*bit.rshift()*
-y = bit.arshift(x, n)						*bit.arshift()*
+y = bit.lshift(x, n)                                            *bit.lshift()*
+y = bit.rshift(x, n)                                            *bit.rshift()*
+y = bit.arshift(x, n)                                           *bit.arshift()*
     Returns either the bitwise `logical left-shift`, bitwise `logical`
     `right-shift`, or bitwise `arithmetic right-shift` of its first argument
     by the number of bits given by the second argument.
@@ -149,19 +149,19 @@ y = bit.arshift(x, n)						*bit.arshift()*
     (reduces to the range [0..31]).
 
     Example: >lua
-	print(bit.lshift(1, 0))              --> 1
-	print(bit.lshift(1, 8))              --> 256
-	print(bit.lshift(1, 40))             --> 256
-	print(bit.rshift(256, 8))            --> 1
-	print(bit.rshift(-256, 8))           --> 16777215
-	print(bit.arshift(256, 8))           --> 1
-	print(bit.arshift(-256, 8))          --> -1
-	printx(bit.lshift(0x87654321, 12))   --> 0x54321000
-	printx(bit.rshift(0x87654321, 12))   --> 0x00087654
-	printx(bit.arshift(0x87654321, 12))  --> 0xfff87654
+        print(bit.lshift(1, 0))              --> 1
+        print(bit.lshift(1, 8))              --> 256
+        print(bit.lshift(1, 40))             --> 256
+        print(bit.rshift(256, 8))            --> 1
+        print(bit.rshift(-256, 8))           --> 16777215
+        print(bit.arshift(256, 8))           --> 1
+        print(bit.arshift(-256, 8))          --> -1
+        printx(bit.lshift(0x87654321, 12))   --> 0x54321000
+        printx(bit.rshift(0x87654321, 12))   --> 0x00087654
+        printx(bit.arshift(0x87654321, 12))  --> 0xfff87654
 <
-y = bit.rol(x, n)						*bit.rol()*
-y = bit.ror(x, n)						*bit.ror()*
+y = bit.rol(x, n)                                               *bit.rol()*
+y = bit.ror(x, n)                                               *bit.ror()*
     Returns either the bitwise `left rotation`, or bitwise `right rotation` of its
     first argument by the number of bits given by the second argument. Bits
     shifted out on one side are shifted back in on the other side.
@@ -170,8 +170,8 @@ y = bit.ror(x, n)						*bit.ror()*
     [0..31]).
 
     Example: >lua
-	printx(bit.rol(0x12345678, 12))   --> 0x45678123
-	printx(bit.ror(0x12345678, 12))   --> 0x67812345
+        printx(bit.rol(0x12345678, 12))   --> 0x45678123
+        printx(bit.ror(0x12345678, 12))   --> 0x67812345
 <
 y = bit.bswap(x)
     Swaps the bytes of its argument and returns it. This can be used to
@@ -179,8 +179,8 @@ y = bit.bswap(x)
     versa.
 
     Example: >lua
-	printx(bit.bswap(0x12345678)) --> 0x78563412
-	printx(bit.bswap(0x78563412)) --> 0x12345678
+        printx(bit.bswap(0x12345678)) --> 0x78563412
+        printx(bit.bswap(0x78563412)) --> 0x12345678
 <
 ------------------------------------------------------------------------------
 Example Program
@@ -206,11 +206,11 @@ shift and rotate functions.
 
     for i=2,m do
       if band(rshift(p[rshift(i, 5)], i), 1) ~= 0 then
-	count = count + 1
-	for j=i+i,m,i do
-	  local jx = rshift(j, 5)
-	  p[jx] = band(p[jx], rol(-2, j))
-	end
+        count = count + 1
+        for j=i+i,m,i do
+          local jx = rshift(j, 5)
+          p[jx] = band(p[jx], rol(-2, j))
+        end
       end
     end
 
@@ -268,16 +268,16 @@ E.g. it's never true on a Lua installation with the default number type. Some
 simple solutions:
 
     Never use hex literals larger than 0x7fffffff in comparisons: >lua
-	bit.bor(x, 1) == -1
+        bit.bor(x, 1) == -1
 <
     Or convert them with bit.tobit() before comparing: >lua
-	bit.bor(x, 1) == bit.tobit(0xffffffff)
+        bit.bor(x, 1) == bit.tobit(0xffffffff)
 <
     Or use a generic workaround with bit.bxor(): >lua
-	bit.bxor(bit.bor(x, 1), 0xffffffff) == 0
+        bit.bxor(bit.bor(x, 1), 0xffffffff) == 0
 <
     Or use a case-specific workaround: >lua
-	bit.rshift(x, 1) == 0x7fffffff
+        bit.rshift(x, 1) == 0x7fffffff
 <
 ==============================================================================
 OPERATIONAL SEMANTICS AND RATIONALE                        *lua-bit-semantics*
@@ -336,12 +336,10 @@ arithmetic should work the same across all platforms as far as possible:
   ±2^51 and still be safely normalized across all platforms by taking their
   least-significant 32 bits. The limit is derived from the way doubles are
   converted to integers.
-
 - The function bit.tobit can be used to explicitly normalize numbers to
   implement modular addition or subtraction. E.g. >lua
-		bit.tobit(0xffffffff + 1)
+                bit.tobit(0xffffffff + 1)
   returns 0 on all platforms.
-
 - The limit on the argument range implies that modular multiplication is
   usually restricted to multiplying already normalized numbers with small
   constants. FP numbers are limited to 53 bits of precision, anyway. E.g.
@@ -365,24 +363,20 @@ strongly advised not to rely on undefined or implementation-defined behavior.
 - All kinds of floating-point numbers are acceptable to the bitwise
   operations. None of them cause an error, but some may invoke undefined
   behavior:
-
-	- -0 is treated the same as +0 on input and is never returned as a result.
-
-	- Passing ±Inf, NaN or numbers outside the range of ±2^51 as input yields
-	  an undefined result.
-
-	- Non-integral numbers may be rounded or truncated in an
-	  implementation-defined way. This means the result could differ between
-	  different BitOp versions, different Lua VMs, on different platforms or
-	  even between interpreted vs. compiled code (as in |LuaJIT|). Avoid
-	  passing fractional numbers to bitwise functions. Use `math.floor()` or
-	  `math.ceil()` to get defined behavior.
-
+        - -0 is treated the same as +0 on input and is never returned as a result.
+        - Passing ±Inf, NaN or numbers outside the range of ±2^51 as input yields
+          an undefined result.
+        - Non-integral numbers may be rounded or truncated in an
+          implementation-defined way. This means the result could differ between
+          different BitOp versions, different Lua VMs, on different platforms or
+          even between interpreted vs. compiled code (as in |LuaJIT|). Avoid
+          passing fractional numbers to bitwise functions. Use `math.floor()` or
+          `math.ceil()` to get defined behavior.
 - Lua provides auto-coercion of string arguments to numbers by default. This
   behavior is deprecated for bitwise operations.
 
 ==============================================================================
-COPYRIGHT                                                   *lua-bit-copyright*
+COPYRIGHT
 
 Lua BitOp is Copyright (C) 2008-2012 Mike Pall.
 Lua BitOp is free software, released under the MIT license.
