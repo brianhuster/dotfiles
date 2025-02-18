@@ -1,30 +1,3 @@
-local function nvim_builtin_lua_ls()
-	require 'lspconfig'.lua_ls.setup {
-		on_init = function(client)
-			local path = client.workspace_folders[1].name
-			if vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc') then
-				return
-			end
-
-			client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
-				runtime = {
-					-- Tell the language server which version of Lua you're using
-					-- (most likely LuaJIT in the case of Neovim)
-					version = 'LuaJIT'
-				},
-				-- Make the server aware of Neovim runtime files
-				workspace = {
-					checkThirdParty = false,
-					library = vim.api.nvim_get_runtime_file("", true)
-				}
-			})
-		end,
-		settings = {
-			Lua = {}
-		}
-	}
-end
-
 return {
 	{
 		'williamboman/mason.nvim',
@@ -64,12 +37,9 @@ return {
 			}
 			require("mason-lspconfig").setup_handlers {
 				function(server_name)
-					require("lspconfig")[server_name].setup {
-						-- common setup for all language server
-					}
-				end,
-				["lua_ls"] = function()
-					nvim_builtin_lua_ls()
+					if server_name ~= 'lua_ls' then
+						require("lspconfig")[server_name].setup {}
+					end
 				end,
 			}
 		end,
@@ -98,19 +68,8 @@ return {
 		'nvimdev/phoenix.nvim'
 	},
 	{
-		-- Smart Lua development
-		"folke/lazydev.nvim",
-		ft = "lua", -- only load on lua files
-		opts = {
-			library = {
-				-- See the configuration section for more details
-				-- Load luvit types when the `vim.uv` word is found
-				{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
-			},
-		},
-	},
-	{
 		-- Lsp loading notifications
-		'echasnovski/mini.notify', config = true
+		'echasnovski/mini.notify',
+		config = true
 	}
 }
