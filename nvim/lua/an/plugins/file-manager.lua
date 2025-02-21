@@ -29,11 +29,4 @@ return {
 		-- 	branch = 'dev'
 		-- },
 	},
-	-- 	{
-	-- 	'miversen33/netman.nvim',
-	-- 	config = function()
-	-- 		require('netman')
-	-- 	end,
-	-- 	cmd = 'Netman'
-	-- }
 }

@@ -32,5 +32,5 @@ function! an#InsAutocomplete(shorcut, trigger_chars) abort
 	if index(a:trigger_chars, v:char) == -1
 		return
 	end
-	call feedkeys(l:completion_keymap, "m")
+	call feedkeys(a:shortcut, "m")
 endfunction

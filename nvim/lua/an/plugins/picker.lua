@@ -19,9 +19,9 @@ return {
 			vim.keymap.set('n', '<leader>fg', function() require('fzf-lua').live_grep() end, { desc = 'Find live grep' })
 		end
 	},
-	{
-		'brianhuster/compick.nvim',
-	},
+	-- {
+	-- 	'brianhuster/compick.nvim',
+	-- },
 	{
 		'echasnovski/mini.pick',
 		config = true,

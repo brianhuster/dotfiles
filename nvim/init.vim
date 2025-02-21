@@ -18,6 +18,8 @@ set messagesopt=hit-enter,wait:5000,history:10000
 set completeopt=menuone,noinsert,fuzzy,noselect,preview,popup
 set dictionary=/usr/share/dict/words
 set noswapfile
+set foldmethod=expr
+set nofoldenable
 
 let g:python3_host_prog = 'python3'
 
@@ -50,17 +52,30 @@ cnoremap <C-v> <C-r>+
 let did_install_default_menus = 1
 let did_install_syntax_menu = 1
 
+function! IbusOff()
+	let g:ibus_prev_engine = trim(system('ibus engine'))
+	execute 'silent !ibus engine xkb:us::eng'
+endfunction
+
+function! IbusOn()
+	let l:current_engine = trim(system('ibus engine'))
+	if l:current_engine !~? 'xkb:us::eng'
+		let g:ibus_prev_engine = l:current_engine
+	endif
+	execute 'silent !' . 'ibus engine ' . g:ibus_prev_engine
+endfunction
+
 if executable('ibus')
 	augroup IBusHandler
-		autocmd CmdLineEnter [/?],[s/],[%s/] call ibus#On()
-		autocmd CmdLineLeave [/?],[:s/?],[:%s/?] call ibus#Off()
-		autocmd InsertEnter * call ibus#On()
-		autocmd InsertLeave * call ibus#Off()
-		autocmd FocusGained * call ibus#On()
-		autocmd FocusLost * call ibus#Off()
-		autocmd ExitPre * call ibus#On()
+		autocmd CmdLineEnter [/?],[s/],[%s/] call IbusOn()
+		autocmd CmdLineLeave [/?],[:s/?],[:%s/?] call IbusOff()
+		autocmd InsertEnter * call IbusOn()
+		autocmd InsertLeave * call IbusOff()
+		autocmd FocusGained * call IbusOn()
+		autocmd FocusLost * call IbusOff()
+		autocmd ExitPre * call IbusOn()
 	augroup END
-	call ibus#Off()
+	call IbusOff()
 else
 	echoerr "ibus is not installed. Switch to keymap vietnamese-telex_utf-8."
 	set keymap=vietnamese-telex_utf-8

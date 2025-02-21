@@ -4,6 +4,9 @@ return {
 		event = "BufRead",
 	},
 	{
+		'OXY2DEV/patterns.nvim'
+	},
+	{
 		--- Auto generate code documentation
 		'danymat/neogen',
 		config = true,
