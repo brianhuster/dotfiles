@@ -15,3 +15,16 @@ endfunction
 if maparg('K', 'n') == ''
 	nnoremap K <cmd>call <sid>Help(expand('<cword>'))<CR>
 endif
+
+lua << EOF
+vim.api.nvim_create_autocmd('LspAttach', {
+	buffer = 0,
+	callback = function(args)
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+        if not client then return end
+        if client:supports_method('textDocument/hover') then
+            vim.keymap.set('n', 'K', function() vim.lsp.buf.hover() end, {buffer = 0})
+        end
+	end
+})
+EOF

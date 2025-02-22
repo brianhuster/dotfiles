@@ -23,6 +23,9 @@ if not is_nvim_lua() then
 	return
 end
 
+vim.g.lua_version = 5
+vim.g.lua_subversion = 1
+
 vim.bo.omnifunc = "v:lua.vim.lua_omnifunc"
 vim.bo.includeexpr = "v:lua.require'an.lua'.includeexpr(v:fname)"
 if not vim.b.root_dir then
