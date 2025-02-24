@@ -63,10 +63,10 @@ return {
 		]]
 		end
 	},
-	{
-		--- Provides path completion via an in-process server.
-		'nvimdev/phoenix.nvim'
-	},
+	-- {
+	-- 	--- Provides path completion via an in-process server.
+	-- 	'nvimdev/phoenix.nvim'
+	-- },
 	{
 		-- Lsp loading notifications
 		'echasnovski/mini.notify',

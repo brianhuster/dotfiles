@@ -23,13 +23,15 @@ set nofoldenable
 
 let g:python3_host_prog = 'python3'
 
-" au InsertLeavePre,TextChanged,TextChangedP * if &modifiable | silent! write | endif
+au! InsertLeavePre,TextChanged,TextChangedP * if &modifiable && !&readonly | silent! write | endif
 autocmd! FocusGained,BufEnter * checktime
 
 " Key mappings
 nnoremap t <cmd>call an#Terminal()<CR>
 xnoremap t <cmd>call an#Terminal()<CR>
 tnoremap <Esc> <C-\><C-n>
+
+nnoremap <Leader>g :<C-u>grep<Space>
 
 nnoremap <BS> "_d
 xnoremap <BS> "_d
@@ -47,7 +49,7 @@ imap <2-MiddleMouse> <Nop>
 imap <3-MiddleMouse> <Nop>
 imap <4-MiddleMouse> <Nop>
 
-cnoremap <C-v> <C-r>+
+exe 'cnoremap' '<C-v>' '<C-r>'.v:register
 
 let did_install_default_menus = 1
 let did_install_syntax_menu = 1
@@ -85,6 +87,5 @@ if has('nvim')
 	call execute('set rtp^=' . stdpath('config'))
 	set foldexpr=v:lua.vim.treesitter.foldexpr()
 	set exrc
-	au BufRead */doc/*.txt setlocal ft=help
 	source <script>:p:h/nvim.lua
 endif
