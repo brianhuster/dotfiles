@@ -32,10 +32,9 @@ if not vim.b.root_dir then
 	vim.b.root_dir = require('an.lua').find_root(vim.api.nvim_buf_get_name(0))
 end
 
-if vim.fn.maparg('K', 'n') == '' then
-	vim.keymap.set('n', 'K', function() require('an.lua').keywordexpr() end,
-		{ buffer = true, desc = 'Open help docs for term under cursor' })
-end
+vim.keymap.set('n', '<C-k>', function()
+	require 'an.lua'.keywordexpr()
+end, { buffer = true })
 
 vim.api.nvim_create_autocmd('LspAttach', {
 	buffer = 0,
@@ -52,4 +51,4 @@ vim.api.nvim_create_autocmd('LspAttach', {
 })
 
 vim.b.undo_ftplugin = (vim.b.undo_ftplugin or '')
-	.. '\n lua vim.treesitter.stop() \n setl omnifunc< includeexpr<'
+	.. '\n lua vim.treesitter.stop() \n setl omnifunc< includeexpr< \n nunmap <buffer> <C-k> \n'

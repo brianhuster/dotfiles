@@ -31,8 +31,6 @@ nnoremap t <cmd>call an#Terminal()<CR>
 xnoremap t <cmd>call an#Terminal()<CR>
 tnoremap <Esc> <C-\><C-n>
 
-nnoremap <Leader>g :<C-u>grep<Space>
-
 nnoremap <BS> "_d
 xnoremap <BS> "_d
 nnoremap <BS><BS> "_dd
@@ -50,6 +48,8 @@ imap <3-MiddleMouse> <Nop>
 imap <4-MiddleMouse> <Nop>
 
 exe 'cnoremap' '<C-v>' '<C-r>'.v:register
+nnoremap <Leader>g :<C-u>grep<Space>
+nnoremap <C-k> K
 
 let did_install_default_menus = 1
 let did_install_syntax_menu = 1
