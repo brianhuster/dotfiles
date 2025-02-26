@@ -4,7 +4,7 @@ set mouse=nvc
 set number
 set noexpandtab
 set autoindent
-set smartindent
+set cindent
 set nocursorline
 set shiftwidth=4
 set tabstop=4
