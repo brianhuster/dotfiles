@@ -87,5 +87,4 @@ if has('nvim')
 	call execute('set rtp^=' . stdpath('config'))
 	set foldexpr=v:lua.vim.treesitter.foldexpr()
 	set exrc
-	source <script>:p:h/nvim.lua
 endif

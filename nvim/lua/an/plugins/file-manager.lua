@@ -11,9 +11,20 @@ return {
 				local icon, hl = get(p:sub(-1) == '/' and 'directory' or 'file', p)
 				icon = icon .. ' '
 				return { icon = icon, hl = hl }
-			end
+			end,
+			remove = 'permanent',
+			keymaps = {
+				paste = 'gp',
+				copy = 'gy',
+				cut = 'gd',
+				preview = 'P',
+				mkdir = 'gmd',
+				mkfile = 'gmf',
+				argadd = 'gaa',
+				argdelete = 'gad'
+			}
 		}
-		vim.keymap.set({ 'n', 'x' }, '<leader>f', ':<C-u>Find<Space>', {
+		vim.keymap.set({ 'n', 'x' }, '<leader>f', ':<C-u>FindFile<Space>', {
 			desc = 'Find file'
 		})
 	end
