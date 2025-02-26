@@ -1,7 +1,6 @@
 if vim.loader then
 	vim.loader.enable()
 end
-vim.g.loaded_perl_provider = 1
 
 local function ins_autocomplete(shortcut, triggers)
 	if vim.fn.pumvisible() == 1 or vim.fn.state('m') == 'm' then

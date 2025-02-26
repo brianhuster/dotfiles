@@ -87,4 +87,5 @@ if has('nvim')
 	call execute('set rtp^=' . stdpath('config'))
 	set foldexpr=v:lua.vim.treesitter.foldexpr()
 	set exrc
+	let g:loaded_perl_provider = 1
 endif
