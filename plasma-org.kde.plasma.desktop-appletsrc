@@ -101,7 +101,7 @@ plugin=org.kde.plasma.systemmonitor.cpu
 
 [Containments][473][Applets][498][Configuration]
 CurrentPreset=org.kde.plasma.systemmonitor
-PreloadWeight=85
+PreloadWeight=90
 
 [Containments][473][Applets][498][Configuration][Appearance]
 chartFace=org.kde.ksysguard.piechart
@@ -212,7 +212,7 @@ immutability=1
 plugin=org.kde.plasma.devicenotifier
 
 [Containments][479][Applets][485][Configuration]
-PreloadWeight=65
+PreloadWeight=70
 
 [Containments][479][Applets][486]
 immutability=1

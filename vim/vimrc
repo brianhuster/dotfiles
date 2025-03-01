@@ -33,17 +33,13 @@ xnoremap Y y$
 
 let s:file = expand('<sfile>')
 function! s:setup()
-	let s:nvim_config = trim(systemlist('nvim -l ' . fnamemodify(s:file, ':h') . '/.lua')[0])
+	let s:nvim_config = trim(systemlist('nvim --clean -l ' . fnamemodify(s:file, ':h') . '/.lua')[0])
 	execute 'source ' . s:nvim_config . '/init.vim'
 	execute 'set runtimepath+=' . s:nvim_config
 endfunction
 autocmd VimEnter * call s:setup()
 
 set packpath+=/usr/share/vim/vimfiles
-packadd! lazy/vim-dirvish
-let g:dirvish_mode = ':sort ,^.*[\\/],'
 if has('lua')
-	packadd! lazy/dirvish-git.nvim
-	packadd! lazy/autosave.nvim
 	packadd! lazy/copilot.vim
 endif
