@@ -6,11 +6,15 @@ let g:javascript_node_modules = 1
 " standardized, no JS runtime can automatically find them, they also have no
 " build tools. If users want to use those filetypes, they should write module
 " name with those extensions (for example `import './foo.jsm';`).
-let s:suffixes = [ '.tsx', '.jsx', '.ts', '.d.ts', '.vue', '.mjs', '.js', '.cjs', '.json', '/index.tsx', '/index.jsx', '/index.ts', '/index.d.ts', '/index.vue', '/index.mjs', '/index.js', '/index.cjs', '/index.json' ]
+let s:suffixes = [ '.tsx', '.jsx', '.ts', '.d.ts', '.vue', '.mjs', '.js', '.cjs', '.json']
+let s:indexsuffixes = map(copy(s:suffixes), { i, v -> "/index"..v })
+let s:suffixes = extend(s:suffixes, s:indexsuffixes)
+
 let &l:suffixesadd = join(s:suffixes, ',')
 
 setlocal include=\v<(require\([''"]|import\s+[''"]|from\s+[''"])\zs[^''"]+
 setlocal includeexpr=s:IncludeExpr(v:fname)
+setl path=
 
 if !exists('g:javascript_node_modules')
 	let g:javascript_node_modules = v:false
@@ -34,6 +38,15 @@ endfunc
 " @param module_name string
 " @return string
 func! s:IncludeExpr(module_name) abort
+	if filereadable(module_name)
+		return module_name
+	endif
+	for suf in s:suffixes
+		let result = a:module_name . suf
+		if filereadable(result)
+			return result
+		endif
+	endfor
 	if !exists('g:javascript_node_modules') || !g:javascript_node_modules
 		return a:module_name
 	endif

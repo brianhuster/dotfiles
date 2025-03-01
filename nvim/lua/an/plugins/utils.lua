@@ -1,11 +1,10 @@
 return {
 	{
-		'brianhuster/autosave.nvim',
-		event = "BufRead",
-	},
-	{
 		'OXY2DEV/patterns.nvim'
 	},
+	-- {
+	-- 	'justinmk/vim-dirvish',
+	-- },
 	{
 		--- Auto generate code documentation
 		'danymat/neogen',

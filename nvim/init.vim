@@ -27,8 +27,8 @@ au! InsertLeavePre,TextChanged,TextChangedP * if &modifiable && !&readonly | sil
 autocmd! FocusGained,BufEnter * checktime
 
 " Key mappings
-nnoremap t <cmd>call an#Terminal()<CR>
-xnoremap t <cmd>call an#Terminal()<CR>
+nnoremap t <cmd>call Terminal()<CR>
+xnoremap t <cmd>call Terminal()<CR>
 tnoremap <Esc> <C-\><C-n>
 
 nnoremap <BS> "_d
@@ -48,11 +48,36 @@ imap <3-MiddleMouse> <Nop>
 imap <4-MiddleMouse> <Nop>
 
 exe 'cnoremap' '<C-v>' '<C-r>'.v:register
-nnoremap <Leader>g :<C-u>grep<Space>
 nnoremap <C-k> K
 
 let did_install_default_menus = 1
 let did_install_syntax_menu = 1
+
+autocmd QuickFixCmdPost [^l]* cwindow
+autocmd QuickFixCmdPost l* lwindow
+
+function! Terminal()
+	if &buftype == 'terminal'
+		startinsert
+		return
+	endif
+	let term_win = -1
+	for win in range(1, winnr('$'))
+		execute win . 'wincmd w'
+		if &buftype == 'terminal'
+			let term_win = win
+			break
+		endif
+	endfor
+	if term_win == -1
+		belowright split | terminal
+		setlocal nonumber
+		set winheight=12
+	else
+		execute term_win . 'wincmd w'
+	endif
+	startinsert
+endfunction
 
 function! IbusOff()
 	let g:ibus_prev_engine = trim(system('ibus engine'))
@@ -69,8 +94,6 @@ endfunction
 
 if executable('ibus')
 	augroup IBusHandler
-		autocmd CmdLineEnter [/?],[s/],[%s/] call IbusOn()
-		autocmd CmdLineLeave [/?],[:s/?],[:%s/?] call IbusOff()
 		autocmd InsertEnter * call IbusOn()
 		autocmd InsertLeave * call IbusOff()
 		autocmd FocusGained * call IbusOn()
@@ -85,6 +108,10 @@ endif
 
 if has('nvim')
 	call execute('set rtp^=' . stdpath('config'))
+	if &grepprg[:2] == 'rg '
+		"let &grepprg .= '--max-columns=100 '
+		let &grepprg .= '-j1 '
+	endif
 	set foldexpr=v:lua.vim.treesitter.foldexpr()
 	set exrc
 	let g:loaded_perl_provider = 1

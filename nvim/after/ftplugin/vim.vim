@@ -1,30 +1,44 @@
-function! s:Help(args)
-	let syn_name = synIDattr(synID(line('.'), col('.'), 1), 'name')
+if !exists("*" .. expand("<SID>") .. "Help")
+	function s:Help(topic) abort
+		let topic = a:topic
 
-	if syn_name =~# 'vimCommand'
-		execute 'help' a:args..':'
-	elseif syn_name =~# 'vimOption'
-		execute 'help' "'"..a:args.."'"
-	elseif syn_name =~# 'vimFunc'
-		execute 'help' a:args..'()'
-	else
-		execute 'help' a:args
-	endif
-endfunction
+		if get(g:, 'syntax_on', 0)
+			let syn = synIDattr(synID(line('.'), col('.'), 1), 'name')
+			if syn ==# 'vimFuncName'
+				return topic.'()'
+			elseif syn ==# 'vimOption'
+				return "'".topic."'"
+			elseif syn ==# 'vimUserAttrbKey'
+				return ':command-'.topic
+			elseif syn =~# 'vimCommand'
+				return ':'.topic
+			endif
+		endif
 
-if maparg('K', 'n') == ''
-	nnoremap K <cmd>call <sid>Help(expand('<cword>'))<CR>
+		let col = col('.') - 1
+		while col && getline('.')[col] =~# '\k'
+			let col -= 1
+		endwhile
+		let pre = col == 0 ? '' : getline('.')[0 : col]
+
+		let col = col('.') - 1
+		while col && getline('.')[col] =~# '\k'
+			let col += 1
+		endwhile
+		let post = getline('.')[col : -1]
+
+		if pre =~# '^\s*:\=$'
+			return ':'.topic
+		elseif pre =~# '\<v:$'
+			return 'v:'.topic
+		elseif pre =~# '\\$'
+			return '/\'.topic
+		elseif topic ==# 'v' && post =~# ':\w\+'
+			return 'v'.matchstr(post, ':\w\+')
+		else
+			return topic
+		endif
+	endfunction
 endif
-
-lua << EOF
-vim.api.nvim_create_autocmd('LspAttach', {
-	buffer = 0,
-	callback = function(args)
-        local client = vim.lsp.get_client_by_id(args.data.client_id)
-        if not client then return end
-        if client:supports_method('textDocument/hover') then
-            vim.keymap.set('n', 'K', function() vim.lsp.buf.hover() end, {buffer = 0})
-        end
-	end
-})
-EOF
+command! -buffer -nargs=1 VimKeywordPrg :exe 'help' s:Help(<q-args>)
+setlocal keywordprg=:VimKeywordPrg

@@ -26,6 +26,7 @@ end
 vim.g.lua_version = 5
 vim.g.lua_subversion = 1
 
+vim.bo.path = nil
 vim.bo.omnifunc = "v:lua.vim.lua_omnifunc"
 vim.bo.includeexpr = "v:lua.require'an.lua'.includeexpr(v:fname)"
 if not vim.b.root_dir then
@@ -41,9 +42,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
 	callback = function(args)
 		local client = vim.lsp.get_client_by_id(args.data.client_id)
 		if not client then return end
-		if client:supports_method('textDocument/hover') then
-			vim.keymap.set('n', 'K', function() vim.lsp.buf.hover() end, { buffer = true, desc = 'vim.lsp.buf.hover()' })
-		end
 		if client:supports_method('textDocument/completion') then
 			vim.bo.omnifunc = 'v:lua.vim.lsp.omnifunc'
 		end

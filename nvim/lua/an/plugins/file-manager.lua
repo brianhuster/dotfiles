@@ -12,9 +12,9 @@ return {
 				icon = icon .. ' '
 				return { icon = icon, hl = hl }
 			end,
+			grep = {
+				parse_args = 'shell'
+			}
 		}
-		vim.keymap.set({ 'n', 'x' }, '<leader>f', ':<C-u>FindFile<Space>', {
-			desc = 'Find file'
-		})
 	end
 }
