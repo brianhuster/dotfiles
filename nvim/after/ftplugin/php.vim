@@ -1,3 +1,4 @@
 let l:&commentstring='// %s'
 
-let b:undo_ftplugin = (exists(b:undo_ftplugin) && type(b:undo_ftplugin) ==# v:t_string ? b:undo_ftplugin : '') . '\n setl commentstring< define< include< path<'
+let b:undo_ftplugin = join([ exists(b:undo_ftplugin) && type(b:undo_ftplugin) ==# v:tstring ? b:undo_ftplugin : '',
+			\ 'setl commentstring'], '\n')

@@ -5,9 +5,7 @@ return {
 			vim.g.lexima_enable_endwise_rules = false
 		end,
 	},
-	{
-		'brianhuster/nvim-treesitter-endwise',
-	},
+	'brianhuster/nvim-treesitter-endwise',
 	-- {
 	-- 	'echasnovski/mini.pairs',
 	-- 	config = function()

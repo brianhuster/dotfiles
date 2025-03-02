@@ -12,9 +12,6 @@ return {
 				icon = icon .. ' '
 				return { icon = icon, hl = hl }
 			end,
-			grep = {
-				parse_args = 'shell'
-			}
 		}
 	end
 }

@@ -1,10 +1,5 @@
 return {
-	{
-		'OXY2DEV/patterns.nvim'
-	},
-	-- {
-	-- 	'justinmk/vim-dirvish',
-	-- },
+	'OXY2DEV/patterns.nvim',
 	{
 		--- Auto generate code documentation
 		'danymat/neogen',
@@ -17,15 +12,9 @@ return {
 		event = "FileType",
 		enabled = vim.fn.has("nvim-0.10.0") == 1,
 	},
-	{
-		'lambdalisue/vim-suda',
-	},
-	{
-		'brianhuster/snipexec.nvim'
-	},
-	{
-		'uga-rosa/ccc.nvim'
-	},
+	'lambdalisue/vim-suda',
+	'brianhuster/snipexec.nvim',
+	'uga-rosa/ccc.nvim',
 	{
 		'glacambre/firenvim',
 		build = function()
@@ -46,9 +35,7 @@ return {
 			}
 		end
 	},
-	{
 		"alexxGmZ/player.nvim",
-	},
 	{
 		'brianhuster/live-preview.nvim',
 		branch = "dev",
@@ -60,5 +47,5 @@ return {
 			}
 		end
 	},
-	{ 'equalsraf/neovim-gui-shim' }
+	'equalsraf/neovim-gui-shim'
 }
