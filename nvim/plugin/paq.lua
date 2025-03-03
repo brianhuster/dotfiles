@@ -19,298 +19,277 @@ vim.api.nvim_create_user_command("UpdatePaq", function()
 end, {})
 
 require 'paq' {
-	"brianhuster/direx.nvim",
-	'echasnovski/mini.icons', -- Use by direx.nvim
+	{ 'echasnovski/mini.icons',      config = function() require('mini.icons').setup() end }, -- Use by direx.nvim
+	{
+		"brianhuster/direx.nvim", config = function()
+		require('direx.config').set {
+			iconfunc = function(p)
+				local get = require('mini.icons').get
+				local icon, hl = get(p:sub(-1) == '/' and 'directory' or 'file', p)
+				icon = icon .. ' '
+				return { icon = icon, hl = hl }
+			end,
+		}
+	end
+	},
 	'neovim/nvim-lspconfig',
 	'williamboman/mason.nvim',
-	'williamboman/mason-lspconfig.nvim',
+	{ 'williamboman/mason-lspconfig.nvim', config = function()
+		local lang_servers = {
+			"arduino_language_server",
+			"bashls",
+			"clangd",
+			"cssls",
+			"tailwindcss",
+			"dockerls",
+			"html",
+			"ts_ls",
+			"jsonls",
+			'jdtls',
+			"lua_ls",
+			"marksman",
+			"pylsp",
+			"volar",
+			"gopls"
+		}
+		require('mason').setup({
+			ui = {
+				icons = {
+					package_installed = "✓",
+					package_pending = "➜",
+					package_uninstalled = "✗"
+				}
+			}
+		})
+		require("mason-lspconfig").setup {
+			ensure_installed = lang_servers,
+		}
+		require("mason-lspconfig").setup_handlers {
+			function(server_name)
+				if server_name ~= 'lua_ls' then
+					require("lspconfig")[server_name].setup {}
+				end
+			end,
+		}
+	end },
 	'tpope/vim-repeat', -- dependency of vim-surround
 	'tpope/vim-surround',
-	'justinmk/vim-sneak',
 	'mg979/vim-visual-multi',
 	'christoomey/vim-tmux-navigator',
-	'justinmk/vim-sneak',
-	'mfussenegger/nvim-jdtls', -- Java development
-	'echasnovski/mini.trailspace',
-	'nvimdev/indentmini.nvim',
+	{
+		'mfussenegger/nvim-jdtls', -- Java development
+		config = function()
+			vim.cmd [[
+			nnoremap <A-o> <Cmd>lua require'jdtls'.organize_imports()<CR>
+			nnoremap crv <Cmd>lua require('jdtls').extract_variable()<CR>
+			vnoremap crv <Esc><Cmd>lua require('jdtls').extract_variable(true)<CR>
+			nnoremap crc <Cmd>lua require('jdtls').extract_constant()<CR>
+			vnoremap crc <Esc><Cmd>lua require('jdtls').extract_constant(true)<CR>
+			vnoremap crm <Esc><Cmd>lua require('jdtls').extract_method(true)<CR>
+
+
+			" If using nvim-dap
+			" This requires java-debug and vscode-java-test bundles, see install steps in this README further below.
+			nnoremap <leader>df <Cmd>lua require'jdtls'.test_class()<CR>
+			nnoremap <leader>dn <Cmd>lua require'jdtls'.test_nearest_method()<CR>
+			]]
+		end
+	},
+	{ 'echasnovski/mini.trailspace', config = function() require('mini.trailspace').setup {} end },
+	{
+		'nvimdev/indentmini.nvim',
+		config = function()
+			vim.cmd [[
+				hi default link IndentLine Comment
+				hi default link IndentLineCurrent Comment
+			]]
+			require('indentmini').setup {}
+		end
+	},
 	'f-person/git-blame.nvim',
 	'tpope/vim-fugitive',
 	'nvim-lua/plenary.nvim', -- dependency of many plugins
-	{ 'NeogitOrg/neogit',                            opt = true },
-	'echasnovski/mini.diff',
+	{ 'NeogitOrg/neogit',       opt = true },
+	{
+		'echasnovski/mini.diff',
+		config = function()
+			require('mini.diff').setup {
+				view = {
+					style = 'sign'
+				}
+			}
+		end
+	},
 	'mfussenegger/nvim-dap',
+	'leoluz/nvim-dap-go',
 	{
 		'nvim-treesitter/nvim-treesitter',
 		build = ':TSUpdateAll',
 	},
-	'nvim-treesitter/nvim-treesitter-context',
-	{ 'nvim-treesitter/nvim-treesitter-textobjects', branch = 'main' },
 	{
-		'nvim-treesitter/nvim-treesitter-textobjects',
-		branch = 'main',
+		'nvim-treesitter/nvim-treesitter-context',
+		config = function()
+			require('treesitter-context').setup { max_lines = 3 }
+			vim.keymap.set("n", "[c", function()
+				require("treesitter-context").go_to_context(vim.v.count1)
+			end, { silent = true })
+		end
+	},
+	{
+		'nvim-treesitter/nvim-treesitter-textobjects', branch = 'main',
+		config = function()
+			require("nvim-treesitter-textobjects").setup {
+				select = {
+					-- Automatically jump forward to textobj, similar to targets.vim
+					lookahead = true,
+					-- You can choose the select mode (default is charwise 'v')
+					--
+					-- Can also be a function which gets passed a table with the keys
+					-- * query_string: eg '@function.inner'
+					-- * method: eg 'v' or 'o'
+					-- and should return the mode ('v', 'V', or '<c-v>') or a table
+					-- mapping query_strings to modes.
+					selection_modes = {
+						['@parameter.outer'] = 'v', -- charwise
+						['@function.outer'] = 'V', -- linewise
+						['@class.outer'] = '<c-v>', -- blockwise
+					},
+					-- If you set this to `true` (default is `false`) then any textobject is
+					-- extended to include preceding or succeeding whitespace. Succeeding
+					-- whitespace has priority in order to act similarly to eg the built-in
+					-- `ap`.
+					--
+					-- Can also be a function which gets passed a table with the keys
+					-- * query_string: eg '@function.inner'
+					-- * selection_mode: eg 'v'
+					-- and should return true of false
+					include_surrounding_whitespace = false,
+				},
+				move = {
+					-- whether to set jumps in the jumplist
+					set_jumps = true,
+				},
+			}
+
+			-- keymaps
+			-- You can use the capture groups defined in `textobjects.scm`
+			vim.keymap.set({ "x", "o" }, "af", function()
+				require "nvim-treesitter-textobjects.select".select_textobject("@function.outer", "textobjects")
+			end)
+			vim.keymap.set({ "x", "o" }, "if", function()
+				require "nvim-treesitter-textobjects.select".select_textobject("@function.inner", "textobjects")
+			end)
+			vim.keymap.set({ "x", "o" }, "ac", function()
+				require "nvim-treesitter-textobjects.select".select_textobject("@class.outer", "textobjects")
+			end)
+			vim.keymap.set({ "x", "o" }, "ic", function()
+				require "nvim-treesitter-textobjects.select".select_textobject("@class.inner", "textobjects")
+			end)
+			-- You can also use captures from other query groups like `locals.scm`
+			vim.keymap.set({ "x", "o" }, "al", function()
+				require "nvim-treesitter-textobjects.select".select_textobject("@local.scope", "locals")
+			end)
+			vim.keymap.set({ "x", "o" }, "ic", function()
+				require "nvim-treesitter-textobjects.select".select_textobject("@comment.inner", 'textobjects')
+			end)
+			vim.keymap.set({ "x", "o" }, "ac", function()
+				require "nvim-treesitter-textobjects.select".select_textobject("@comment.outer", 'textobjects')
+			end)
+
+			local ts_repeat_move = "nvim-treesitter-textobjects.repeatable_move"
+
+			vim.keymap.set({ "n", "x", "o" }, ";", function()
+				require(ts_repeat_move).repeat_last_move_next()
+			end)
+			vim.keymap.set({ "n", "x", "o" }, ",", function()
+				require(ts_repeat_move).repeat_last_move_previous()
+			end)
+		end
 	},
 	'cohama/lexima.vim', -- Autopairs
 	'brianhuster/nvim-treesitter-endwise',
-	'windwp/nvim-ts-autotag',
+	{ 'windwp/nvim-ts-autotag', config = function() require('nvim-ts-autotag').setup() end },
 	'OXY2DEV/patterns.nvim',
-	'folke/ts-comments.nvim', -- Better comments for JSX, ...
+	{ 'folke/ts-comments.nvim',        config = function() require('ts-comments').setup() end },
 	'lambdalisue/vim-suda',
 	'brianhuster/snipexec.nvim',
 	'uga-rosa/ccc.nvim',
-	{ 'glacambre/firenvim', build = ':call firenvim#install(0)' },
-	'brianhuster/live-preview.nvim',
+	{
+		'glacambre/firenvim', build = ':call firenvim#install(0)',
+		config = function()
+			vim.g.firenvim_config = {
+				globalSettings = { alt = "all" },
+				localSettings = {
+					[".*"] = {
+						cmdline  = "neovim",
+						content  = "text",
+						priority = 0,
+						selector = "textarea",
+						takeover = "never"
+					}
+				}
+			}
+		end
+	},
+	{ 'brianhuster/live-preview.nvim', opt = true },
 	'equalsraf/neovim-gui-shim',
-	'folke/which-key.nvim',
-	'echasnovski/mini.clue',
+	{
+		'folke/which-key.nvim',
+		config = function()
+			require('which-key').setup {
+				preset = "helix",
+				triggers = { "<auto>", 'nxso' }
+			}
+		end
+	},
+	{
+		'echasnovski/mini.clue',
+		config = function()
+			local miniclue = require('mini.clue')
+			miniclue.setup({
+				triggers = {
+					-- Built-in completion
+					{ mode = 'i', keys = '<C-x>' },
+				},
+
+				clues = {
+					-- Enhance this by adding descriptions for <Leader> mapping groups
+					miniclue.gen_clues.builtin_completion(),
+					miniclue.gen_clues.g(),
+					miniclue.gen_clues.marks(),
+					miniclue.gen_clues.registers(),
+					miniclue.gen_clues.windows(),
+					miniclue.gen_clues.z(),
+				},
+			})
+		end
+	},
 	'github/copilot.vim',
 	{
 		'CopilotC-Nvim/CopilotChat.nvim',
-		build = 'make tiktoken',
+		build = 'make tiktoken', opt = true,
+		config = function()
+			require('CopilotChat').setup()
+		end
 	},
 	'MunifTanjim/nui.nvim',
 	'HakonHarnes/img-clip.nvim', -- avante dependencies
-	-- { 'yetone/avante.nvim', build = 'make' },
-	'olimorris/codecompanion.nvim',
-	'brianhuster/supermaven-nvim',
+	{ 'yetone/avante.nvim', build = 'make', opt = true,
+		config = function()
+			require('avante').setup {
+				provider = "copilot",
+			}
+		end
+	},
+	{ 'olimorris/codecompanion.nvim', opt = true, config = function() require('codecompanion').setup() end },
+	{ 'brianhuster/supermaven-nvim', },
 	'tpope/vim-dadbod',
-	'kristijanhusak/vim-dadbod-ui',
+	{ 'kristijanhusak/vim-dadbod-ui', config = function() vim.g.db_ui_use_nerd_fonts = 1 end },
 	'kristijanhusak/vim-dadbod-completion',
 }
 
 vim.cmd.PaqInstall()
 
-require('mini.icons').setup()
-
-require('direx.config').set {
-	iconfunc = function(p)
-		local get = require('mini.icons').get
-		local icon, hl = get(p:sub(-1) == '/' and 'directory' or 'file', p)
-		icon = icon .. ' '
-		return { icon = icon, hl = hl }
-	end,
-}
-
-local lang_servers = {
-	"arduino_language_server",
-	"bashls",
-	"clangd",
-	"cssls",
-	"tailwindcss",
-	"dockerls",
-	"html",
-	"ts_ls",
-	"jsonls",
-	'jdtls',
-	"lua_ls",
-	"marksman",
-	"pylsp",
-	"volar",
-	"gopls"
-}
-require('mason').setup({
-	ui = {
-		icons = {
-			package_installed = "✓",
-			package_pending = "➜",
-			package_uninstalled = "✗"
-		}
-	}
-})
-require("mason-lspconfig").setup {
-	ensure_installed = lang_servers,
-}
-require("mason-lspconfig").setup_handlers {
-	function(server_name)
-		if server_name ~= 'lua_ls' then
-			require("lspconfig")[server_name].setup {}
-		end
-	end,
-}
-
-
---- nvim-jdtls
-vim.cmd [[
-nnoremap <A-o> <Cmd>lua require'jdtls'.organize_imports()<CR>
-nnoremap crv <Cmd>lua require('jdtls').extract_variable()<CR>
-vnoremap crv <Esc><Cmd>lua require('jdtls').extract_variable(true)<CR>
-nnoremap crc <Cmd>lua require('jdtls').extract_constant()<CR>
-vnoremap crc <Esc><Cmd>lua require('jdtls').extract_constant(true)<CR>
-vnoremap crm <Esc><Cmd>lua require('jdtls').extract_method(true)<CR>
-
-
-" If using nvim-dap
-" This requires java-debug and vscode-java-test bundles, see install steps in this README further below.
-nnoremap <leader>df <Cmd>lua require'jdtls'.test_class()<CR>
-nnoremap <leader>dn <Cmd>lua require'jdtls'.test_nearest_method()<CR>
-]]
-
--- echasnovski/mini.trailspace
-require('mini.trailspace').setup {}
-
--- nvimdev/indentmini.nvim
-vim.cmd.highlight('IndentLine guifg=#123456')
-vim.cmd.highlight('IndentLineCurrent guifg=#123456')
-require('indentmini').setup {}
-
--- echasnovski/mini.diff
-require('mini.diff').setup {
-	view = {
-		style = 'sign'
-	}
-}
-
--- vim-sneak
-vim.cmd [[
-let g:vm_mouse_mappings    = 1
-let g:vm_theme             = 'iceblue'
-
-let g:vm_maps = {}
-let g:vm_maps["undo"]      = 'u'
-let g:vm_maps["redo"]      = '<c-r>'
-]]
-
--- nvim-treesitter-context
-
-require('treesitter-context').setup { max_lines = 3 }
-vim.keymap.set("n", "[c", function()
-	require("treesitter-context").go_to_context(vim.v.count1)
-end, { silent = true })
-
--- nvim-treesitter-textobjects
-require("nvim-treesitter-textobjects").setup {
-	select = {
-		-- Automatically jump forward to textobj, similar to targets.vim
-		lookahead = true,
-		-- You can choose the select mode (default is charwise 'v')
-		--
-		-- Can also be a function which gets passed a table with the keys
-		-- * query_string: eg '@function.inner'
-		-- * method: eg 'v' or 'o'
-		-- and should return the mode ('v', 'V', or '<c-v>') or a table
-		-- mapping query_strings to modes.
-		selection_modes = {
-			['@parameter.outer'] = 'v', -- charwise
-			['@function.outer'] = 'V', -- linewise
-			['@class.outer'] = '<c-v>', -- blockwise
-		},
-		-- If you set this to `true` (default is `false`) then any textobject is
-		-- extended to include preceding or succeeding whitespace. Succeeding
-		-- whitespace has priority in order to act similarly to eg the built-in
-		-- `ap`.
-		--
-		-- Can also be a function which gets passed a table with the keys
-		-- * query_string: eg '@function.inner'
-		-- * selection_mode: eg 'v'
-		-- and should return true of false
-		include_surrounding_whitespace = false,
-	},
-	move = {
-		-- whether to set jumps in the jumplist
-		set_jumps = true,
-	},
-}
-
--- keymaps
--- You can use the capture groups defined in `textobjects.scm`
-vim.keymap.set({ "x", "o" }, "af", function()
-	require "nvim-treesitter-textobjects.select".select_textobject("@function.outer", "textobjects")
-end)
-vim.keymap.set({ "x", "o" }, "if", function()
-	require "nvim-treesitter-textobjects.select".select_textobject("@function.inner", "textobjects")
-end)
-vim.keymap.set({ "x", "o" }, "ac", function()
-	require "nvim-treesitter-textobjects.select".select_textobject("@class.outer", "textobjects")
-end)
-vim.keymap.set({ "x", "o" }, "ic", function()
-	require "nvim-treesitter-textobjects.select".select_textobject("@class.inner", "textobjects")
-end)
--- You can also use captures from other query groups like `locals.scm`
-vim.keymap.set({ "x", "o" }, "al", function()
-	require "nvim-treesitter-textobjects.select".select_textobject("@local.scope", "locals")
-end)
-vim.keymap.set({ "x", "o" }, "ic", function()
-	require "nvim-treesitter-textobjects.select".select_textobject("@comment.inner", 'textobjects')
-end)
-vim.keymap.set({ "x", "o" }, "ac", function()
-	require "nvim-treesitter-textobjects.select".select_textobject("@comment.outer", 'textobjects')
-end)
-
-local ts_repeat_move = "nvim-treesitter-textobjects.repeatable_move"
-
-vim.keymap.set({ "n", "x", "o" }, ";", function()
-	require(ts_repeat_move).repeat_last_move_next()
-end)
-vim.keymap.set({ "n", "x", "o" }, ",", function()
-	require(ts_repeat_move).repeat_last_move_previous()
-end)
-
--- nvim-ts-autotag
-require('nvim-ts-autotag').setup()
-
--- nvim-ts-autotag
-require('nvim-ts-autotag').setup()
-
--- folke/ts-comments.nvim
-require('ts-comments').setup()
-
--- glacambre/firenvim
-vim.g.firenvim_config = {
-	globalSettings = { alt = "all" },
-	localSettings = {
-		[".*"] = {
-			cmdline  = "neovim",
-			content  = "text",
-			priority = 0,
-			selector = "textarea",
-			takeover = "never"
-		}
-	}
-}
-
--- vim-dadbod-ui
-vim.g.db_ui_use_nerd_fonts = 1
-
--- which-key.nvim
-require('which-key').setup {
-	preset = "helix",
-	triggers = { "<auto>", 'nxso' }
-}
-
--- mini.clue
-local miniclue = require('mini.clue')
-miniclue.setup({
-	triggers = {
-		-- Built-in completion
-		{ mode = 'i', keys = '<C-x>' },
-	},
-
-	clues = {
-		-- Enhance this by adding descriptions for <Leader> mapping groups
-		miniclue.gen_clues.builtin_completion(),
-		miniclue.gen_clues.g(),
-		miniclue.gen_clues.marks(),
-		miniclue.gen_clues.registers(),
-		miniclue.gen_clues.windows(),
-		miniclue.gen_clues.z(),
-	},
-})
-
--- img-clip.nvim
-require('img-clip').setup {
-	default = {
-		embed_image_as_base64 = false,
-		prompt_for_file_name = false,
-		drag_and_drop = {
-			insert_mode = true,
-		},
-		-- required for Windows users
-		use_absolute_path = true,
-	}
-}
-
--- require('avante').setup {
--- 	provider = "copilot",
--- }
 
 -- supermaven-nvim
 vim.api.nvim_create_autocmd('InsertEnter', {
@@ -329,12 +308,6 @@ vim.api.nvim_create_autocmd('InsertEnter', {
 	end,
 	once = true
 })
-
--- codecompanion.nvim
-require('codecompanion').setup()
-
--- CopilotChat.nvim
-require('CopilotChat').setup()
 
 -- -- codeium.nvim
 -- 		require("codeium").setup({

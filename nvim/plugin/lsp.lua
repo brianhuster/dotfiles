@@ -5,11 +5,12 @@ vim.lsp.enable('lua_ls')
 api.nvim_create_autocmd('LspAttach', {
 	callback = function(args)
 		local client = vim.lsp.get_client_by_id(args.data.client_id)
-		if client and client:supports_method('textDocument/completion') and vim.lsp.completion then
+		if not client then return end
+		if client:supports_method('textDocument/completion') and vim.lsp.completion then
 			vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
 		end
 
-		if client and client:supports_method('textDocument/formatting') then
+		if client:supports_method('textDocument/formatting') then
 			api.nvim_create_autocmd('BufWritePre', {
 				buffer = args.buf,
 				callback = function()
@@ -19,9 +20,14 @@ api.nvim_create_autocmd('LspAttach', {
 				end,
 			})
 		end
-		local capabilities = vim.lsp.get_client_by_id(args.data.client_id).server_capabilities
-		if capabilities and capabilities.renameProvider then
-			vim.keymap.set("n", "grn", function() vim.lsp.buf.rename() end, { buffer = true })
+
+		if client:supports_method('textDocument/documentSymbol') then
+			vim.keymap.set('n', 'gs', function() vim.lsp.buf.document_symbol() end,
+				{ buffer = args.buf, desc = 'Select LSP document symbol' })
+		end
+		if client:supports_method('workspace/symbol') then
+			vim.keymap.set('n', 'gS', function() vim.lsp.buf.workspace_symbol() end,
+				{ buffer = args.buf, desc = 'Select LSP workspace symbol' })
 		end
 	end,
 })

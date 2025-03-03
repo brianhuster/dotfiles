@@ -219,6 +219,7 @@ end
 ---@field name string
 ---@field as string
 ---@field branch string
+---@field config function
 ---@field dir string
 ---@field status Status
 ---@field hash string
@@ -368,8 +369,8 @@ local function register(pkg)
 	end
 
 	local url = pkg.url
-		or (pkg[1]:match("^https?://") and pkg[1])                      -- [1] is a URL
-		or string.format(Config.url_format, pkg[1])                     -- [1] is a repository name
+		or (pkg[1]:match("^https?://") and pkg[1])                   -- [1] is a URL
+		or string.format(Config.url_format, pkg[1])                  -- [1] is a repository name
 
 	local name = pkg.as or url:gsub("%.git$", ""):match("/([%w-_.]+)$") -- Infer name from `url`
 	if not name then
@@ -380,9 +381,14 @@ local function register(pkg)
 	local ok, hash = pcall(get_git_hash, dir)
 	hash = ok and hash or ""
 
+	if pkg.config and not pkg.opt then
+		pkg.config()
+	end
+
 	Packages[name] = {
 		name = name,
 		branch = pkg.branch,
+		config = pkg.config,
 		dir = dir,
 		status = uv.fs_stat(dir) and Status.INSTALLED or Status.TO_INSTALL,
 		hash = hash,
@@ -574,6 +580,13 @@ end
 
 setmetatable(paq, meta)
 
+paq.run_config = function(name)
+	local config = Packages[name].config
+	if config then
+		config()
+	end
+end
+
 for cmd_name, fn in pairs {
 	PaqInstall = paq.install,
 	PaqUpdate = paq.update,
@@ -596,6 +609,10 @@ do
 				:totable()
 		end,
 	})
+	vim.api.nvim_create_user_command("PaqAdd", function(cmd)
+		vim.cmd.packadd(cmd.args)
+		paq.run_config(cmd.args)
+	end, { bar = true, nargs = 1, complete = 'packadd' })
 end
 
 return paq
