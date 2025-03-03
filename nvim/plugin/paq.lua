@@ -3,23 +3,14 @@ vim.g.loaded_netrwPlugin = 1
 vim.g.did_install_default_menus = 1
 vim.g.did_install_syntax_menu = 1
 
-vim.api.nvim_create_user_command("UpdatePaq", function()
-	local url = "https://raw.githubusercontent.com/savq/paq-nvim/refs/heads/nightly/"
-	print("Updating Paq")
-	vim.system({ 'curl', url .. 'lua/paq.lua', '-o', vim.fn.stdpath('config') .. '/lua/paq.lua' }, {}, function(cmd)
-		print(cmd.stderr)
-		print(cmd.stdout)
-	end)
-
-	vim.system({ 'curl', url .. 'doc/paq-nvim.txt', '-o', vim.fn.stdpath('config') .. '/doc/paq-nvim.txt' }, {},
-		function(cmd)
-			print(cmd.stderr)
-			print(cmd.stdout)
-		end)
-end, {})
+if vim.fn.isdirectory(vim.fn.stdpath('data') .. '/site/pack/paqs/start/paq-nvim') == 0 then
+	vim.system({ 'git', 'clone', '--depth=1', '--branch=nightly', 'https://github.com/brianhuster/paq-nvim.git', vim.fn.stdpath('data') ..
+	'/site/pack/paqs/start/paq-nvim' }, {}, function(cmd) print(cmd.stderr) print(cmd.stdout) end)
+end
 
 require 'paq' {
-	{ 'echasnovski/mini.icons',      config = function() require('mini.icons').setup() end }, -- Use by direx.nvim
+	{ 'brianhuster/paq-nvim',   branch = 'nightly' },
+	{ 'echasnovski/mini.icons', config = function() require('mini.icons').setup() end }, -- Use by direx.nvim
 	{
 		"brianhuster/direx.nvim", config = function()
 		require('direx.config').set {
@@ -109,7 +100,7 @@ require 'paq' {
 	'f-person/git-blame.nvim',
 	'tpope/vim-fugitive',
 	'nvim-lua/plenary.nvim', -- dependency of many plugins
-	{ 'NeogitOrg/neogit',       opt = true },
+	{ 'NeogitOrg/neogit',            opt = true },
 	{
 		'echasnovski/mini.diff',
 		config = function()
@@ -210,7 +201,7 @@ require 'paq' {
 	'brianhuster/nvim-treesitter-endwise',
 	{ 'windwp/nvim-ts-autotag', config = function() require('nvim-ts-autotag').setup() end },
 	'OXY2DEV/patterns.nvim',
-	{ 'folke/ts-comments.nvim',        config = function() require('ts-comments').setup() end },
+	{ 'folke/ts-comments.nvim', config = function() require('ts-comments').setup() end },
 	'lambdalisue/vim-suda',
 	'brianhuster/snipexec.nvim',
 	'uga-rosa/ccc.nvim',
@@ -281,7 +272,7 @@ require 'paq' {
 			}
 		end
 	},
-	{ 'olimorris/codecompanion.nvim', opt = true, config = function() require('codecompanion').setup() end },
+	{ 'olimorris/codecompanion.nvim',  opt = true, config = function() require('codecompanion').setup() end },
 	{ 'brianhuster/supermaven-nvim', },
 	'tpope/vim-dadbod',
 	{ 'kristijanhusak/vim-dadbod-ui', config = function() vim.g.db_ui_use_nerd_fonts = 1 end },
