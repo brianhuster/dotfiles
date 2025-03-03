@@ -1,22 +1,24 @@
-if not pcall(require, 'paq') then
-	local paqpath = vim.fn.stdpath("data") .. "/site/pack/paqs/start/paq-nvim"
-	if not vim.uv.fs_stat(paqpath) then
-		vim.fn.system({
-			"git",
-			"clone",
-			"--filter=blob:none",
-			"https://github.com/savq/paq-nvim.git",
-			"--branch=nightly", -- latest stable release
-			paqpath,
-		})
-	end
-end
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+vim.g.did_install_default_menus = 1
+vim.g.did_install_syntax_menu = 1
+
+vim.api.nvim_create_user_command("UpdatePaq", function()
+	local url = "https://raw.githubusercontent.com/savq/paq-nvim/refs/heads/nightly/"
+	print("Updating Paq")
+	vim.system({ 'curl', url .. 'lua/paq.lua', '-o', vim.fn.stdpath('config') .. '/lua/paq.lua' }, {}, function(cmd)
+		print(cmd.stderr)
+		print(cmd.stdout)
+	end)
+
+	vim.system({ 'curl', url .. 'doc/paq-nvim.txt', '-o', vim.fn.stdpath('config') .. '/doc/paq-nvim.txt' }, {},
+		function(cmd)
+			print(cmd.stderr)
+			print(cmd.stdout)
+		end)
+end, {})
 
 require 'paq' {
-	-- {
-	-- 	'savq/paq-nvim',
-	-- 	branch = 'nightly',
-	-- },
 	"brianhuster/direx.nvim",
 	'echasnovski/mini.icons', -- Use by direx.nvim
 	'neovim/nvim-lspconfig',
@@ -30,6 +32,7 @@ require 'paq' {
 	'justinmk/vim-sneak',
 	'mfussenegger/nvim-jdtls', -- Java development
 	'echasnovski/mini.trailspace',
+	'nvimdev/indentmini.nvim',
 	'f-person/git-blame.nvim',
 	'tpope/vim-fugitive',
 	'nvim-lua/plenary.nvim', -- dependency of many plugins
@@ -66,7 +69,7 @@ require 'paq' {
 	},
 	'MunifTanjim/nui.nvim',
 	'HakonHarnes/img-clip.nvim', -- avante dependencies
-	-- 'yetone/avante.nvim',
+	-- { 'yetone/avante.nvim', build = 'make' },
 	'olimorris/codecompanion.nvim',
 	'brianhuster/supermaven-nvim',
 	'tpope/vim-dadbod',
@@ -143,6 +146,11 @@ nnoremap <leader>dn <Cmd>lua require'jdtls'.test_nearest_method()<CR>
 
 -- echasnovski/mini.trailspace
 require('mini.trailspace').setup {}
+
+-- nvimdev/indentmini.nvim
+vim.cmd.highlight('IndentLine guifg=#123456')
+vim.cmd.highlight('IndentLineCurrent guifg=#123456')
+require('indentmini').setup {}
 
 -- echasnovski/mini.diff
 require('mini.diff').setup {
@@ -316,9 +324,10 @@ vim.api.nvim_create_autocmd('InsertEnter', {
 				accept_suggestion = "<M-CR>",
 				accept_word = "<M-w>",
 			},
-			require('supermaven-nvim.api').use_free_version()
 		}
-	end
+		pcall(require('supermaven-nvim.api').use_free_version)
+	end,
+	once = true
 })
 
 -- codecompanion.nvim

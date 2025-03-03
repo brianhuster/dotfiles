@@ -1,5 +1,3 @@
----@source https://github.com/savq/paq-nvim/blob/nightly/lua/paq.lua
-
 ---@alias Path string
 
 local uv = vim.uv
@@ -326,7 +324,7 @@ local function run_build(pkg)
 		vim.system(
 			args,
 			{ cwd = pkg.dir },
-			function(obj) report(pkg.name, Messages.build, obj.code == 0 and "ok" or "err") end
+			vim.schedule_wrap(function(obj) report(pkg.name, Messages.build, obj.code == 0 and "ok" or "err") end)
 		)
 	end
 end
@@ -370,8 +368,8 @@ local function register(pkg)
 	end
 
 	local url = pkg.url
-		or (pkg[1]:match("^https?://") and pkg[1])                   -- [1] is a URL
-		or string.format(Config.url_format, pkg[1])                  -- [1] is a repository name
+		or (pkg[1]:match("^https?://") and pkg[1])                      -- [1] is a URL
+		or string.format(Config.url_format, pkg[1])                     -- [1] is a repository name
 
 	local name = pkg.as or url:gsub("%.git$", ""):match("/([%w-_.]+)$") -- Infer name from `url`
 	if not name then
