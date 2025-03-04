@@ -28,7 +28,7 @@ vim.g.lua_subversion = 1
 
 vim.bo.path = nil
 vim.bo.omnifunc = "v:lua.vim.lua_omnifunc"
-vim.bo.includeexpr = "v:lua.require'an.lua'.includeexpr(v:fname)"
+vim.bo.includeexpr = "v:lua.require'an.lua'.includeexpr()"
 if not vim.b.root_dir then
 	vim.b.root_dir = require('an.lua').find_root(vim.api.nvim_buf_get_name(0))
 end

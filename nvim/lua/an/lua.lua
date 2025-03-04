@@ -25,12 +25,12 @@ function M.find_root(fname)
 	return #root_lua >= #root_git and root_lua or root_git
 end
 
----@param fname string
 ---@return string?
-function M.includeexpr(fname)
+function M.includeexpr()
+	local fname = vim.v.fname
 	local module = fname:gsub('%.', '/')
 	local runtime = {
-		vim.b.root_dir or '.',
+		vim.b.root_dir or vim.fn.getcwd(),
 		unpack(vim.api.nvim_list_runtime_paths())
 	}
 
@@ -56,6 +56,8 @@ function M.includeexpr(fname)
 			return file
 		end
 	end
+
+	return fname
 end
 
 ---@param keyword string
@@ -91,7 +93,8 @@ end
 function M.keywordexpr()
 	local temp_isk = vim.o.iskeyword
 	vim.cmd("set iskeyword+=.")
-	local _, cword = pcall(vim.fn.expand, "<cword>")
+	---@type _, string
+	local _, cword = pcall(vim.fn.expand, "<cword>") ---@diagnostic disable-line: assign-type-mismatch
 	vim.o.iskeyword = temp_isk
 	if not cword or #cword == 0 then return end
 	local list_of_opts = {

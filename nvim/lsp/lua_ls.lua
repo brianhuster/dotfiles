@@ -2,11 +2,11 @@ return {
 	cmd = { 'lua-language-server' },
 	filetypes = { 'lua' },
 	rootdir = require('an.lua').find_root,
-	runtime = {
-		version = 'LuaJIT'
-	},
 	settings = {
 		Lua = {
+			runtime = {
+				version = 'LuaJIT',
+			},
 			workspace = {
 				checkThirdParty = false,
 				library = {
