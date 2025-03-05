@@ -38,8 +38,8 @@ endfunc
 " @param module_name string
 " @return string
 func! s:IncludeExpr(module_name) abort
-	if filereadable(module_name)
-		return module_name
+	if filereadable(a:module_name)
+		return a:module_name
 	endif
 	for suf in s:suffixes
 		let result = a:module_name . suf

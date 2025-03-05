@@ -4,8 +4,13 @@ vim.g.did_install_default_menus = 1
 vim.g.did_install_syntax_menu = 1
 
 if vim.fn.isdirectory(vim.fn.stdpath('data') .. '/site/pack/paqs/start/paq-nvim') == 0 then
-	vim.system({ 'git', 'clone', '--depth=1', '--branch=nightly', 'https://github.com/brianhuster/paq-nvim.git', vim.fn.stdpath('data') ..
-	'/site/pack/paqs/start/paq-nvim' }, {}, function(cmd) print(cmd.stderr) print(cmd.stdout) end)
+	vim.system(
+		{ 'git', 'clone', '--depth=1', '--branch=nightly', 'https://github.com/brianhuster/paq-nvim.git', vim.fn.stdpath(
+			'data') ..
+		'/site/pack/paqs/start/paq-nvim' }, {}, function(cmd)
+			print(cmd.stderr)
+			print(cmd.stdout)
+		end)
 end
 
 require 'paq' {
@@ -115,7 +120,7 @@ require 'paq' {
 	'leoluz/nvim-dap-go',
 	{
 		'nvim-treesitter/nvim-treesitter',
-		build = ':TSUpdateAll',
+		build = ':TSUpdate all',
 	},
 	{
 		'nvim-treesitter/nvim-treesitter-context',
@@ -246,11 +251,6 @@ require 'paq' {
 				clues = {
 					-- Enhance this by adding descriptions for <Leader> mapping groups
 					miniclue.gen_clues.builtin_completion(),
-					miniclue.gen_clues.g(),
-					miniclue.gen_clues.marks(),
-					miniclue.gen_clues.registers(),
-					miniclue.gen_clues.windows(),
-					miniclue.gen_clues.z(),
 				},
 			})
 		end
@@ -258,9 +258,11 @@ require 'paq' {
 	'github/copilot.vim',
 	{
 		'CopilotC-Nvim/CopilotChat.nvim',
-		build = 'make tiktoken', opt = true,
+		build = 'make tiktoken',
 		config = function()
-			require('CopilotChat').setup()
+			require('CopilotChat').setup {
+				model = "claude-3.7-sonnet",
+			}
 		end
 	},
 	'MunifTanjim/nui.nvim',
@@ -272,7 +274,22 @@ require 'paq' {
 			}
 		end
 	},
-	{ 'olimorris/codecompanion.nvim',  opt = true, config = function() require('codecompanion').setup() end },
+	{
+		'olimorris/codecompanion.nvim',
+		config = function()
+			require('codecompanion').setup {
+				adapters = {
+					copilot = require("codecompanion.adapters").extend("copilot", {
+						schema = {
+							model = {
+								default = "claude-3.7-sonnet",
+							},
+						},
+					}),
+				}
+			}
+		end
+	},
 	{ 'brianhuster/supermaven-nvim', },
 	'tpope/vim-dadbod',
 	{ 'kristijanhusak/vim-dadbod-ui', config = function() vim.g.db_ui_use_nerd_fonts = 1 end },

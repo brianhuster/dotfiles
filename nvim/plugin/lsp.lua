@@ -10,17 +10,6 @@ api.nvim_create_autocmd('LspAttach', {
 			vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
 		end
 
-		if client:supports_method('textDocument/formatting') then
-			api.nvim_create_autocmd('BufWritePre', {
-				buffer = args.buf,
-				callback = function()
-					if not api.nvim_buf_get_name(0):match("%.min%.") then
-						vim.lsp.buf.format({ bufnr = args.buf, id = client.id })
-					end
-				end,
-			})
-		end
-
 		if client:supports_method('textDocument/documentSymbol') then
 			vim.keymap.set('n', 'gs', function() vim.lsp.buf.document_symbol() end,
 				{ buffer = args.buf, desc = 'Select LSP document symbol' })

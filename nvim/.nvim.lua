@@ -1,8 +1,4 @@
 vim.lsp.config.lua_ls = {
-	runtime = {
-		version = 'LuaJIT'
-	},
-
 	settings = {
 		Lua = {
 			workspace = {

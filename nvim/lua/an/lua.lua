@@ -25,7 +25,7 @@ function M.find_root(fname)
 	return #root_lua >= #root_git and root_lua or root_git
 end
 
----@return string?
+---@return string
 function M.includeexpr()
 	local fname = vim.v.fname
 	local module = fname:gsub('%.', '/')

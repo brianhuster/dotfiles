@@ -47,7 +47,34 @@ imap <2-MiddleMouse> <Nop>
 imap <3-MiddleMouse> <Nop>
 imap <4-MiddleMouse> <Nop>
 
-exe 'cnoremap' '<C-v>' '<C-r>'.v:register
+tnoremap <A-h> <C-\><C-N><C-w>h
+tnoremap <A-j> <C-\><C-N><C-w>j
+tnoremap <A-k> <C-\><C-N><C-w>k
+tnoremap <A-l> <C-\><C-N><C-w>l
+inoremap <A-h> <C-\><C-N><C-w>h
+inoremap <A-j> <C-\><C-N><C-w>j
+inoremap <A-k> <C-\><C-N><C-w>k
+inoremap <A-l> <C-\><C-N><C-w>l
+nnoremap <A-h> <C-w>h
+nnoremap <A-j> <C-w>j
+nnoremap <A-k> <C-w>k
+nnoremap <A-l> <C-w>l
+
+tnoremap <A-Up> <C-\><C-N><C-w>k
+tnoremap <A-Down> <C-\><C-N><C-w>j
+tnoremap <A-Left> <C-\><C-N><C-w>h
+tnoremap <A-Right> <C-\><C-N><C-w>l
+inoremap <A-Up> <C-\><C-N><C-w>k
+inoremap <A-Down> <C-\><C-N><C-w>j
+inoremap <A-Left> <C-\><C-N><C-w>h
+inoremap <A-Right> <C-\><C-N><C-w>l
+nnoremap <A-Up> <C-w>k
+nnoremap <A-Down> <C-w>j
+nnoremap <A-Left> <C-w>h
+nnoremap <A-Right> <C-w>l
+
+tnoremap <expr> <C-R> '<C-\><C-N>"'.nr2char(getchar()).'pi'
+
 nnoremap <C-k> K
 
 let did_install_default_menus = 1
