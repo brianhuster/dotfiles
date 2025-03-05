@@ -71,7 +71,7 @@ require 'paq' {
 	'tpope/vim-repeat', -- dependency of vim-surround
 	'tpope/vim-surround',
 	'mg979/vim-visual-multi',
-	'christoomey/vim-tmux-navigator',
+	-- 'christoomey/vim-tmux-navigator',
 	{
 		'mfussenegger/nvim-jdtls', -- Java development
 		config = function()

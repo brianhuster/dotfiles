@@ -9,6 +9,8 @@
 !nvim/**
 !vim
 !vim/**
+!fish
+!fish/**
 !tmux
 !tmux/**
 !dolphinrc

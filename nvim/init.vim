@@ -20,6 +20,7 @@ set dictionary=/usr/share/dict/words
 set noswapfile
 set foldmethod=expr
 set nofoldenable
+set smoothscroll
 
 let g:python3_host_prog = 'python3'
 

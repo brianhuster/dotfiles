@@ -1,5 +1,6 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhistcnt =4
+let g:netrw_dirhistcnt =5
+let g:netrw_dirhist_5='/media/brianhuster/D/Projects/golang'
 let g:netrw_dirhist_4='/media/brianhuster/D/Projects/egg-web/src/components'
 let g:netrw_dirhist_3='/tmp/.mount_vimIGjJPo/usr/share/vim/vim91/ftplugin'
 let g:netrw_dirhist_2='/media/brianhuster/D/Projects/test'
@@ -9,4 +10,3 @@ let g:netrw_dirhist_9='/media/brianhuster/D/Projects/vim-dirvish'
 let g:netrw_dirhist_8='/media/brianhuster/D/Projects/snipexec.nvim/plugin'
 let g:netrw_dirhist_7='/media/brianhuster/D/Projects/snipexec.nvim'
 let g:netrw_dirhist_6='/home/brianhuster/.config/nvim'
-let g:netrw_dirhist_5='/media/brianhuster/D/Projects/nvim-treesitter-endwise'
