@@ -1,5 +1,4 @@
 setl iskeyword+=.,-,/
-setl suffixesadd=.fish
 setl formatprg=fish_indent
 setl omnifunc=FishComplete
 for path in split(system("fish -c 'echo $fish_function_path'"))
