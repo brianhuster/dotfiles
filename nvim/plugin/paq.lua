@@ -91,7 +91,7 @@ require('paq') {
 			]]
 		end
 	},
-	{ 'echasnovski/mini.notify', config = function() require('mini.notify').setup {} end },
+	{ 'echasnovski/mini.notify',     config = function() require('mini.notify').setup {} end },
 	{ 'echasnovski/mini.trailspace', config = function() require('mini.trailspace').setup {} end },
 	{
 		'nvimdev/indentmini.nvim',
@@ -106,7 +106,7 @@ require('paq') {
 	'f-person/git-blame.nvim',
 	'tpope/vim-fugitive',
 	'nvim-lua/plenary.nvim', -- dependency of many plugins
-	{ 'NeogitOrg/neogit',            opt = true },
+	{ 'NeogitOrg/neogit',       opt = true },
 	{
 		'echasnovski/mini.diff',
 		config = function()
@@ -207,7 +207,7 @@ require('paq') {
 	'brianhuster/nvim-treesitter-endwise',
 	{ 'windwp/nvim-ts-autotag', config = function() require('nvim-ts-autotag').setup() end },
 	'OXY2DEV/patterns.nvim',
-	{ 'folke/ts-comments.nvim', config = function() require('ts-comments').setup() end },
+	{ 'folke/ts-comments.nvim',        config = function() require('ts-comments').setup() end },
 	'lambdalisue/vim-suda',
 	'brianhuster/snipexec.nvim',
 	'uga-rosa/ccc.nvim',
@@ -256,7 +256,25 @@ require('paq') {
 			})
 		end
 	},
-	'github/copilot.vim',
+	{
+		'github/copilot.vim',
+		config = function()
+			vim.keymap.set('i', '<M-CR>', 'copilot#Accept("\\<CR>")', {
+				expr = true,
+				replace_keycodes = false
+			})
+			vim.keymap.set('i', '<M-w>', '<Plug>(copilot-accept-word)', {
+				expr = true,
+				replace_keycodes = false
+			})
+			vim.keymap.set('i', '<M-l>', '<Plug>(copilot-accept-line)', {
+				expr = true,
+				replace_keycodes = false
+			})
+			vim.g.copilot_no_tab_map = true
+			vim.cmd [[au BufEnter * let b:copilot_enabled = v:false]]
+		end,
+	},
 	{
 		'CopilotC-Nvim/CopilotChat.nvim',
 		build = 'make tiktoken',
