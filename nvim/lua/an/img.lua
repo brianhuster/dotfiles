@@ -161,7 +161,7 @@ function Img:hide()
 
 	if proto == 'iterm2' then
 		local bg = vim.o.bg
-		vim.o.bg = bg == 'dark' and 'light' or 'dark'
+		vim.o.bg = bg == 'light' and 'dark' or 'light'
 		vim.o.bg = bg
 	elseif proto == 'kitty' then
 		-- Graphics codes are in this form:

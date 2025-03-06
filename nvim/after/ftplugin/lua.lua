@@ -48,5 +48,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
 	end,
 })
 
-vim.b.undo_ftplugin = (vim.b.undo_ftplugin or '')
-	.. '\n lua vim.treesitter.stop() \n setl omnifunc< includeexpr< \n nunmap <buffer> <C-k> \n'
+vim.b.undo_ftplugin = table.concat({
+	vim.b.undo_ftplugin or '',
+	'setl omnifunc< includeexpr<',
+	'nunmap <buffer> <C-k>',
+}, '\n')

@@ -5,6 +5,7 @@ cmd.colorscheme 'an'
 
 local autocmd = api.nvim_create_autocmd
 if not autocmd then return end
+local go_chan
 
 autocmd('BufEnter', {
 	pattern = '*',
@@ -46,38 +47,67 @@ local function get_win_size(a, b)
 	return ws
 end
 
+local function get_image_size(path)
+	local width, height
+
+	local result, err = vim.rpcrequest(go_chan, 'get_image_size', path)
+	if not result then
+		error(err)
+	end
+	width, height = result.width, result.height
+	return {width, height}
+end
+
 autocmd('BufWinEnter', {
 	pattern = img_patterns,
 	callback = function()
-		--- Image preview
-		cmd.py3 'from image import get_image_size'
+		if not go_chan then
+			go_chan = vim.fn.jobstart({'go', 'run', 'go/image.go'}, {
+				rpc = true,
+				cwd = vim.fn.stdpath('config'),
+				on_stderr = function(_, data, _)
+					vim.print(data)
+				end,
+				on_exit = function(_, code, _)
+					if code ~= 0 then
+						vim.notify("Go process exited with code " .. code, vim.log.levels.ERROR)
+					end
+				end
+			})
+		end
+
 		local pos = api.nvim_win_get_position(0)
 		local bufname = api.nvim_buf_get_name(0)
 		api.nvim_buf_delete(0, {})
 		cmd.enew()
 		api.nvim_buf_set_name(0, bufname)
 
-		local img_size = vim.fn.py3eval('get_image_size(vim.current.buffer.name)')
-		local img_width, img_height = img_size[1], img_size[2]
+		local img_size = get_image_size(bufname)
+		local img_width_in_pixels, img_height_in_pixels = img_size[1], img_size[2]
 		local ws = get_win_size()
 		local width = ws.col
 		local height = ws.row
 		local xpixel = ws.xpixel
 		local ypixel = ws.ypixel
-		local winratio = xpixel / ypixel
-		local imgratio = img_width / img_height
-		if winratio < imgratio then
-			height = math.min(height, img_height)
-			width = math.floor(height * winratio)
+		local pix_per_row = ypixel / height
+		local pix_per_col = xpixel / width
+		local img_col_row_ratio = (img_width_in_pixels / pix_per_col) / (img_height_in_pixels / pix_per_row)
+		local winheight = api.nvim_win_get_height(0)
+		local winwidth = api.nvim_win_get_width(0)
+		local win_col_row_ratio = winwidth / winheight
+		local imgwidth, imgheight
+		if img_col_row_ratio > win_col_row_ratio then
+			imgwidth = winwidth
+			imgheight = math.floor(winwidth / img_col_row_ratio)
 		else
-			width = math.min(width, img_width)
-			height = math.floor(width / winratio)
+			imgheight = winheight
+			imgwidth = math.floor(winheight * img_col_row_ratio)
 		end
 		vim.b.img = require 'an.img'.Img:new({
-			row = pos[1] + 7,
+			row = pos[1],
 			col = pos[2],
-			width = width,
-			height = height
+			width = imgwidth,
+			height = imgheight
 		})
 		vim.b.img:show({ filename = bufname })
 	end
