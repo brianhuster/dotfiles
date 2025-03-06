@@ -7,7 +7,6 @@ import (
 	"log"
 	"os"
 	"github.com/neovim/go-client/nvim"
-	"fmt"
 )
 
 func getImageSize(imagePath string) (int, int, error) {
@@ -31,7 +30,6 @@ func sendImageSizeToNvim(v *nvim.Nvim, imagePath string) (map[string]int, error)
 		v.WriteOut(err.Error())
 		return nil, err
 	}
-	v.WriteOut(fmt.Sprintf("width: %d, height: %d", width, height))
 	return map[string]int{"width": width, "height": height}, nil
 }
 
