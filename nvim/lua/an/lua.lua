@@ -122,6 +122,8 @@ function M.keywordexpr()
 		{ regex = [[\(vim\.uv\.\)\@<=\w\+]],  suffix = '()' },
 		-- Luaref
 		{ prefix = 'lua-' },
+		-- environment variable
+		{ regex = [[\(vim\.env\.\)\@<=\w\+]], prefix = "$" },
 		-- Other
 		{}
 	}
