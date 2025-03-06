@@ -13,7 +13,7 @@ if vim.fn.isdirectory(vim.fn.stdpath('data') .. '/site/pack/paqs/start/paq-nvim'
 		end)
 end
 
-require 'paq' {
+require('paq') {
 	{ 'brianhuster/paq-nvim',   branch = 'nightly' },
 	{ 'echasnovski/mini.icons', config = function() require('mini.icons').setup() end }, -- Use by direx.nvim
 	{

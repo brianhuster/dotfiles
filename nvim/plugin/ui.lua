@@ -73,7 +73,7 @@ autocmd('BufWinEnter', {
 			width = math.min(width, img_width)
 			height = math.floor(width / winratio)
 		end
-		vim.b.img = require('an.img').Img:new({
+		vim.b.img = require 'an.img'.Img:new({
 			row = pos[1] + 7,
 			col = pos[2],
 			width = width,
