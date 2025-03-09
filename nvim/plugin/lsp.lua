@@ -1,3 +1,9 @@
+if not vim.g.loaded_config_lsp then
+	return
+end
+
+vim.g.loaded_config_lsp = true
+
 local api = vim.api
 
 vim.lsp.enable('lua_ls')
@@ -9,13 +15,8 @@ api.nvim_create_autocmd('LspAttach', {
 		if client:supports_method('textDocument/completion') and vim.lsp.completion then
 			vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
 		end
-
-		if client:supports_method('textDocument/documentSymbol') then
-			vim.keymap.set('n', 'gs', function() vim.lsp.buf.document_symbol() end,
-				{ buffer = args.buf, desc = 'Select LSP document symbol' })
-		end
 		if client:supports_method('workspace/symbol') then
-			vim.keymap.set('n', 'gS', function() vim.lsp.buf.workspace_symbol() end,
+			vim.keymap.set('n', 'grs', function() vim.lsp.buf.workspace_symbol() end,
 				{ buffer = args.buf, desc = 'Select LSP workspace symbol' })
 		end
 	end,

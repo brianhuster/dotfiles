@@ -3,6 +3,11 @@ vim.g.loaded_netrwPlugin = 1
 vim.g.did_install_default_menus = 1
 vim.g.did_install_syntax_menu = 1
 
+if not vim.g.loaded_config_paq then
+	return
+end
+vim.g.loaded_config_paq = true
+
 if vim.fn.isdirectory(vim.fn.stdpath('data') .. '/site/pack/paqs/start/paq-nvim') == 0 then
 	vim.system(
 		{ 'git', 'clone', '--depth=1', '--branch=nightly', 'https://github.com/brianhuster/paq-nvim.git', vim.fn.stdpath(
@@ -25,6 +30,7 @@ require('paq') {
 				icon = icon .. ' '
 				return { icon = icon, hl = hl }
 			end,
+			fzfprg = [[fzf --preview "nvim --headless --clean -c 'set nomore' -c 'redir! > /dev/stdout' -c 'silent! %p' \ -c 'redir END' \ -c 'qa!' {}"]]
 		}
 	end
 	},
@@ -33,20 +39,17 @@ require('paq') {
 	{ 'williamboman/mason-lspconfig.nvim', config = function()
 		local lang_servers = {
 			"arduino_language_server",
+			"dockerls",
 			"bashls",
 			"clangd",
-			"cssls",
-			"tailwindcss",
-			"dockerls",
-			"html",
-			"ts_ls",
+			"cssls", "tailwindcss", "html", "ts_ls",
 			"jsonls",
 			'jdtls',
 			"lua_ls",
 			"marksman",
 			"pylsp",
 			"volar",
-			"gopls"
+			"gopls",
 		}
 		require('mason').setup({
 			ui = {
@@ -117,7 +120,19 @@ require('paq') {
 			}
 		end
 	},
-	'mfussenegger/nvim-dap',
+	{
+		'mfussenegger/nvim-dap',
+		config = function()
+			vim.keymap.set('n', '<Leader>b', '<cmd>DapToggleBreakpoint<CR>')
+			vim.keymap.set('n', ']D', '<cmd>DapContinue<CR>')
+		end
+	},
+	{
+		'theHamsta/nvim-dap-virtual-text',
+		config = function()
+			require('nvim-dap-virtual-text').setup()
+		end
+	},
 	'leoluz/nvim-dap-go',
 	{
 		'nvim-treesitter/nvim-treesitter',

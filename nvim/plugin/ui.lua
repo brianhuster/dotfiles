@@ -1,3 +1,8 @@
+if vim.g.loaded_config_ui then
+	return
+end
+vim.g.loaded_config_ui = true
+
 local cmd = vim.cmd
 local api = vim.api
 
