@@ -5,4 +5,4 @@ if status is-interactive
     set -gx EDITOR nvim
 end
 
-set -gx ANDROID_SDK_HOME /media/brianhuster/D
+set -gx ANDROID_USER_HOME /media/brianhuster/D/.android/
