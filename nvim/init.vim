@@ -1,5 +1,4 @@
 "silent language vi_vn.utf-8
-
 set mouse=nvc
 set number
 set noexpandtab
@@ -21,6 +20,7 @@ set noswapfile
 set foldmethod=expr
 set nofoldenable
 set smoothscroll
+set wildmode=noselect:full
 
 let g:python3_host_prog = 'python3'
 

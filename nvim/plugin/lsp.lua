@@ -1,15 +1,10 @@
-if not vim.g.loaded_config_lsp then
-	return
-end
-
-vim.g.loaded_config_lsp = true
-
 local api = vim.api
 
 vim.lsp.enable('lua_ls')
 
 api.nvim_create_autocmd('LspAttach', {
 	callback = function(args)
+		vim.o.statusline = '%{v:lua.vim.lsp.status()}'
 		local client = vim.lsp.get_client_by_id(args.data.client_id)
 		if not client then return end
 		if client:supports_method('textDocument/completion') and vim.lsp.completion then

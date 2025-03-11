@@ -3,11 +3,6 @@ vim.g.loaded_netrwPlugin = 1
 vim.g.did_install_default_menus = 1
 vim.g.did_install_syntax_menu = 1
 
-if not vim.g.loaded_config_paq then
-	return
-end
-vim.g.loaded_config_paq = true
-
 if vim.fn.isdirectory(vim.fn.stdpath('data') .. '/site/pack/paqs/start/paq-nvim') == 0 then
 	vim.system(
 		{ 'git', 'clone', '--depth=1', '--branch=nightly', 'https://github.com/brianhuster/paq-nvim.git', vim.fn.stdpath(
@@ -23,16 +18,22 @@ require('paq') {
 	{ 'echasnovski/mini.icons', config = function() require('mini.icons').setup() end }, -- Use by direx.nvim
 	{
 		"brianhuster/direx.nvim", config = function()
-		require('direx.config').set {
-			iconfunc = function(p)
-				local get = require('mini.icons').get
-				local icon, hl = get(p:sub(-1) == '/' and 'directory' or 'file', p)
-				icon = icon .. ' '
-				return { icon = icon, hl = hl }
-			end,
-			fzfprg = [[fzf --preview "nvim --headless --clean -c 'set nomore' -c 'redir! > /dev/stdout' -c 'silent! %p' \ -c 'redir END' \ -c 'qa!' {}"]]
-		}
-	end
+			local previewer ---@type string
+			if vim.fn.executable('nvcat') == 1 then
+				previewer = [[nvcat -clean {}]]
+			elseif vim.fn.executable('bat') == 1 then
+				previewer = [[bat --style=numbers --color=always --paging=always --wrap=never --theme=ansi --pager=never --decorations=never {}]]
+			end
+			require('direx.config').set {
+				iconfunc = function(p)
+					local get = require('mini.icons').get
+					local icon, hl = get(p:sub(-1) == '/' and 'directory' or 'file', p)
+					icon = icon .. ' '
+					return { icon = icon, hl = hl }
+				end,
+				fzfprg = [[fzf --preview ]] ..  vim.fn.shellescape(previewer)
+			}
+		end
 	},
 	'neovim/nvim-lspconfig',
 	'williamboman/mason.nvim',
