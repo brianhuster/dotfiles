@@ -6,62 +6,41 @@ local api = vim.api
 ---@param fname string
 ---@return string
 function M.find_root(fname)
-	local root_markers = {
-		'.luarc.json',
-		'.luarc.jsonc',
-		'.luacheckrc',
-		'.stylua.toml',
-		'stylua.toml',
-		'selene.toml',
-		'selene.yml',
-	}
-	local root = vim.fs.root(fname, root_markers)
-	if root and root ~= vim.env.HOME then
-		return root
-	end
-	local root_lua = vim.fs.root(fname, 'lua') or ''
-	local root_git = vim.fs.root(fname, '.git') or ''
-	if #root_lua == 0 and #root_git == 0 then
-		return '.'
-	end
-	return #root_lua >= #root_git and root_lua or root_git
+	return vim.fs.root(fname, 'lua') or vim.fn.getcwd()
 end
 
+--- @param module string
 ---@return string
-function M.includeexpr()
-	local fname = vim.v.fname
-	local module = fname:gsub('%.', '/')
-	local runtime = {
-		vim.b.root_dir or vim.fn.getcwd(),
-		unpack(vim.api.nvim_list_runtime_paths())
-	}
+function M.includeexpr(module)
+  ---@param fname string
+  ---@return boolean
+  local function filereadable(fname)
+    return vim.fn.filereadable(fname) == 1
+  end
 
-	---@param prefix string
-	---@return string[]
-	local function templates(prefix)
-		return vim.tbl_map(function(v)
-			return prefix .. '/lua/' .. module .. v
-		end, { '.lua', '/init.lua' })
-	end
+  local fname = module:gsub('%.', '/')
 
-	for _, dir in ipairs(runtime) do
-		for _, file in ipairs(templates(dir)) do
-			if vim.fn.filereadable(file) == 1 then
-				return file
-			end
-		end
-	end
+  -- For normal Lua projects
+  local lua_ver = { vim.g.lua_version, vim.g.lua_subversion }
+  if filereadable(fname .. '.lua') then
+    return fname .. '.lua'
+  end
+  if vim.version.ge(lua_ver, { 5, 3 }) and filereadable(fname .. '/init.lua') then
+    return fname .. '/init.lua'
+  end
 
-	for _, template in ipairs(vim.split(package.path, ";")) do
-		local file = template:gsub("?", module)
-		if vim.fn.filereadable(file) == 1 then
-			return file
-		end
-	end
+  -- For Nvim Lua
+  local root = vim.fs.root(vim.api.nvim_buf_get_name(0), 'lua') or vim.fn.getcwd()
+  for _, suf in ipairs {'.lua', '/lua/init.lua'} do
+    local path = vim.fs.joinpath(root, 'lua', fname .. suf)
+    if filereadable(path) then
+      return path
+    end
+  end
 
-	return fname
+  local modInfo = vim.loader.find(module)[1]
+  return modInfo and modInfo.modpath or module
 end
-
 ---@param keyword string
 ---@param opts {prefix: string?, suffix: string?, regex: string?, pattern: string?, on_keyword: function?}
 local function lookup_help(keyword, opts)

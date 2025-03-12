@@ -95,7 +95,6 @@ require('paq') {
 			]]
 		end
 	},
-	{ 'echasnovski/mini.notify',     config = function() require('mini.notify').setup {} end },
 	{ 'echasnovski/mini.trailspace', config = function() require('mini.trailspace').setup {} end },
 	{
 		'nvimdev/indentmini.nvim',
