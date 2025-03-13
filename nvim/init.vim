@@ -21,8 +21,7 @@ set foldmethod=expr
 set nofoldenable
 set smoothscroll
 set wildmode=noselect:full
-
-let g:python3_host_prog = 'python3'
+set confirm
 
 au! InsertLeavePre,TextChanged,TextChangedP * if &modifiable && !&readonly | silent! write | endif
 autocmd! FocusGained,BufEnter * checktime
@@ -142,4 +141,9 @@ if has('nvim')
 	set foldexpr=v:lua.vim.treesitter.foldexpr()
 	set exrc
 	let g:loaded_perl_provider = 1
+	lua << EOF
+		if vim.loader then
+			vim.loader.enable()
+		end
+EOF
 endif

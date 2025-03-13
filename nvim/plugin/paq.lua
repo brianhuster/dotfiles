@@ -295,7 +295,7 @@ require('paq') {
 		build = 'make tiktoken',
 		config = function()
 			require('CopilotChat').setup {
-				model = "claude-3.7-sonnet",
+				model = "claude-3.5-sonnet",
 			}
 		end
 	},
@@ -316,7 +316,7 @@ require('paq') {
 					copilot = require("codecompanion.adapters").extend("copilot", {
 						schema = {
 							model = {
-								default = "claude-3.7-sonnet",
+								default = "claude-3.5-sonnet",
 							},
 						},
 					}),

@@ -52,8 +52,12 @@ global=Alt+F1
 immutability=1
 plugin=org.kde.plasma.icontasks
 
+[Containments][473][Applets][476][Configuration][ConfigDialog]
+DialogHeight=810
+DialogWidth=1080
+
 [Containments][473][Applets][476][Configuration][General]
-launchers=applications:systemsettings.desktop,preferred://filemanager,applications:org.kde.discover.desktop
+launchers=applications:systemsettings.desktop,preferred://filemanager
 
 [Containments][473][Applets][477]
 immutability=1
@@ -212,7 +216,7 @@ immutability=1
 plugin=org.kde.plasma.devicenotifier
 
 [Containments][479][Applets][485][Configuration]
-PreloadWeight=75
+PreloadWeight=80
 
 [Containments][479][Applets][486]
 immutability=1
