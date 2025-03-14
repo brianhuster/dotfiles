@@ -76,6 +76,9 @@ tnoremap <expr> <C-R> '<C-\><C-N>"'.nr2char(getchar()).'pi'
 
 nnoremap <C-k> K
 
+cnoremap <Left> <C-e><Left>
+cnoremap <Right> <C-e><Right>
+
 let did_install_default_menus = 1
 let did_install_syntax_menu = 1
 

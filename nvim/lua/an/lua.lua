@@ -31,7 +31,7 @@ function M.includeexpr(module)
 
   -- For Nvim Lua
   local root = vim.fs.root(vim.api.nvim_buf_get_name(0), 'lua') or vim.fn.getcwd()
-  for _, suf in ipairs {'.lua', '/lua/init.lua'} do
+  for _, suf in ipairs {'.lua', '/init.lua'} do
     local path = vim.fs.joinpath(root, 'lua', fname .. suf)
     if filereadable(path) then
       return path

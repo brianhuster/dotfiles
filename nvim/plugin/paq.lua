@@ -37,6 +37,7 @@ require('paq') {
 	},
 	'neovim/nvim-lspconfig',
 	'williamboman/mason.nvim',
+	'echasnovski/mini.pick',
 	{ 'williamboman/mason-lspconfig.nvim', config = function()
 		local lang_servers = {
 			"arduino_language_server",
