@@ -78,6 +78,8 @@ nnoremap <C-k> K
 
 cnoremap <Left> <C-e><Left>
 cnoremap <Right> <C-e><Right>
+cnoremap <Up> <C-e><Up>
+cnoremap <Down> <C-e><Down>
 
 let did_install_default_menus = 1
 let did_install_syntax_menu = 1
@@ -144,9 +146,5 @@ if has('nvim')
 	set foldexpr=v:lua.vim.treesitter.foldexpr()
 	set exrc
 	let g:loaded_perl_provider = 1
-	lua << EOF
-		if vim.loader then
-			vim.loader.enable()
-		end
-EOF
+	lua if vim.loader then vim.loader.enable() end
 endif
