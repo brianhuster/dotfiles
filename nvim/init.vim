@@ -78,8 +78,8 @@ nnoremap <C-k> K
 
 cnoremap <expr> <Left> pumvisible() ? '<C-e><Left>' : '<Left>'
 cnoremap <expr> <Right> pumvisible() ? '<C-e><Right>' : '<Right>'
-cnoremap <expr> <Up> pumvisible() ? '<C-e><Up>' : '<Up>'
-cnoremap <expr> <Down> pumvisible() ? '<C-e><Down>' : '<Down>'
+cnoremap <expr> <Up> pumvisible() ? '<C-b><Up>' : '<Up>'
+cnoremap <expr> <Down> pumvisible() ? '<C-b><Down>' : '<Down>'
 
 let did_install_default_menus = 1
 let did_install_syntax_menu = 1

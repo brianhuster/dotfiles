@@ -190,7 +190,7 @@ immutability=1
 plugin=org.kde.plasma.volume
 
 [Containments][479][Applets][480][Configuration]
-PreloadWeight=60
+PreloadWeight=65
 
 [Containments][479][Applets][480][Configuration][General]
 migrated=true
@@ -210,6 +210,9 @@ plugin=org.kde.plasma.printmanager
 [Containments][479][Applets][484]
 immutability=1
 plugin=org.kde.plasma.notifications
+
+[Containments][479][Applets][484][Configuration]
+PreloadWeight=55
 
 [Containments][479][Applets][485]
 immutability=1
