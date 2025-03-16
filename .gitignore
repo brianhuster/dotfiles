@@ -16,6 +16,8 @@
 !tmux
 !tmux/**
 !dolphinrc
+!ghostty
+!ghostty/**
 !gtkrc
 !gtkrc-2.0
 !katerc

@@ -23,8 +23,12 @@ set smoothscroll
 set wildmode=noselect:full
 set confirm
 
-au! InsertLeavePre,TextChanged,TextChangedP * if &modifiable && !&readonly | silent! write | endif
-autocmd! FocusGained,BufEnter * checktime
+au InsertLeavePre,TextChanged,TextChangedP * if &modifiable && !&readonly | silent! write | endif
+au FocusGained,BufEnter * checktime
+
+au TermOpen * setl nonumber norelativenumber winheight=12 | startinsert
+au BufEnter * if &buftype == 'terminal' | startinsert | setl winheight=12 | else | setl winheight=100 | endif
+au BufEnter *.png,*.jpg,*.jpeg,*.gif,*.webp call s:OpenImgBuf(expand('<amatch>'))
 
 " Key mappings
 nnoremap t <cmd>call Terminal()<CR>
@@ -83,9 +87,16 @@ cnoremap <expr> <Down> pumvisible() ? '<C-b><Down>' : '<Down>'
 
 let did_install_default_menus = 1
 let did_install_syntax_menu = 1
+let g:loaded_perl_provider = 1
 
 autocmd QuickFixCmdPost [^l]* cwindow
 autocmd QuickFixCmdPost l* lwindow
+
+func! s:OpenImgBuf(file) abort
+	term imgcat %
+	exe 'bwipeout!' a:file
+	exe 'file' a:file
+endfunc
 
 function! Terminal()
 	if &buftype == 'terminal'
@@ -102,20 +113,17 @@ function! Terminal()
 	endfor
 	if term_win == -1
 		belowright split | terminal
-		setlocal nonumber
-		set winheight=12
 	else
 		execute term_win . 'wincmd w'
 	endif
-	startinsert
 endfunction
 
-function! IbusOff()
+function! s:IbusOff()
 	let g:ibus_prev_engine = trim(system('ibus engine'))
 	execute 'silent !ibus engine xkb:us::eng'
 endfunction
 
-function! IbusOn()
+function! s:IbusOn()
 	let l:current_engine = trim(system('ibus engine'))
 	if l:current_engine !~? 'xkb:us::eng'
 		let g:ibus_prev_engine = l:current_engine
@@ -125,26 +133,27 @@ endfunction
 
 if executable('ibus')
 	augroup IBusHandler
-		autocmd InsertEnter * call IbusOn()
-		autocmd InsertLeave * call IbusOff()
-		autocmd FocusGained * call IbusOn()
-		autocmd FocusLost * call IbusOff()
-		autocmd ExitPre * call IbusOn()
+		autocmd InsertEnter * call s:IbusOn()
+		autocmd InsertLeave * call s:IbusOff()
+		autocmd FocusGained * call s:IbusOn()
+		autocmd FocusLost * call s:IbusOff()
+		autocmd ExitPre * call s:IbusOn()
 	augroup END
-	call IbusOff()
+	call s:IbusOff()
 else
 	echoerr "ibus is not installed. Switch to keymap vietnamese-telex_utf-8."
 	set keymap=vietnamese-telex_utf-8
 endif
 
 if has('nvim')
-	call execute('set rtp^=' . stdpath('config'))
+	colorscheme an
 	if &grepprg[:2] == 'rg '
 		"let &grepprg .= '--max-columns=100 '
 		let &grepprg .= '-j1 '
 	endif
 	set foldexpr=v:lua.vim.treesitter.foldexpr()
 	set exrc
-	let g:loaded_perl_provider = 1
+
 	lua if vim.loader then vim.loader.enable() end
+	au FileType * lua pcall(vim.treesitter.start)
 endif

@@ -18,7 +18,7 @@ if !exists('*' .. expand('<SID>') .. 'GoKeywordPrg')
 			if has('nvim')
 				let prev_buf = bufnr('%')
 				let buf = nvim_create_buf(v:false, v:false)
-				exe 'buffer' buf | exe "term" cmd | startinsert
+				exe 'buffer' buf | exe "term" cmd | startinsert | normal! gg
 				tmap <buffer> <Esc> <Cmd>call jobstop(&channel) <Bar> exe 'buffer' buf <Bar> exe 'bdelete' buf<CR>
 			else
 				exe '!'..cmd
