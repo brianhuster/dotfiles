@@ -151,20 +151,20 @@ plugin=org.kde.plasma.icon
 localPath=/home/brianhuster/.local/share/plasma_icons/brave_brave.desktop
 url=file:///var/lib/snapd/desktop/applications/brave_brave.desktop
 
-[Containments][473][Applets][514]
+[Containments][473][Applets][515]
 immutability=1
 plugin=org.kde.plasma.icon
 
-[Containments][473][Applets][514][Configuration]
-localPath=/home/brianhuster/.local/share/plasma_icons/ghostty_ghostty.desktop
-url=file:///var/lib/snapd/desktop/applications/ghostty_ghostty.desktop
+[Containments][473][Applets][515][Configuration]
+localPath=/home/brianhuster/.local/share/plasma_icons/org.kde.konsole.desktop
+url=file:///usr/share/applications/org.kde.konsole.desktop
 
 [Containments][473][ConfigDialog]
 DialogHeight=109
 DialogWidth=1920
 
 [Containments][473][General]
-AppletOrder=498;497;474;505;508;510;513;514;476;477;478;491;492
+AppletOrder=498;497;474;505;508;510;513;515;476;477;478;491;492
 
 [Containments][479]
 activityId=

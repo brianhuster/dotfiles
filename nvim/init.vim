@@ -26,7 +26,6 @@ set confirm
 au InsertLeavePre,TextChanged,TextChangedP * if &modifiable && !&readonly | silent! write | endif
 au FocusGained,BufEnter * checktime
 
-au TermOpen * setl nonumber norelativenumber winheight=12 | startinsert
 au BufEnter * if &buftype == 'terminal' | startinsert | setl winheight=12 | else | setl winheight=100 | endif
 au BufEnter *.png,*.jpg,*.jpeg,*.gif,*.webp call s:OpenImgBuf(expand('<amatch>'))
 
@@ -115,6 +114,9 @@ function! Terminal()
 		belowright split | terminal
 	else
 		execute term_win . 'wincmd w'
+		if has('nvim')
+			call nvim_win_set_height(term_win, 12)
+		endif
 	endif
 endfunction
 
@@ -153,6 +155,8 @@ if has('nvim')
 	endif
 	set foldexpr=v:lua.vim.treesitter.foldexpr()
 	set exrc
+
+	au TermOpen * setl nonumber norelativenumber | startinsert
 
 	lua if vim.loader then vim.loader.enable() end
 	au FileType * lua pcall(vim.treesitter.start)

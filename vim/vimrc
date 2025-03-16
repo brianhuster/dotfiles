@@ -33,13 +33,8 @@ xnoremap Y y$
 
 let s:file = expand('<sfile>')
 function! s:setup()
-	let s:nvim_config = trim(systemlist('nvim --clean -l ' . fnamemodify(s:file, ':h') . '/.lua')[0])
-	execute 'source ' . s:nvim_config . '/init.vim'
-	execute 'set runtimepath+=' . s:nvim_config
+	let nvim_config = '~/.config/nvim'
+	execute 'source' nvim_config . '/init.vim'
+	execute 'set runtimepath+=' . nvim_config
 endfunction
 autocmd VimEnter * call s:setup()
-
-set packpath+=/usr/share/vim/vimfiles
-if has('lua')
-	packadd! lazy/copilot.vim
-endif
