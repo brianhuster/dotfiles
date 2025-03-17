@@ -31,7 +31,7 @@ require('paq') {
 					icon = icon .. ' '
 					return { icon = icon, hl = hl }
 				end,
-				fzfprg = [[fzf --preview ]] ..  vim.fn.shellescape(previewer)
+				fzfprg = ("fzf --preview %s "):format(vim.fn.shellescape(previewer))
 			}
 		end
 	},

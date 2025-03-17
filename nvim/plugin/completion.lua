@@ -15,7 +15,9 @@ if api.nvim_eval('&wildmode'):match('noselect') then
 			if vim.fn.wildmenumode() == 0 and a.file == ':' and api.nvim_get_mode().mode == 'c' then
 				local ok, comp = pcall(vim.fn.getcompletion, vim.fn.getcmdline(), 'cmdline')
 				if not ok or #comp == 0 then return end
+				vim.opt.eventignore:append('CmdlineChanged')
 				api.nvim_feedkeys(vim.keycode('<Tab>'), 'nt', false)
+				vim.schedule(function() vim.opt.eventignore:remove('CmdlineChanged') end)
 			end
 		end,
 	})

@@ -5,7 +5,7 @@ func! Shell(cmd)
 	let cur_buf = bufnr('%')
 	exe 'startinsert'
 	let term_job_stop = has('nvim') ? 'call jobstop(&channel)' : 'call job_stop(term_getjob(0))'
-	exe 'tmap' '<buffer>' '<Esc>' '<Cmd>buffer' prev_buf '<Bar>' term_job_stop '<Bar>' 'bdelete' cur_buf '<CR>'
+	exe $'tmap <buffer> <Esc> <Cmd> buffer {prev_buf} <Bar> {term_job_stop} <Bar> bdelete {cur_buf} <CR>'
 endf
 ]]
 
