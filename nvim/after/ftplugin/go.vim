@@ -16,7 +16,7 @@ if !exists('*' .. expand('<SID>') .. 'GoKeywordPrg')
 		try
 			let cmd = 'go doc -C ' . shellescape(expand('%:h')) . ' ' . shellescape(expand('<cword>'))
 			if has('gui_running') || has('nvim')
-				exe 'Sh' cmd
+				exe 'hor term' cmd
 			else
 				exe '!'..cmd
 			endif

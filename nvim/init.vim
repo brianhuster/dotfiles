@@ -104,8 +104,8 @@ function! Terminal()
 	endif
 	let term_win = -1
 	for win in range(1, winnr('$'))
-		execute win . 'wincmd w'
-		if &buftype == 'terminal'
+		let buftype = getbufvar(winbufnr(win), '&buftype')
+		if buftype == 'terminal'
 			let term_win = win
 			break
 		endif
@@ -115,7 +115,7 @@ function! Terminal()
 	else
 		execute term_win . 'wincmd w'
 		if has('nvim')
-			call nvim_win_set_height(term_win, 12)
+			call nvim_win_set_height(win_getid(term_win), 12)
 		endif
 	endif
 endfunction
@@ -148,7 +148,6 @@ else
 endif
 
 if has('nvim')
-	colorscheme an
 	if &grepprg[:2] == 'rg '
 		"let &grepprg .= '--max-columns=100 '
 		let &grepprg .= '-j1 '

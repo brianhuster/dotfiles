@@ -1,1 +1,1 @@
-source <script>:p:h/javascript.lua
+source <script>:p:h/javascript_dap.lua

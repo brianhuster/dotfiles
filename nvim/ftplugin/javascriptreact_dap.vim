@@ -1,1 +1,1 @@
-source <script>:p:h/javascript.vim
+source <script>:p:h/javascript_dap.lua

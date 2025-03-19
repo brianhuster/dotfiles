@@ -34,7 +34,7 @@ map('n', '<Leader>ff', call 'workbench.action.quickOpen', { silent = true })    
 map('n', 't', call 'workbench.action.terminal.toggleTerminal', { silent = true })     -- terminal window
 
 map('v', 'gq', action 'editor.action.formatSelection', { silent = true })
-map('v', '<Leader>ca', call 'editor.action.refactor', { silent = true })
+map('v', 'gra', call 'editor.action.refactor', { silent = true })
 map('v', '<Leader>fc', call 'workbench.action.showCommands', { silent = true })
 
 autocmd('BufWritePre', {
