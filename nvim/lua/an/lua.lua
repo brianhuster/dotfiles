@@ -41,6 +41,7 @@ function M.includeexpr(module)
   local modInfo = vim.loader.find(module)[1]
   return modInfo and modInfo.modpath or module
 end
+
 ---@param keyword string
 ---@param opts {prefix: string?, suffix: string?, regex: string?, pattern: string?, on_keyword: function?}
 local function lookup_help(keyword, opts)
