@@ -22,6 +22,9 @@ set nofoldenable
 set smoothscroll
 set wildmode=noselect:full
 set confirm
+set spelloptions=camel
+set spelllang=en
+set spell
 
 au InsertLeavePre,TextChanged,TextChangedP * if &modifiable && !&readonly | silent! write | endif
 au FocusGained,BufEnter * checktime
