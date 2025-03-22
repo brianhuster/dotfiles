@@ -2,13 +2,15 @@ vim.bo.path = nil
 vim.bo.omnifunc = "v:lua.vim.lua_omnifunc"
 vim.bo.includeexpr = "v:lua.require'an.lua'.includeexpr(v:fname)"
 vim.bo.include = [[\v<((do|load)file|require)[^''"]*[''"]\zs[^''"]+]]
+vim.bo.keywordprg = ':LuaKeywordPrg'
+
+vim.api.nvim_buf_create_user_command(0, 'LuaKeywordPrg', function()
+	require('an.lua').keywordprg()
+end, { nargs = '*' })
+
 if not vim.b.root_dir then
 	vim.b.root_dir = require('an.lua').find_root(vim.api.nvim_buf_get_name(0))
 end
-
-vim.keymap.set('n', '<C-k>', function()
-	require 'an.lua'.keywordexpr()
-end, { buffer = true })
 
 vim.api.nvim_create_autocmd('LspAttach', {
 	buffer = 0,
@@ -23,6 +25,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 vim.b.undo_ftplugin = table.concat({
 	vim.b.undo_ftplugin or '',
-	'setl omnifunc< includeexpr<',
-	'nunmap <buffer> <C-k>',
+	'setl omnifunc< includeexpr< keywordprg< path< include<',
+	'delcommand -buffer LuaKeywordPrg',
 }, '\n')

@@ -72,7 +72,7 @@ local function lookup_help(keyword, opts)
 end
 
 ---@TODO: Support Vimscript better, possibly using Treesitter node
-function M.keywordexpr()
+function M.keywordprg()
 	local temp_isk = vim.o.iskeyword
 	vim.cmd("set iskeyword+=.")
 	---@type _, string
@@ -151,8 +151,8 @@ function M.auto_require(client, bufnr)
 		Lua = { workspace = { library = {} } },
 	})
 
-	--- @param first? integer
-	--- @param last? integer
+	--- @param first? number
+	--- @param last? number
 	local function on_lines(_, _, _, first, _, last)
 		local did_change = false
 
