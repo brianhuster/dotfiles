@@ -25,3 +25,6 @@ if !exists('*' .. expand('<SID>') .. 'GoKeywordPrg')
 		endtry
 	endfunc
 endif
+
+let b:undo_ftplugin = exists('b:undo_ftplugin') ? b:undo_ftplugin : ''
+	\ . ' setl fp< kp<'

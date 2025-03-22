@@ -1,4 +1,4 @@
 vim.cmd.colorscheme 'an'
-vim.ui.select = function(...) ---@diagnostic disable-line: duplicate-set-field
+vim.ui.select = function(...)
 	require 'an'.select(...)
 end
