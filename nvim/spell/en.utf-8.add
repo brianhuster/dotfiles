@@ -8,3 +8,9 @@ lsp
 number
 treesitter
 update
+Lua
+keywordprg
+Neovim
+ftplugin
+feat
+Nvim

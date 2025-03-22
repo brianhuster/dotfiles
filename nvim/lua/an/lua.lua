@@ -74,7 +74,7 @@ end
 ---@TODO: Support Vimscript better, possibly using Treesitter node
 function M.keywordprg()
 	local temp_isk = vim.o.iskeyword
-	vim.cmd("set iskeyword+=.")
+	vim.cmd("set iskeyword+=.,#")
 	---@type _, string
 	local _, cword = pcall(vim.fn.expand, "<cword>") ---@diagnostic disable-line: assign-type-mismatch
 	vim.o.iskeyword = temp_isk

@@ -36,10 +36,13 @@ end
 ---               `idx` is the 1-based index of `item` within `items`.
 ---               `nil` if the user aborted the dialog.
 function M.select(items, opts, on_choice)
-	opts = opts or {}
+	vim.validate('items', items, 'table')
+	vim.validate('opts', opts, 'table')
+  	vim.validate('on_choice', on_choice, 'function')
+
 	local title = opts.prompt or "Select item"
 	local width = 0
-	local height = #items
+	local au = api.nvim_create_autocmd
 
 	for _, item in ipairs(items) do
 		local item_text = tostring(opts.format_item and opts.format_item(item) or item)
@@ -55,51 +58,67 @@ function M.select(items, opts, on_choice)
 		style = 'minimal',
 		border = 'rounded',
 		width = width,
-		height = height,
-		row = math.floor((vim.o.lines - height) / 2),
+		height = 1,
+		row = math.floor((vim.o.lines - 1) / 2),
 		col = math.floor((vim.o.columns - width) / 2),
 		title = title,
 		title_pos = 'center',
 		noautocmd = true
 	})
+	vim.cmd.startinsert()
+	vim.wo[win].number = false
 
-	local content = {}
-	for i, item in ipairs(items) do
-		local item_text = tostring(opts.format_item and opts.format_item(item) or item)
-		content[i] = " " .. item_text
+	for i, _ in ipairs(items) do
+		items[i] = {
+			word = opts.format_item and opts.format_item(items[i]) or tostring(items[i]),
+			user_data = {
+				key = i,
+				item = items[i]
+			}
+		}
 	end
 
-	api.nvim_buf_set_lines(buf, 0, -1, false, content)
-	local ns_id = api.nvim_create_namespace('popup_select')
-
-	local function nmap(lhs, rhs)
-		vim.keymap.set('n', lhs, rhs, { buffer = buf })
+	---@param w integer
+	---@param b integer
+	local function close_picker(w, b)
+		api.nvim_win_close(w, true)
+		api.nvim_buf_delete(b, { force = true })
+		vim.cmd.stopinsert()
 	end
 
-	local function highlight_selected()
-		api.nvim_buf_clear_namespace(buf, ns_id, 0, -1)
-		api.nvim_buf_set_extmark(buf, ns_id, vim.api.nvim_win_get_cursor(win)[1] - 1, 0, {
-			line_hl_group = 'PmenuSel',
-			priority = 100
-		})
+	M.select_omnifunc = function(find_start, base)
+		if find_start == 1 then
+			return 0
+		end
+		if not base or base == "" then
+			return items
+		end
+		return vim.fn.matchfuzzy(items, base, { key = 'word' })
 	end
+	vim.bo[buf].omnifunc = "v:lua.require'an'.select_omnifunc"
+	vim.bo[buf].completeopt = "menu,menuone,noinsert,noselect,popup"
 
-	nmap('<CR>', function()
-		local selected_index = api.nvim_win_get_cursor(win)[1]
-		local selected_item = items[selected_index]
-		api.nvim_win_close(win, true)
-		on_choice(selected_item, selected_index)
-	end)
-	nmap('<Esc>', function()
-		api.nvim_win_close(win, true)
-		on_choice(nil, nil)
-	end)
+	vim.keymap.set('i', '<Esc>', function()
+		close_picker(win, buf)
+	end, { buffer = buf })
 
-	highlight_selected()
-	api.nvim_create_autocmd("CursorMoved", { buffer = buf, callback = highlight_selected })
-	vim.bo[buf].bufhidden = 'wipe'
-	vim.bo[buf].readonly = true
-	vim.bo[buf].modifiable = false
+	api.nvim_feedkeys(vim.keycode("<C-x><C-o>"), "n", false)
+
+	au("WinLeave", { buffer = buf, callback = function()
+		close_picker(win, buf)
+	end })
+	au("TextChangedI", { buffer = buf, callback = function()
+		api.nvim_feedkeys(vim.keycode("<C-x><C-o>"), "n", false)
+	end })
+	au("CompleteDonePre", { buffer = buf, callback = function()
+		if vim.v.completed_item == vim.empty_dict() then
+			return
+		end
+		close_picker(win, buf)
+		on_choice(vim.v.completed_item.user_data.item, vim.v.completed_item.user_data.key)
+	end })
 end
+
+M.select_omnifunc = nil ---@type fun(find_start: number, base: string): number|table
 
 return M
