@@ -108,7 +108,6 @@ require('paq') {
 			require('indentmini').setup {}
 		end
 	},
-	'f-person/git-blame.nvim',
 	'tpope/vim-fugitive',
 	'nvim-lua/plenary.nvim', -- dependency of many plugins
 	{ 'NeogitOrg/neogit',            opt = true },
