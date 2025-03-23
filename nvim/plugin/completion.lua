@@ -41,4 +41,4 @@ if api.nvim_eval('&wildmode'):match('noselect') then
 			end
 		end,
 	})
-	end
+end

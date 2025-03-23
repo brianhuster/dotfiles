@@ -20,6 +20,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
 		if client:supports_method('textDocument/completion') then
 			vim.bo.omnifunc = 'v:lua.vim.lsp.omnifunc'
 		end
+		if client:supports_method('textDocument/Hover') then
+			vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = 0 })
+		end
 	end,
 })
 
@@ -27,4 +30,5 @@ vim.b.undo_ftplugin = table.concat({
 	vim.b.undo_ftplugin or '',
 	'setl omnifunc< includeexpr< keywordprg< path< include<',
 	'delcommand -buffer LuaKeywordPrg',
+	'unmap <buffer> K'
 }, '\n')

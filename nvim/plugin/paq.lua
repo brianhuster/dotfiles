@@ -18,22 +18,23 @@ require('paq') {
 	{ 'echasnovski/mini.icons', config = function() require('mini.icons').setup() end }, -- Use by direx.nvim
 	{
 		"brianhuster/direx.nvim", config = function()
-			local previewer ---@type string
-			if vim.fn.executable('nvcat') == 1 then
-				previewer = [[nvcat -clean {}]]
-			elseif vim.fn.executable('bat') == 1 then
-				previewer = [[bat --style=numbers --color=always --paging=always --wrap=never --theme=ansi --pager=never --decorations=never {}]]
-			end
-			require('direx.config').set {
-				iconfunc = function(p)
-					local get = require('mini.icons').get
-					local icon, hl = get(p:sub(-1) == '/' and 'directory' or 'file', p)
-					icon = icon .. ' '
-					return { icon = icon, hl = hl }
-				end,
-				fzfprg = ("fzf --preview %s "):format(vim.fn.shellescape(previewer))
-			}
+		local previewer ---@type string
+		if vim.fn.executable('nvcat') == 1 then
+			previewer = [[nvcat -clean {}]]
+		elseif vim.fn.executable('bat') == 1 then
+			previewer =
+			[[bat --style=numbers --color=always --paging=always --wrap=never --theme=ansi --pager=never --decorations=never {}]]
 		end
+		require('direx.config').set {
+			iconfunc = function(p)
+				local get = require('mini.icons').get
+				local icon, hl = get(p:sub(-1) == '/' and 'directory' or 'file', p)
+				icon = icon .. ' '
+				return { icon = icon, hl = hl }
+			end,
+			fzfprg = ("fzf --preview %s "):format(vim.fn.shellescape(previewer))
+		}
+	end
 	},
 	'neovim/nvim-lspconfig',
 	'williamboman/mason.nvim',
@@ -110,7 +111,7 @@ require('paq') {
 	'f-person/git-blame.nvim',
 	'tpope/vim-fugitive',
 	'nvim-lua/plenary.nvim', -- dependency of many plugins
-	{ 'NeogitOrg/neogit',       opt = true },
+	{ 'NeogitOrg/neogit',            opt = true },
 	{
 		'echasnovski/mini.diff',
 		config = function()
@@ -219,11 +220,16 @@ require('paq') {
 			end)
 		end
 	},
-	'cohama/lexima.vim', -- Autopairs
+	{
+		'cohama/lexima.vim',
+		config = function()
+			vim.g.lexima_map_escape = ''
+		end
+	},
 	'brianhuster/nvim-treesitter-endwise',
 	{ 'windwp/nvim-ts-autotag', config = function() require('nvim-ts-autotag').setup() end },
 	'OXY2DEV/patterns.nvim',
-	{ 'folke/ts-comments.nvim',        config = function() require('ts-comments').setup() end },
+	{ 'folke/ts-comments.nvim', config = function() require('ts-comments').setup() end },
 	'lambdalisue/vim-suda',
 	'brianhuster/snipexec.nvim',
 	'uga-rosa/ccc.nvim',

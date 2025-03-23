@@ -68,57 +68,39 @@ function M.select(items, opts, on_choice)
 	vim.cmd.startinsert()
 	vim.wo[win].number = false
 
+	local comp_items = {} ---@type { word: string, user_data: string }[]
 	for i, _ in ipairs(items) do
-		items[i] = {
+		comp_items[i] = {
 			word = opts.format_item and opts.format_item(items[i]) or tostring(items[i]),
-			user_data = {
-				key = i,
-				item = items[i]
-			}
+			user_data = items[i]
 		}
 	end
 
-	---@param w integer
-	---@param b integer
-	local function close_picker(w, b)
-		api.nvim_win_close(w, true)
-		api.nvim_buf_delete(b, { force = true })
+	local function close_picker()
 		vim.cmd.stopinsert()
+		api.nvim_win_hide(win)
 	end
 
-	M.select_omnifunc = function(find_start, base)
-		if find_start == 1 then
-			return 0
-		end
-		if not base or base == "" then
-			return items
-		end
-		return vim.fn.matchfuzzy(items, base, { key = 'word' })
+	local function complete()
+		local line = vim.fn.getline('.')
+		if #vim.trim(line) == 0 then return vim.fn.complete(1, comp_items) end
+		vim.fn.complete(1, vim.fn.matchfuzzy(comp_items, line, { key = 'word' }))
 	end
-	vim.bo[buf].omnifunc = "v:lua.require'an'.select_omnifunc"
-	vim.bo[buf].completeopt = "menu,menuone,noinsert,noselect,popup"
 
-	vim.keymap.set('i', '<Esc>', function()
-		close_picker(win, buf)
-	end, { buffer = buf })
+	vim.bo[buf].completeopt = "menu,menuone,noinsert,noselect,popup,fuzzy"
 
-	api.nvim_feedkeys(vim.keycode("<C-x><C-o>"), "n", false)
+	vim.keymap.set({'n', 'i'}, '<Esc>', close_picker, { buffer = buf })
 
-	au("WinLeave", { buffer = buf, callback = function()
-		close_picker(win, buf)
-	end })
-	au("TextChangedI", { buffer = buf, callback = function()
-		api.nvim_feedkeys(vim.keycode("<C-x><C-o>"), "n", false)
-	end })
+	au("InsertEnter", { buffer = buf, callback = vim.schedule_wrap(complete) })
+	au("WinLeave", { buffer = buf, callback = close_picker })
+	au({"TextChangedI"}, { buffer = buf, callback = vim.schedule_wrap(complete) })
 	au("CompleteDonePre", { buffer = buf, callback = function()
-		if vim.v.completed_item == vim.empty_dict() then
-			return
-		end
-		close_picker(win, buf)
-		on_choice(vim.v.completed_item.user_data.item, vim.v.completed_item.user_data.key)
+		local selected = vim.fn.complete_info().selected
+		if selected == -1 then return complete() end
+		selected = selected + 1
+		close_picker()
+		on_choice(comp_items[selected].user_data, selected)
 	end })
 end
-
-M.select_omnifunc = nil ---@type fun(find_start: number, base: string): number|table
 
 return M
