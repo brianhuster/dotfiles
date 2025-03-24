@@ -26,10 +26,11 @@ set spelloptions=camel
 set spelllang=en
 set spell
 
+
 au InsertLeavePre,TextChanged,TextChangedP * if &modifiable && !&readonly | silent! write | endif
 au FocusGained,BufEnter * checktime
 
-au BufEnter * if &buftype == 'terminal' | startinsert | setl winheight=12 | else | setl winheight=100 | endif
+au BufEnter * if &buftype == 'terminal' | startinsert | setl winheight=12 | setl nospell |else | setl winheight=100 | endif
 au BufEnter *.png,*.jpg,*.jpeg,*.gif,*.webp call s:OpenImgBuf(expand('<amatch>'))
 
 " Key mappings

@@ -36,6 +36,12 @@ require('paq') {
 		}
 	end
 	},
+	{
+		'echasnovski/mini.animate',
+		config = function()
+			require('mini.animate').setup()
+		end
+	},
 	'neovim/nvim-lspconfig',
 	'williamboman/mason.nvim',
 	'echasnovski/mini.pick',
