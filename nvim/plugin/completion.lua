@@ -9,6 +9,7 @@ api.nvim_create_autocmd('InsertCharPre', {
 	end
 })
 
+
 if api.nvim_eval('&wildmode'):match('noselect') then
 	vim.api.nvim_create_autocmd('CmdlineChanged', {
 		pattern = ':',

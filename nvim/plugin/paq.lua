@@ -3,18 +3,7 @@ vim.g.loaded_netrwPlugin = 1
 vim.g.did_install_default_menus = 1
 vim.g.did_install_syntax_menu = 1
 
-if vim.fn.isdirectory(vim.fn.stdpath('data') .. '/site/pack/paqs/start/paq-nvim') == 0 then
-	vim.system(
-		{ 'git', 'clone', '--depth=1', '--branch=nightly', 'https://github.com/brianhuster/paq-nvim.git', vim.fn.stdpath(
-			'data') ..
-		'/site/pack/paqs/start/paq-nvim' }, {}, function(cmd)
-			print(cmd.stderr)
-			print(cmd.stdout)
-		end)
-end
-
 require('paq') {
-	{ 'brianhuster/paq-nvim',   branch = 'nightly' },
 	{ 'echasnovski/mini.icons', config = function() require('mini.icons').setup() end }, -- Use by direx.nvim
 	{
 		"brianhuster/direx.nvim", config = function()
@@ -39,7 +28,11 @@ require('paq') {
 	{
 		'echasnovski/mini.animate',
 		config = function()
-			require('mini.animate').setup()
+			require('mini.animate').setup {
+				scroll = {
+					enable = false
+				}
+			}
 		end
 	},
 	'neovim/nvim-lspconfig',
@@ -114,9 +107,8 @@ require('paq') {
 			require('indentmini').setup {}
 		end
 	},
-	'tpope/vim-fugitive',
 	'nvim-lua/plenary.nvim', -- dependency of many plugins
-	{ 'NeogitOrg/neogit',            opt = true },
+	'NeogitOrg/neogit',
 	{
 		'echasnovski/mini.diff',
 		config = function()
@@ -229,12 +221,12 @@ require('paq') {
 		'cohama/lexima.vim',
 		config = function()
 			vim.g.lexima_map_escape = ''
+			vim.g.lexima_enable_endwise_rules = 0
 		end
 	},
 	'brianhuster/nvim-treesitter-endwise',
 	{ 'windwp/nvim-ts-autotag', config = function() require('nvim-ts-autotag').setup() end },
 	'OXY2DEV/patterns.nvim',
-	{ 'folke/ts-comments.nvim', config = function() require('ts-comments').setup() end },
 	'lambdalisue/vim-suda',
 	'brianhuster/snipexec.nvim',
 	'uga-rosa/ccc.nvim',

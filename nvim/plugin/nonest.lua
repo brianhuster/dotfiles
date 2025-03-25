@@ -16,14 +16,16 @@ end
 
 api.nvim_create_autocmd('VimEnter', {
 	callback = function()
-		local bufs = api.nvim_list_bufs()
-		for i, buf in ipairs(bufs) do
-			if not api.nvim_buf_is_loaded(buf) then
-				return
-			end
-			vim.rpcnotify(chan, 'nvim_command', (i == 1 and '' or 'vsplit | ') .. 'edit ' .. api.nvim_buf_get_name(buf))
+		local bufname = api.nvim_buf_get_name(0)
+		local wins_num = vim.rpcrequest(chan, 'nvim_eval', 'len(nvim_list_wins())')
+		if wins_num == 1 then
+			vim.rpcrequest(chan, 'nvim_command', 'vsplit')
 		end
-		vim.fn.chanclose(chan)
-		vim.cmd 'quitall!'
+		vim.rpcrequest(chan, 'nvim_exec_lua', "vim.cmd.edit(...)", { bufname })
+		local parent_buf = vim.rpcrequest(chan, 'nvim_call_function', 'bufnr', { bufname })
+		vim.rpcrequest(chan, 'nvim_create_autocmd', { 'WinClosed', 'BufDelete', 'BufWipeOut', 'WinLeave' }, {
+			buffer = parent_buf,
+			command = ([[ silent! call rpcnotify(sockconnect('pipe', '%s', #{ rpc: v:true }), 'nvim_command', 'quitall!') ]]):format(vim.v.servername),
+		})
 	end,
 })
