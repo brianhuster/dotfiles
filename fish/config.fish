@@ -1,7 +1,7 @@
 if status is-interactive
     # Commands to run in interactive sessions can go here
     set -x OLLAMA_MODELS "/media/brianhuster/D/.ollama/models"
-    set -gx PATH $PATH /usr/local/go/bin /media/brianhuster/D/.android-studio/bin /home/brianhuster/go/bin
+    set -gx PATH $PATH /usr/local/go/bin /media/brianhuster/D/.android-studio/bin /home/brianhuster/go/bin /media/brianhuster/D/Android/Sdk/emulator
     set -gx EDITOR nvim
 end
 
