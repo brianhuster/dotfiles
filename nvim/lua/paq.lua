@@ -432,7 +432,7 @@ local function exe_op(op, fn, pkgs, silent)
         })
 
         -- This makes the logfile reload if there were changes while the job was running
-		vim.cmd.checktime { args = { vim.fn.fnameescape(Config.log) }, mods = { emgs_silent = true } }
+		vim.cmd.checktime { args = { vim.fn.fnameescape(Config.log) }, mods = { emsg_silent = true } }
     end
 
     local counter = new_counter(#pkgs, after)
@@ -570,6 +570,7 @@ for cmd_name, fn in pairs {
     PaqList = M.list,
     PaqLogOpen = M.log_open,
     PaqLogClean = M.log_clean,
+	PaqSync = M.sync,
 } do
     vim.api.nvim_create_user_command(cmd_name, fn, { bar = true })
 end
@@ -579,7 +580,6 @@ do
 	command('PaqUpdate', M.update, { bar = true, nargs = '?', complete = function()
 		return vim.tbl_keys(Packages)
 	end})
-	command("PaqSync", function() M:sync() end, { bar = true })
 	command("PaqBuild", function(a) run_build(Packages[a.args]) end, {
         bar = true,
         nargs = 1,
