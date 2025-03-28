@@ -470,7 +470,9 @@ function M.install() exe_op("install", clone, vim.tbl_filter(Filter.to_install, 
 ---hasn't been installed with |PaqInstall|, the function ignores it. If a
 ---package had changes and it has a `build` argument, then the `build` argument
 ---will be executed.
-function M.update() exe_op("update", pull, vim.tbl_filter(Filter.to_update, Packages)) end
+function M.update(opts) exe_op("update", pull,
+	vim.tbl_filter(opts.args and function(p) return p.name == opts.args end or Filter.to_update, Packages))
+end
 
 ---Removes packages found on |paq-dir| that aren't listed in your
 ---configuration.
@@ -564,7 +566,6 @@ setmetatable(M, meta)
 
 for cmd_name, fn in pairs {
     PaqInstall = M.install,
-    PaqUpdate = M.update,
     PaqClean = M.clean,
     PaqList = M.list,
     PaqLogOpen = M.log_open,
@@ -574,8 +575,12 @@ for cmd_name, fn in pairs {
 end
 
 do
-	vim.api.nvim_create_user_command("PaqSync", function() M:sync() end, { bar = true })
-    vim.api.nvim_create_user_command("PaqBuild", function(a) run_build(Packages[a.args]) end, {
+	local command = vim.api.nvim_create_user_command
+	command('PaqUpdate', M.update, { bar = true, nargs = '?', complete = function()
+		return vim.tbl_keys(Packages)
+	end})
+	command("PaqSync", function() M:sync() end, { bar = true })
+	command("PaqBuild", function(a) run_build(Packages[a.args]) end, {
         bar = true,
         nargs = 1,
         complete = function()
@@ -584,13 +589,13 @@ do
                 :totable()
         end,
     })
-    vim.api.nvim_create_user_command("PaqAdd", function(cmd)
-		load_plugin(Packages[cmd.args])
-    end, { bar = true, nargs = 1, complete = function()
-		return vim.iter(Packages)
-			:map(function(name, pkg) return not Filter.loaded(pkg) and name or nil end)
-			:totable()
-    end })
+    command("PaqAdd", function(cmd) load_plugin(Packages[cmd.args]) end, {
+		bar = true, nargs = 1, complete = function()
+			return vim.iter(Packages)
+				:map(function(name, pkg) return not Filter.loaded(pkg) and name or nil end)
+				:totable()
+    	end
+	})
 end
 
 return M
