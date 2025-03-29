@@ -3,7 +3,7 @@ vim.g.loaded_netrwPlugin = 1
 vim.g.did_install_default_menus = 1
 vim.g.did_install_syntax_menu = 1
 
-require('paq') {
+require 'plug' {
 	{ 'echasnovski/mini.icons', config = function() require('mini.icons').setup() end }, -- Use by direx.nvim
 	{
 		"brianhuster/direx.nvim", config = function()
@@ -27,13 +27,7 @@ require('paq') {
 	},
 	{
 		'echasnovski/mini.animate',
-		config = function()
-			require('mini.animate').setup {
-				scroll = {
-					enable = false
-				}
-			}
-		end
+		config = function() require('mini.animate').setup() end
 	},
 	'neovim/nvim-lspconfig',
 	'williamboman/mason.nvim',
@@ -248,7 +242,6 @@ require('paq') {
 		end
 	},
 	{ 'brianhuster/live-preview.nvim', opt = true },
-	'equalsraf/neovim-gui-shim',
 	{
 		'folke/which-key.nvim',
 		config = function()
@@ -333,9 +326,6 @@ require('paq') {
 	{ 'kristijanhusak/vim-dadbod-ui', config = function() vim.g.db_ui_use_nerd_fonts = 1 end },
 	'kristijanhusak/vim-dadbod-completion',
 }
-
-vim.cmd.PaqInstall()
-
 
 -- supermaven-nvim
 vim.api.nvim_create_autocmd('InsertEnter', {

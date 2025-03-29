@@ -1,8 +1,23 @@
 ---@alias Path string
 
-local uv = vim.uv
+---@class Package
+---@field name string
+---@field as string
+---@field branch string
+---@field config function
+---@field dir string
+---@field status Status
+---@field hash string
+---@field pin boolean
+---@field opt boolean
+---@field build string | function
+---@field url string
+---@field dependencies Package[]
 
----@class setup_opts
+local uv = vim.uv
+local command = vim.api.nvim_create_user_command
+
+---@class plug.Config
 ---@field path Path
 ---@field opt boolean
 ---@field verbose boolean
@@ -16,15 +31,15 @@ local Config = {
     clone_args = { "--depth=1", "--recurse-submodules", "--shallow-submodules", "--no-single-branch" },
     -- Using '--tags --force' means conflicting tags will be synced with remote
     pull_args = { "--tags", "--force", "--recurse-submodules", "--update-shallow" },
-    lock = vim.fs.joinpath(vim.fn.stdpath("data") --[[@as string]], "paq-lock.json"),
-    log = vim.fs.joinpath(vim.fn.stdpath("log") --[[@as string]], "paq.log"),
+    lock = vim.fs.joinpath(vim.fn.stdpath("data") --[[@as string]], "plug", "plug-lock.json"),
+    log = vim.fs.joinpath(vim.fn.stdpath("log") --[[@as string]], "plug.log"),
     opt = false,
-    path = vim.fs.joinpath(vim.fn.stdpath("data") --[[@as string]], "site", "pack", "paqs", "opt"),
+    path = vim.fs.joinpath(vim.fn.stdpath("data") --[[@as string]], "plug"),
     url_format = "https://github.com/%s.git",
     verbose = false,
 }
 
----@enum Messages
+---@enum plug.Messages
 local Messages = {
     install = { ok = "Installed", err = "Failed to install" },
     update = { ok = "Updated", err = "Failed to update", nop = "(up-to-date)" },
@@ -33,12 +48,11 @@ local Messages = {
 }
 
 local Lock = {}     -- Table of pgks loaded from the lockfile
-local Packages = {} -- Table of pkgs loaded from the user configuration
+local Pkgs = {} -- Table of pkgs loaded from the user configuration
 
 ---@enum Status
 local Status = {
-    INSTALLED = 0,
-    CLONED = 1,
+    INSTALLED = 1,
     UPDATED = 2,
     REMOVED = 3,
     TO_INSTALL = 4,
@@ -57,6 +71,19 @@ local Filter = {
     to_reclone  = function(p) return p.status == Status.TO_RECLONE end,
 }
 
+---@param name string
+---@param msg_op plug.Messages
+---@param result string
+---@param n integer?
+---@param total integer?
+local function report(name, msg_op, result, n, total)
+    local count = n and (" [%d/%d]"):format(n, total) or ""
+    vim.notify(
+        (" Paq:%s %s %s"):format(count, msg_op[result], name),
+        result == "err" and vim.log.levels.ERROR or vim.log.levels.INFO
+    )
+end
+
 local function file_write(path, flags, data)
     local err_msg = "Failed to %s '" .. path .. "'"
     local file = assert(uv.fs_open(path, flags, 0x1A4), err_msg:format("open"))
@@ -73,6 +100,26 @@ local function file_read(path)
     return data
 end
 
+---@param pkg Package
+---@param callback fun(pkg: Package)?
+local function run_build(pkg, callback)
+    local t = type(pkg.build)
+    if t == "function" then
+        local ok = pcall(pkg.build --[[@as function]])
+        report(pkg.name, Messages.build, ok and "ok" or "err")
+    elseif t == "string" and pkg.build:sub(1, 1) == ":" then
+        local ok = pcall(vim.cmd --[[@as function]], pkg.build)
+        report(pkg.name, Messages.build, ok and "ok" or "err")
+    elseif t == "string" then
+  		vim.system(
+			{ vim.o.shell, vim.o.shellcmdflag, pkg.build --[[@as string]] },
+			{ cwd = pkg.dir },
+			vim.schedule_wrap(function(obj) report(pkg.name, Messages.build, obj.code == 0 and "ok" or "err") end))
+    end
+	vim.cmd.helptags { args = { vim.fs.joinpath(pkg.dir, "doc") }, mods = { emsg_silent = true } }
+	if callback then callback(pkg) end
+end
+
 ---@return Package
 local function find_unlisted()
     local unlisted = {}
@@ -80,7 +127,7 @@ local function find_unlisted()
     for name, type in vim.fs.dir(path) do
         if type == "directory" and name ~= "paq-nvim" then
             local dir = vim.fs.joinpath(path, name)
-            local pkg = Packages[name]
+            local pkg = Pkgs[name]
             if not pkg or pkg.dir ~= dir then
                 table.insert(unlisted, { name = name, dir = dir })
             end
@@ -134,22 +181,10 @@ local function log_update_changes(pkg, prev_hash, cur_hash)
     )
 end
 
----@param name string
----@param msg_op Messages
----@param result string
----@param n integer?
----@param total integer?
-local function report(name, msg_op, result, n, total)
-    local count = n and (" [%d/%d]"):format(n, total) or ""
-    vim.notify(
-        (" Paq:%s %s %s"):format(count, msg_op[result], name),
-        result == "err" and vim.log.levels.ERROR or vim.log.levels.INFO
-    )
-end
-
 ---Object to track result of operations (installs, updates, etc.)
 ---@param total integer
 ---@param callback function
+---@return function
 local function new_counter(total, callback)
     local c = { ok = 0, err = 0, nop = 0 }
     return vim.schedule_wrap(function(name, msg_op, result)
@@ -169,7 +204,7 @@ end
 local function lock_write()
     -- remove run key since can have a function in it, and
     -- json.encode doesn't support functions
-    local pkgs = vim.deepcopy(Packages)
+    local pkgs = vim.deepcopy(Pkgs)
     for p, _ in pairs(pkgs) do
         pkgs[p].build = nil
         pkgs[p].config = nil
@@ -180,7 +215,7 @@ local function lock_write()
     end
     -- Ignore if fail
     pcall(file_write, Config.lock, "w", result)
-    Lock = Packages
+    Lock = Pkgs
 end
 
 local function lock_load()
@@ -188,35 +223,33 @@ local function lock_load()
     if exists then
         local ok, result = pcall(vim.json.decode, data)
         if ok then
-            Lock = not vim.tbl_isempty(result) and result or Packages
+            Lock = not vim.tbl_isempty(result) and result or Pkgs
             -- Repopulate 'build' key so 'vim.deep_equal' works
             for name, pkg in pairs(result) do
-                pkg.build = Packages[name] and Packages[name].build or nil
+                pkg.build = Pkgs[name] and Pkgs[name].build or nil
             end
         end
     else
         lock_write()
-        Lock = Packages
+        Lock = Pkgs
     end
 end
 
----@class Package
----@field name string
----@field as string
----@field branch string
----@field config function
----@field dir string
----@field status Status
----@field hash string
----@field pin boolean
----@field opt boolean
----@field build string | function
----@field url string
+---@param pkg Package
+local function load_plugin(pkg)
+	if Filter.loaded(pkg) then return end
+	vim.opt.rtp:prepend(pkg.dir)
+	if pkg.config then pkg.config() end
+	if not vim.v.vim_did_enter then return end
+	for _, file in ipairs(vim.fn.glob(vim.fs.joinpath(pkg.dir, "plugin/**/*.{vim,lua}"), true, true)) do
+		vim.cmd.source(file)
+	end
+	pkg.status = Status.LOADED
+end
 
 ---@param pkg Package
 ---@param counter function
----@param build_queue table
-local function clone(pkg, counter, build_queue)
+local function clone(pkg, counter)
     local args = vim.list_extend({ "git", "clone", pkg.url }, Config.clone_args)
     if pkg.branch then
         vim.list_extend(args, { "-b", pkg.branch })
@@ -225,11 +258,9 @@ local function clone(pkg, counter, build_queue)
     vim.system(args, {}, function(obj)
         local ok = obj.code == 0
         if ok then
-            pkg.status = Status.CLONED
+            pkg.status = Status.INSTALLED
             lock_write()
-            if pkg.build then
-                table.insert(build_queue, pkg)
-            end
+        	run_build(pkg, not pkg.opt and not Filter.loaded(pkg) and load_plugin or nil)
         end
         counter(pkg.name, Messages.install, ok and "ok" or "err")
     end)
@@ -237,8 +268,7 @@ end
 
 ---@param pkg Package
 ---@param counter function
----@param build_queue table
-local function pull(pkg, counter, build_queue)
+local function pull(pkg, counter)
     local prev_hash = Lock[pkg.name] and Lock[pkg.name].hash or pkg.hash
     vim.system(
         vim.list_extend({ "git", "pull" }, Config.pull_args),
@@ -262,50 +292,23 @@ local function pull(pkg, counter, build_queue)
             pkg.status, pkg.hash = Status.UPDATED, cur_hash
             lock_write()
             counter(pkg.name, Messages.update, "ok")
-            if pkg.build then
-                table.insert(build_queue, pkg)
-            end
+			run_build(pkg, not pkg.opt and not Filter.loaded(pkg) and load_plugin or nil)
         end
     )
 end
 
 ---@param pkg Package
 ---@param counter function
----@param build_queue table
-local function clone_or_pull(pkg, counter, build_queue)
+local function clone_or_pull(pkg, counter)
     if Filter.to_update(pkg) then
-        pull(pkg, counter, build_queue)
+        pull(pkg, counter)
     elseif Filter.to_install(pkg) then
-        clone(pkg, counter, build_queue)
+        clone(pkg, counter)
     end
 end
 
 ---@param pkg Package
-local function run_build(pkg)
-    local t = type(pkg.build)
-    if t == "function" then
-        ---@diagnostic disable-next-line: param-type-mismatch
-        local ok = pcall(pkg.build)
-        report(pkg.name, Messages.build, ok and "ok" or "err")
-    elseif t == "string" and pkg.build:sub(1, 1) == ":" then
-        ---@diagnostic disable-next-line: param-type-mismatch
-        local ok = pcall(vim.cmd, pkg.build)
-        report(pkg.name, Messages.build, ok and "ok" or "err")
-    elseif t == "string" then
-        local args = {}
-        for word in pkg.build:gmatch("%S+") do
-            table.insert(args, word)
-        end
-        vim.system(
-            args,
-            { cwd = pkg.dir },
-            vim.schedule_wrap(function(obj) report(pkg.name, Messages.build, obj.code == 0 and "ok" or "err") end)
-        )
-    end
-end
-
----@param pkg Package
-local function reclone(pkg, _, build_queue)
+local function reclone(pkg)
     local ok = rm(pkg.dir)
     if not ok then
         return
@@ -320,35 +323,24 @@ local function reclone(pkg, _, build_queue)
             pkg.status = Status.INSTALLED
             pkg.hash = get_git_hash(pkg.dir)
             lock_write()
-            if pkg.build then
-                table.insert(build_queue, pkg)
-            end
+			run_build(pkg, not pkg.opt and not Filter.loaded(pkg) and load_plugin or nil)
         end
     end)
 end
 
-local function resolve(pkg, counter, build_queue)
+---@param pkg Package
+local function resolve(pkg)
     if Filter.to_reclone(pkg) then
-        reclone(Packages[pkg.name], counter, build_queue)
+        reclone(Pkgs[pkg.name])
+	elseif not pkg.opt and not Filter.loaded(pkg) then
+		load_plugin(pkg)
     end
 end
 
----@param pkg Package
-local function load_plugin(pkg)
-	if Filter.loaded(pkg) then return end
-	vim.opt.rtp:prepend(pkg.dir)
-	if pkg.config then pkg.config() end
-	if not vim.v.vim_did_enter then return end
-	for _, file in ipairs(vim.fn.glob(vim.fs.joinpath(pkg.dir, "plugin/**/*.{vim,lua}"), true, true)) do
-		vim.cmd.source(file)
-	end
-	pkg.status = Status.LOADED
-end
-
----@param pkg Package
+---@param pkg string|{ [1]: string, branch?: string, as?: string, config?: function, build?: string|function, opt?: boolean, pin?: boolean, url?: string }
 local function register(pkg)
     if type(pkg) == "string" then
-        pkg = { pkg } ---@diagnostic disable-line: missing-fields
+        pkg = { pkg }
     end
 
     local url = pkg.url
@@ -363,7 +355,7 @@ local function register(pkg)
     local dir = vim.fs.joinpath(Config.path, name)
     local ok, hash = pcall(get_git_hash, dir)
 
-    Packages[name] = {
+    Pkgs[name] = {
         name = name,
         branch = pkg.branch,
         config = pkg.config,
@@ -375,7 +367,7 @@ local function register(pkg)
         url = url,
         opt = opt
     }
-	return Packages[name]
+	return Pkgs[name]
 end
 
 ---@param pkg Package
@@ -384,7 +376,7 @@ local function remove(pkg, counter)
     local ok = rm(pkg.dir)
     counter(pkg.name, Messages.remove, ok and "ok" or "err")
     if ok then
-        Packages[pkg.name] = { name = pkg.name, status = Status.REMOVED }
+        Pkgs[pkg.name] = { name = pkg.name, status = Status.REMOVED }
         lock_write()
     end
 end
@@ -392,7 +384,6 @@ end
 ---@alias Operation
 ---| '"install"'
 ---| '"update"'
----| '"config"'
 ---| '"remove"'
 ---| '"build"'
 ---| '"resolve"'
@@ -402,61 +393,46 @@ end
 ---@param op Operation
 ---@param fn function
 ---@param pkgs Package[]
----@param silent boolean?
-local function exe_op(op, fn, pkgs, silent)
+---@param opts? { silent: boolean? }
+local function exe_op(op, fn, pkgs, opts)
+	opts = opts or {}
+	local silent = opts.silent or false
     if vim.tbl_isempty(pkgs) then
         if not silent then
-            vim.notify(" Paq: Nothing to " .. op)
+            vim.notify(" Plug: Nothing to " .. op)
         end
 
         vim.api.nvim_exec_autocmds("User", {
-            pattern = "PaqDone" .. op:gsub("^%l", string.upper),
+            pattern = "PlugDone" .. op:gsub("^%l", string.upper),
         })
         return
     end
 
-    local build_queue = {}
-
     local function after(ok, err, nop)
-        local summary = " Paq: %s complete. %d ok; %d errors;" .. (nop > 0 and " %d no-ops" or "")
+        local summary = " Plug: %s complete. %d ok; %d errors;" .. (nop > 0 and " %d no-ops" or "")
         vim.notify(string.format(summary, op, ok, err, nop))
-		vim.iter(vim.fn.glob(vim.fs.joinpath(Config.path, "*", "doc"), true, true)):each(function(doc)
-			vim.cmd.helptags { args = { doc }, mods = { emsg_silent = true } }
-		end)
-        if #build_queue ~= 0 then
-            exe_op("build", run_build, build_queue)
-        end
 
-        vim.api.nvim_exec_autocmds("User", {
-            pattern = "PaqDone" .. op:gsub("^%l", string.upper),
-        })
+        vim.api.nvim_exec_autocmds("User", { pattern = "PlugDone" .. op:gsub("^%l", string.upper), })
 
         -- This makes the logfile reload if there were changes while the job was running
 		vim.cmd.checktime { args = { vim.fn.fnameescape(Config.log) }, mods = { emsg_silent = true } }
     end
 
     local counter = new_counter(#pkgs, after)
-
-    vim.iter(pkgs):each(function(pkg) fn(pkg, counter, build_queue) end)
+	vim.iter(pkgs):each(function(pkg) fn(pkg, counter) end)
 end
 
 local function calculate_diffs()
-    local diffs = {}
     for name, lock_pkg in pairs(Lock) do
-        local pack_pkg = Packages[name]
+        local pack_pkg = Pkgs[name]
         if pack_pkg and Filter.not_removed(lock_pkg) and not vim.deep_equal(lock_pkg, pack_pkg) then
-            for k, v in pairs {
-                branch = Status.TO_RECLONE,
-                url = Status.TO_RECLONE,
-            } do
-                if lock_pkg[k] ~= pack_pkg[k] then
-                    lock_pkg.status = v
-                    table.insert(diffs, lock_pkg)
-                end
-            end
+			vim.iter { 'branch', 'url' }:each(function(k)
+				if lock_pkg[k] ~= pack_pkg[k] then
+					Pkgs[name].status = Status.TO_RECLONE
+				end
+			end)
         end
     end
-    return diffs
 end
 
 local M = {}
@@ -464,14 +440,15 @@ local M = {}
 ---Installs all packages listed in your configuration. If a package is already
 ---installed, the function ignores it. If a package has a `build` argument,
 ---it'll be executed after the package is installed.
-function M.install() exe_op("install", clone, vim.tbl_filter(Filter.to_install, Packages)) end
+function M.install() exe_op("install", clone, vim.tbl_filter(Filter.to_install, Pkgs)) end
 
 ---Updates the installed packages listed in your configuration. If a package
 ---hasn't been installed with |PaqInstall|, the function ignores it. If a
 ---package had changes and it has a `build` argument, then the `build` argument
 ---will be executed.
-function M.update(opts) exe_op("update", pull,
-	vim.tbl_filter(opts.args and function(p) return p.name == opts.args end or Filter.to_update, Packages))
+---@param name string?
+function M.update(name)
+	exe_op("update", pull, name and { Pkgs[name] } or vim.tbl_filter(Filter.to_update, Pkgs))
 end
 
 ---Removes packages found on |paq-dir| that aren't listed in your
@@ -483,10 +460,10 @@ function M.clean() exe_op("remove", remove, find_unlisted()) end
 ---out of order.
 function M.sync()
     M.clean()
-    exe_op("sync", clone_or_pull, vim.tbl_filter(Filter.not_removed, Packages))
+    exe_op("sync", clone_or_pull, vim.tbl_filter(Filter.not_removed, Pkgs))
 end
 
----@param opts setup_opts
+---@param opts plug.Config
 function M.config(opts)
 	vim.tbl_deep_extend("force", Config, opts)
 end
@@ -502,7 +479,7 @@ function M.query(filter)
     if not Filter[filter] then
         error(string.format("No filter with name: %q", filter))
     end
-    return vim.deepcopy(vim.tbl_filter(Filter[filter], Packages))
+    return vim.deepcopy(vim.tbl_filter(Filter[filter], Pkgs))
 end
 
 function M.list()
@@ -544,7 +521,7 @@ local meta = {}
 ---When the element is a table, the first value has to be a string with the
 ---name of the repository, like: `'<GitHub-username>/<repository-name>'`.
 ---The other key-value pairs in the table have to be named explicitly, see
----|paq-options|. When the element is a string, it works as if it was the first
+---|plug-options|. When the element is a string, it works as if it was the first
 ---value of the table, and all other options will be set to their default
 ---values.
 ---
@@ -552,50 +529,51 @@ local meta = {}
 ---function, so you can always call `paq` without parentheses.
 ---See |luaref-langFuncCalls|.
 function meta:__call(pkgs)
-    Packages = {}
+    Pkgs = {}
     pkgs = vim.tbl_map(register, pkgs)
     lock_load()
-    exe_op("resolve", resolve, calculate_diffs(), true)
-	vim.iter(pkgs):each(function(p)
-		if not p.opt and not Filter.loaded(p) then load_plugin(p) end
-	end)
+	calculate_diffs()
+    exe_op("resolve", resolve, pkgs, { silent = true })
     return self
 end
 
 setmetatable(M, meta)
 
-for cmd_name, fn in pairs {
-    PaqInstall = M.install,
-    PaqClean = M.clean,
-    PaqList = M.list,
-    PaqLogOpen = M.log_open,
-    PaqLogClean = M.log_clean,
-	PaqSync = M.sync,
-} do
-    vim.api.nvim_create_user_command(cmd_name, fn, { bar = true })
+---@param L string
+---@return string
+function M.cmdline_complete(_, L, _)
+	local subcommands = { 'install', 'clean', 'list', 'log', 'cleanlog', 'sync', 'update', 'build', 'add' }
+	local subcommand = vim.split(L, ' ')[2]
+	if not vim.split(L, ' ')[3] then
+		return table.concat(subcommands, '\n')
+	else
+		if subcommand == 'update' then
+			return table.concat(vim.tbl_keys(Pkgs), '\n')
+		elseif subcommand == 'build' then
+			return table.concat(vim.iter(Pkgs):map(function(name, pkg) return pkg.build and name or nil end):totable(), '\n')
+		elseif subcommand == 'add' then
+			return table.concat(vim.iter(Pkgs):map(function(name, pkg) return not Filter.loaded(pkg) and name or nil end):totable(), '\n')
+		else
+			return ''
+		end
+	end
 end
 
-do
-	local command = vim.api.nvim_create_user_command
-	command('PaqUpdate', M.update, { bar = true, nargs = '?', complete = function()
-		return vim.tbl_keys(Packages)
-	end})
-	command("PaqBuild", function(a) run_build(Packages[a.args]) end, {
-        bar = true,
-        nargs = 1,
-        complete = function()
-            return vim.iter(Packages)
-                :map(function(name, pkg) return pkg.build and name or nil end)
-                :totable()
-        end,
-    })
-    command("PaqAdd", function(cmd) load_plugin(Packages[cmd.args]) end, {
-		bar = true, nargs = 1, complete = function()
-			return vim.iter(Packages)
-				:map(function(name, pkg) return not Filter.loaded(pkg) and name or nil end)
-				:totable()
-    	end
-	})
+if not _G.loaded_plug then
+	_G.loaded_plug = true
+	command("Plug", function(cmd)
+		local fargs = cmd.fargs
+		if fargs[1] == 'install' then M.install()
+		elseif fargs[1] == 'clean' then M.clean()
+		elseif fargs[1] == 'list' then M.list()
+		elseif fargs[1] == 'log' then M.log_open()
+		elseif fargs[1] == 'cleanlog' then M.log_clean()
+		elseif fargs[1] == 'sync' then M.sync()
+		elseif fargs[1] == 'update' then M.update(fargs[2])
+		elseif fargs[1] == 'build' then M.build(fargs[2])
+		elseif fargs[1] == 'add' then load_plugin(Pkgs[fargs[2]])
+		end
+	end, { bar = true, nargs = '+', complete = "custom,v:lua.require'plug'.cmdline_complete" })
 end
 
 return M

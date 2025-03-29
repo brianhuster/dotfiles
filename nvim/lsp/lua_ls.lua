@@ -1,7 +1,7 @@
 return {
 	cmd = { 'lua-language-server' },
 	filetypes = { 'lua' },
-	rootdir = require('an.lua').find_root,
+	root_markers = { 'lua' },
 	settings = {
 		Lua = {
 			runtime = {
