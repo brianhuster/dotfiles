@@ -4,26 +4,29 @@ vim.g.did_install_default_menus = 1
 vim.g.did_install_syntax_menu = 1
 
 require 'plug' {
-	{ 'echasnovski/mini.icons', config = function() require('mini.icons').setup() end }, -- Use by direx.nvim
 	{
-		"brianhuster/direx.nvim", config = function()
-		local previewer ---@type string
-		if vim.fn.executable('nvcat') == 1 then
-			previewer = [[nvcat -clean {}]]
-		elseif vim.fn.executable('bat') == 1 then
-			previewer =
-			[[bat --style=numbers --color=always --paging=always --wrap=never --theme=ansi --pager=never --decorations=never {}]]
+		"brianhuster/direx.nvim",
+		dependencies = {
+			{ 'echasnovski/mini.icons', config = function() require('mini.icons').setup() end }
+		},
+		config = function()
+			local previewer ---@type string
+			if vim.fn.executable('nvcat') == 1 then
+				previewer = [[nvcat -clean {}]]
+			elseif vim.fn.executable('bat') == 1 then
+				previewer =
+				[[bat --style=numbers --color=always --paging=always --wrap=never --theme=ansi --pager=never --decorations=never {}]]
+			end
+			require('direx.config').set {
+				iconfunc = function(p)
+					local get = require('mini.icons').get
+					local icon, hl = get(p:sub(-1) == '/' and 'directory' or 'file', p)
+					icon = icon .. ' '
+					return { icon = icon, hl = hl }
+				end,
+				fzfprg = ("fzf --preview %s "):format(vim.fn.shellescape(previewer))
+			}
 		end
-		require('direx.config').set {
-			iconfunc = function(p)
-				local get = require('mini.icons').get
-				local icon, hl = get(p:sub(-1) == '/' and 'directory' or 'file', p)
-				icon = icon .. ' '
-				return { icon = icon, hl = hl }
-			end,
-			fzfprg = ("fzf --preview %s "):format(vim.fn.shellescape(previewer))
-		}
-	end
 	},
 	{
 		'echasnovski/mini.animate',
@@ -67,8 +70,10 @@ require 'plug' {
 			end,
 		}
 	end },
-	'tpope/vim-repeat', -- dependency of vim-surround
-	'tpope/vim-surround',
+	{
+		'tpope/vim-surround',
+		dependencies = { 'tpope/vim-repeat' },
+	},
 	'mg979/vim-visual-multi',
 	-- 'christoomey/vim-tmux-navigator',
 	{
@@ -297,8 +302,9 @@ require 'plug' {
 		end
 	},
 	'MunifTanjim/nui.nvim',
-	'HakonHarnes/img-clip.nvim', -- avante dependencies
-	{ 'yetone/avante.nvim', build = 'make', opt = true,
+	{
+		'yetone/avante.nvim', build = 'make', opt = true,
+		dependencies = { 'HakonHarnes/img-clip.nvim' },
 		config = function()
 			require('avante').setup {
 				provider = "copilot",

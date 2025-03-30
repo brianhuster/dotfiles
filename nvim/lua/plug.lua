@@ -12,9 +12,20 @@
 ---@field opt boolean
 ---@field build string | function
 ---@field url string
----@field dependencies Package[]
+---@field dependencies string[]
 
-local uv = vim.uv
+---@class plug.Declaration
+---@field [1] string
+---@field branch? string
+---@field as? string
+---@field config? function
+---@field build? string|function
+---@field opt? boolean
+---@field pin? boolean
+---@field url? string
+---@field dependencies? table<string|plug.Declaration>
+
+local uv, iter = vim.uv, vim.iter
 local command = vim.api.nvim_create_user_command
 
 ---@class plug.Config
@@ -26,6 +37,7 @@ local command = vim.api.nvim_create_user_command
 ---@field url_format string
 ---@field clone_args string[]
 ---@field pull_args string[]
+---@field dependencies plug.Config[]
 local Config = {
     -- stylua: ignore
     clone_args = { "--depth=1", "--recurse-submodules", "--shallow-submodules", "--no-single-branch" },
@@ -57,7 +69,8 @@ local Status = {
     REMOVED = 3,
     TO_INSTALL = 4,
     TO_RECLONE = 5,
-	LOADED = 6
+	BUILT = 6,
+	LOADED = 7
 }
 
 -- stylua: ignore
@@ -66,6 +79,7 @@ local Filter = {
     not_removed = function(p) return p.status ~= Status.REMOVED end,
     removed     = function(p) return p.status == Status.REMOVED end,
 	loaded		= function(p) return p.status == Status.LOADED end,
+	built       = function(p) return p.status == Status.BUILT end,
     to_install  = function(p) return p.status == Status.TO_INSTALL end,
     to_update   = function(p) return p.status ~= Status.REMOVED and p.status ~= Status.TO_INSTALL and not p.pin end,
     to_reclone  = function(p) return p.status == Status.TO_RECLONE end,
@@ -84,6 +98,9 @@ local function report(name, msg_op, result, n, total)
     )
 end
 
+---@param path string
+---@param flags string
+---@param data string
 local function file_write(path, flags, data)
     local err_msg = "Failed to %s '" .. path .. "'"
     local file = assert(uv.fs_open(path, flags, 0x1A4), err_msg:format("open"))
@@ -91,6 +108,8 @@ local function file_write(path, flags, data)
     assert(uv.fs_close(file), err_msg:format("close"))
 end
 
+---@param path string
+---@return string
 local function file_read(path)
     local err_msg = "Failed to %s '" .. path .. "'"
     local file = assert(uv.fs_open(path, "r", 0x1A4), err_msg:format("open"))
@@ -103,12 +122,16 @@ end
 ---@param pkg Package
 ---@param callback fun(pkg: Package)?
 local function run_build(pkg, callback)
-    local t = type(pkg.build)
+	if Filter.built(pkg) then return end
+	if pkg.dependencies then
+		iter(pkg.dependencies):each(function(dep) run_build(Pkgs[dep], callback) end)
+	end
+    local t, ok = type(pkg.build), false
     if t == "function" then
-        local ok = pcall(pkg.build --[[@as function]])
+        ok = pcall(pkg.build --[[@as function]])
         report(pkg.name, Messages.build, ok and "ok" or "err")
     elseif t == "string" and pkg.build:sub(1, 1) == ":" then
-        local ok = pcall(vim.cmd --[[@as function]], pkg.build)
+        ok = pcall(vim.cmd --[[@as function]], pkg.build)
         report(pkg.name, Messages.build, ok and "ok" or "err")
     elseif t == "string" then
   		vim.system(
@@ -117,6 +140,7 @@ local function run_build(pkg, callback)
 			vim.schedule_wrap(function(obj) report(pkg.name, Messages.build, obj.code == 0 and "ok" or "err") end))
     end
 	vim.cmd.helptags { args = { vim.fs.joinpath(pkg.dir, "doc") }, mods = { emsg_silent = true } }
+	if ok then pkg.status = Status.BUILT end
 	if callback then callback(pkg) end
 end
 
@@ -238,6 +262,9 @@ end
 ---@param pkg Package
 local function load_plugin(pkg)
 	if Filter.loaded(pkg) then return end
+	if pkg.dependencies then
+		iter(pkg.dependencies):each(function(dep) load_plugin(Pkgs[dep]) end)
+	end
 	vim.opt.rtp:prepend(pkg.dir)
 	if pkg.config then pkg.config() end
 	if not vim.v.vim_did_enter then return end
@@ -340,17 +367,18 @@ local function resolve(pkg, counter)
     end
 end
 
----@param pkg string|{ [1]: string, branch?: string, as?: string, config?: function, build?: string|function, opt?: boolean, pin?: boolean, url?: string }
+---@param pkg string|plug.Declaration
+---@return Package?
 local function register(pkg)
-    if type(pkg) == "string" then
-        pkg = { pkg }
-    end
+	pkg = type(pkg) == "string" and { pkg } or pkg
+	if pkg.dependencies then
+		vim.validate('pkg.dependencies', pkg.dependencies, vim.islist, 'a list')
+	end
 
-    local url = pkg.url
-        or (pkg[1]:match("^https?://") and pkg[1])                      -- [1] is a URL
-        or string.format(Config.url_format, pkg[1])                     -- [1] is a repository name
+	local url = (pkg[1]:match("^https?://") and pkg[1])            -- [1] is a URL
+		or Config.url_format:format(pkg[1])                        -- [1] is a repository name
 
-    local name = pkg.as or url:gsub("%.git$", ""):match("/([%w-_.]+)$") -- Infer name from `url`
+    local name = pkg.as or vim.fs.basename(url:gsub("%.git$", "")) -- Infer name from `url`
     if not name then
         return vim.notify(" Plug: Failed to parse " .. vim.inspect(pkg), vim.log.levels.ERROR)
     end
@@ -358,10 +386,14 @@ local function register(pkg)
     local dir = vim.fs.joinpath(Config.path, name)
     local ok, hash = pcall(get_git_hash, dir)
 
+	if not Pkgs[name] then Pkgs[name] = {} end
+
     Pkgs[name] = {
         name = name,
         branch = pkg.branch,
         config = pkg.config,
+		dependencies = pkg.dependencies and
+			vim.tbl_map(function(dep) return register(dep).name end, pkg.dependencies),
         dir = dir,
         status = uv.fs_stat(dir) and Status.INSTALLED or Status.TO_INSTALL,
         hash = ok and hash or "",
@@ -422,14 +454,14 @@ local function exe_op(op, fn, pkgs, opts)
     end
 
     local counter = new_counter(#pkgs, after)
-	vim.iter(pkgs):each(function(pkg) fn(pkg, counter) end)
+	iter(pkgs):each(function(pkg) fn(pkg, counter) end)
 end
 
 local function calculate_diffs()
     for name, lock_pkg in pairs(Lock) do
         local pack_pkg = Pkgs[name]
         if pack_pkg and Filter.not_removed(lock_pkg) and not vim.deep_equal(lock_pkg, pack_pkg) then
-			vim.iter { 'branch', 'url' }:each(function(k)
+			iter { 'branch', 'url' }:each(function(k)
 				if lock_pkg[k] ~= pack_pkg[k] then
 					Pkgs[name].status = Status.TO_RECLONE
 				end
@@ -478,7 +510,7 @@ end
 --- - "to_update"
 ---@param filter string
 function M.query(filter)
-    vim.validate { filter = { filter, { "string" } } }
+	vim.validate('filter', filter, 'string')
     if not Filter[filter] then
         error(string.format("No filter with name: %q", filter))
     end
@@ -518,20 +550,9 @@ end
 
 local meta = {}
 
----The `paq` module is itself a callable object. It takes as argument a list of
----packages. Each element of the list can be a table or a string.
----
----When the element is a table, the first value has to be a string with the
----name of the repository, like: `'<GitHub-username>/<repository-name>'`.
----The other key-value pairs in the table have to be named explicitly, see
----|plug-options|. When the element is a string, it works as if it was the first
----value of the table, and all other options will be set to their default
----values.
----
----Note: Lua can elide parentheses when passing a single table argument to a
----function, so you can always call `paq` without parentheses.
----See |luaref-langFuncCalls|.
+---@param pkgs table<string|plug.Declaration>
 function meta:__call(pkgs)
+	vim.validate('pkgs', pkgs, vim.islist, 'a list')
     Pkgs = {}
     pkgs = vim.tbl_map(register, pkgs)
     lock_load()
@@ -553,9 +574,9 @@ function M.cmdline_complete(_, L, _)
 		if subcommand == 'update' then
 			return table.concat(vim.tbl_keys(Pkgs), '\n')
 		elseif subcommand == 'build' then
-			return table.concat(vim.iter(Pkgs):map(function(name, pkg) return pkg.build and name or nil end):totable(), '\n')
+			return table.concat(iter(Pkgs):map(function(name, pkg) return pkg.build and name or nil end):totable(), '\n')
 		elseif subcommand == 'add' then
-			return table.concat(vim.iter(Pkgs):map(function(name, pkg) return not Filter.loaded(pkg) and name or nil end):totable(), '\n')
+			return table.concat(iter(Pkgs):map(function(name, pkg) return not Filter.loaded(pkg) and name or nil end):totable(), '\n')
 		else
 			return ''
 		end
