@@ -79,7 +79,7 @@ local Filter = {
 local function report(name, msg_op, result, n, total)
     local count = n and (" [%d/%d]"):format(n, total) or ""
     vim.notify(
-        (" Paq:%s %s %s"):format(count, msg_op[result], name),
+        (" Plug:%s %s %s"):format(count, msg_op[result], name),
         result == "err" and vim.log.levels.ERROR or vim.log.levels.INFO
     )
 end
@@ -183,7 +183,7 @@ end
 
 ---Object to track result of operations (installs, updates, etc.)
 ---@param total integer
----@param callback function
+---@param callback function?
 ---@return function
 local function new_counter(total, callback)
     local c = { ok = 0, err = 0, nop = 0 }
@@ -195,7 +195,7 @@ local function new_counter(total, callback)
             end
         end
 
-        if c.ok + c.err + c.nop == total then
+        if callback and c.ok + c.err + c.nop == total then
             callback(c.ok, c.err, c.nop)
         end
     end)
@@ -260,7 +260,7 @@ local function clone(pkg, counter)
         if ok then
             pkg.status = Status.INSTALLED
             lock_write()
-        	run_build(pkg, not pkg.opt and not Filter.loaded(pkg) and load_plugin or nil)
+        	vim.schedule(function() run_build(pkg, not pkg.opt and not Filter.loaded(pkg) and load_plugin or nil) end)
         end
         counter(pkg.name, Messages.install, ok and "ok" or "err")
     end)
@@ -292,7 +292,7 @@ local function pull(pkg, counter)
             pkg.status, pkg.hash = Status.UPDATED, cur_hash
             lock_write()
             counter(pkg.name, Messages.update, "ok")
-			run_build(pkg, not pkg.opt and not Filter.loaded(pkg) and load_plugin or nil)
+			vim.schedule(function() run_build(pkg, not pkg.opt and not Filter.loaded(pkg) and load_plugin or nil) end)
         end
     )
 end
@@ -323,15 +323,18 @@ local function reclone(pkg)
             pkg.status = Status.INSTALLED
             pkg.hash = get_git_hash(pkg.dir)
             lock_write()
-			run_build(pkg, not pkg.opt and not Filter.loaded(pkg) and load_plugin or nil)
+			vim.schedule(function() run_build(pkg, not pkg.opt and not Filter.loaded(pkg) and load_plugin or nil) end)
         end
     end)
 end
 
 ---@param pkg Package
-local function resolve(pkg)
+---@param counter function
+local function resolve(pkg, counter)
     if Filter.to_reclone(pkg) then
         reclone(Pkgs[pkg.name])
+	elseif Filter.to_install(pkg) then
+		clone(pkg, counter)
 	elseif not pkg.opt and not Filter.loaded(pkg) then
 		load_plugin(pkg)
     end
@@ -349,7 +352,7 @@ local function register(pkg)
 
     local name = pkg.as or url:gsub("%.git$", ""):match("/([%w-_.]+)$") -- Infer name from `url`
     if not name then
-        return vim.notify(" Paq: Failed to parse " .. vim.inspect(pkg), vim.log.levels.ERROR)
+        return vim.notify(" Plug: Failed to parse " .. vim.inspect(pkg), vim.log.levels.ERROR)
     end
     local opt = pkg.opt or Config.opt and pkg.opt == nil
     local dir = vim.fs.joinpath(Config.path, name)
@@ -510,7 +513,7 @@ function M.log_open()
 end
 
 function M.log_clean()
-    return assert(uv.fs_unlink(Config.log)) and vim.notify(" Paq: log file deleted")
+    return assert(uv.fs_unlink(Config.log)) and vim.notify(" Plug: log file deleted")
 end
 
 local meta = {}

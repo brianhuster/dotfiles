@@ -28,6 +28,9 @@ if !has('python3')
 	endif
 endif
 
+unlet! skip_defaults_vim
+source $VIMRUNTIME/defaults.vim
+
 nnoremap Y y$
 xnoremap Y y$
 
