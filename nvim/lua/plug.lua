@@ -1,6 +1,7 @@
 ---@alias Path string
+---@alias plug.Dependencies table<string|plug.Declaration>
 
----@class Package
+---@class plug.Package
 ---@field name string
 ---@field as string
 ---@field branch string
@@ -23,21 +24,21 @@
 ---@field opt? boolean
 ---@field pin? boolean
 ---@field url? string
----@field dependencies? table<string|plug.Declaration>
+---@field dependencies? plug.Dependencies
 
 local uv, iter = vim.uv, vim.iter
 local command = vim.api.nvim_create_user_command
 
 ---@class plug.Config
----@field path Path
----@field opt boolean
----@field verbose boolean
----@field log Path
----@field lock Path
----@field url_format string
----@field clone_args string[]
----@field pull_args string[]
----@field dependencies plug.Config[]
+---@field path Path?
+---@field opt boolean?
+---@field verbose boolean?
+---@field log Path?
+---@field lock Path?
+---@field url_format string?
+---@field clone_args string[]?
+---@field pull_args string[]?
+---@field ensure_installed plug.Dependencies?
 local Config = {
     -- stylua: ignore
     clone_args = { "--depth=1", "--recurse-submodules", "--shallow-submodules", "--no-single-branch" },
@@ -119,8 +120,8 @@ local function file_read(path)
     return data
 end
 
----@param pkg Package
----@param callback fun(pkg: Package)?
+---@param pkg plug.Package
+---@param callback fun(pkg: plug.Package)?
 local function run_build(pkg, callback)
 	if Filter.built(pkg) then return end
 	if pkg.dependencies then
@@ -144,7 +145,7 @@ local function run_build(pkg, callback)
 	if callback then callback(pkg) end
 end
 
----@return Package
+---@return plug.Package
 local function find_unlisted()
     local unlisted = {}
     local path = Config.path
@@ -182,7 +183,7 @@ local function rm(path)
 	return vim.fn.delete(path, recursive and "rf" or nil) == 0
 end
 
----@param pkg Package
+---@param pkg plug.Package
 ---@param prev_hash string
 ---@param cur_hash string
 local function log_update_changes(pkg, prev_hash, cur_hash)
@@ -259,7 +260,7 @@ local function lock_load()
     end
 end
 
----@param pkg Package
+---@param pkg plug.Package
 local function load_plugin(pkg)
 	if Filter.loaded(pkg) then return end
 	if pkg.dependencies then
@@ -274,7 +275,7 @@ local function load_plugin(pkg)
 	pkg.status = Status.LOADED
 end
 
----@param pkg Package
+---@param pkg plug.Package
 ---@param counter function
 local function clone(pkg, counter)
     local args = vim.list_extend({ "git", "clone", pkg.url }, Config.clone_args)
@@ -293,7 +294,7 @@ local function clone(pkg, counter)
     end)
 end
 
----@param pkg Package
+---@param pkg plug.Package
 ---@param counter function
 local function pull(pkg, counter)
     local prev_hash = Lock[pkg.name] and Lock[pkg.name].hash or pkg.hash
@@ -324,7 +325,7 @@ local function pull(pkg, counter)
     )
 end
 
----@param pkg Package
+---@param pkg plug.Package
 ---@param counter function
 local function clone_or_pull(pkg, counter)
     if Filter.to_update(pkg) then
@@ -334,7 +335,7 @@ local function clone_or_pull(pkg, counter)
     end
 end
 
----@param pkg Package
+---@param pkg plug.Package
 local function reclone(pkg)
     local ok = rm(pkg.dir)
     if not ok then
@@ -355,7 +356,7 @@ local function reclone(pkg)
     end)
 end
 
----@param pkg Package
+---@param pkg plug.Package
 ---@param counter function
 local function resolve(pkg, counter)
     if Filter.to_reclone(pkg) then
@@ -368,7 +369,7 @@ local function resolve(pkg, counter)
 end
 
 ---@param pkg string|plug.Declaration
----@return Package?
+---@return plug.Package?
 local function register(pkg)
 	pkg = type(pkg) == "string" and { pkg } or pkg
 	if pkg.dependencies then
@@ -405,7 +406,7 @@ local function register(pkg)
 	return Pkgs[name]
 end
 
----@param pkg Package
+---@param pkg plug.Package
 ---@param counter function
 local function remove(pkg, counter)
     local ok = rm(pkg.dir)
@@ -427,7 +428,7 @@ end
 ---Boilerplate around operations (autocmds, counter initialization, etc.)
 ---@param op Operation
 ---@param fn function
----@param pkgs Package[]
+---@param pkgs plug.Package[]
 ---@param opts? { silent: boolean? }
 local function exe_op(op, fn, pkgs, opts)
 	opts = opts or {}
@@ -499,8 +500,16 @@ function M.sync()
 end
 
 ---@param opts plug.Config
-function M.config(opts)
+function M.setup(opts)
 	vim.tbl_deep_extend("force", Config, opts)
+	if opts.ensure_installed then
+		local pkgs = opts.ensure_installed
+		vim.validate('pkgs', pkgs, vim.islist, 'a list')
+		pkgs = vim.tbl_map(register, pkgs)
+		lock_load()
+		calculate_diffs()
+		exe_op("resolve", resolve, pkgs, { silent = true })
+	end
 end
 
 ---Queries paq's packages storage with predefined
@@ -547,21 +556,6 @@ end
 function M.log_clean()
     return assert(uv.fs_unlink(Config.log)) and vim.notify(" Plug: log file deleted")
 end
-
-local meta = {}
-
----@param pkgs table<string|plug.Declaration>
-function meta:__call(pkgs)
-	vim.validate('pkgs', pkgs, vim.islist, 'a list')
-    Pkgs = {}
-    pkgs = vim.tbl_map(register, pkgs)
-    lock_load()
-	calculate_diffs()
-    exe_op("resolve", resolve, pkgs, { silent = true })
-    return self
-end
-
-setmetatable(M, meta)
 
 ---@param L string
 ---@return string
