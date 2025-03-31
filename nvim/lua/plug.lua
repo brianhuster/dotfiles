@@ -48,7 +48,7 @@ local Config = {
     log = vim.fs.joinpath(vim.fn.stdpath("log") --[[@as string]], "plug.log"),
     opt = false,
     path = vim.fs.joinpath(vim.fn.stdpath("data") --[[@as string]], "plug"),
-    url_format = "https://github.com/%s.git",
+    url_format = 'https://%s.git',
     verbose = false,
 }
 
@@ -462,11 +462,11 @@ local function calculate_diffs()
     for name, lock_pkg in pairs(Lock) do
         local pack_pkg = Pkgs[name]
         if pack_pkg and Filter.not_removed(lock_pkg) and not vim.deep_equal(lock_pkg, pack_pkg) then
-			iter { 'branch', 'url' }:each(function(k)
-				if lock_pkg[k] ~= pack_pkg[k] then
-					Pkgs[name].status = Status.TO_RECLONE
-				end
-			end)
+			-- iter { 'branch', 'url' }:each(function(k)
+			-- 	if lock_pkg[k] ~= pack_pkg[k] then
+			-- 		Pkgs[name].status = Status.TO_RECLONE
+			-- 	end
+			-- end)
         end
     end
 end
@@ -501,7 +501,7 @@ end
 
 ---@param opts plug.Config
 function M.setup(opts)
-	vim.tbl_deep_extend("force", Config, opts)
+	Config = vim.tbl_deep_extend("force", Config, opts)
 	if opts.ensure_installed then
 		local pkgs = opts.ensure_installed
 		vim.validate('pkgs', pkgs, vim.islist, 'a list')
@@ -596,4 +596,4 @@ end
 
 return M
 
--- vim: foldmethod=marker
+-- vim: fothod=marker
