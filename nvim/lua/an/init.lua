@@ -44,7 +44,7 @@ function M.select(items, opts, on_choice)
 	local width = 0
 	local au = api.nvim_create_autocmd
 
-	for _, item in ipairs(items) do
+	for _, item in ipairs(vim.list_extend(items, { title })) do
 		local item_text = tostring(opts.format_item and opts.format_item(item) or item)
 		width = math.max(width, #item_text)
 	end
