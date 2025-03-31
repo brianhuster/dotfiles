@@ -1,4 +1,4 @@
-# neovim-config
+#  neovim-config
 
 Support Neovim nightly
 

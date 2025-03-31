@@ -1,4 +1,4 @@
-vim.env.EDITOR = vim.v.progpath .. ' --clean -u ' .. vim.fn.shellescape(vim.fn.expand(vim.fn.expand('<script>')))
+vim.env.EDITOR = table.concat(vim.tbl_map(function(a) return vim.fn.shellescape(a) end, vim.v.argv))
 
 if not vim.env.NVIM then
 	return
