@@ -179,6 +179,11 @@ local function rm(path)
 	return vim.fn.delete(path, recursive and "rf" or nil) == 0
 end
 
+---@param data string
+local function write_log(data)
+	file_write(Config.log, "a+", ('%s %s'):format(os.date("%Y-%m-%d %H:%M:%S"), data))
+end
+
 ---@param pkg plug.Package
 ---@param prev_hash string
 ---@param cur_hash string
@@ -193,11 +198,11 @@ local function log_update_changes(pkg, prev_hash, cur_hash)
 					obj.code,
 					obj.stderr
 				)
-				file_write(Config.log, "a+", msg)
+				write_log(msg)
 				return
 			end
 			local output = ("\n%s updated:\n%s\n"):format(pkg.name, obj.stdout)
-			file_write(Config.log, "a+", output)
+			write_log(output)
 		end
 	)
 end
@@ -301,7 +306,7 @@ local function pull(pkg, counter)
 			if obj.code ~= 0 then
 				counter(pkg.name, Messages.update, "err")
 				local errmsg = ("\nFailed to update %s:\n%s\n"):format(pkg.name, obj.stderr)
-				file_write(Config.log, "a+", errmsg)
+				write_log(errmsg)
 				return
 			end
 			local cur_hash = get_git_hash(pkg.dir)
@@ -319,16 +324,6 @@ local function pull(pkg, counter)
 			vim.schedule(function() run_build(pkg, not pkg.opt and not Filter.loaded(pkg) and load_plugin or nil) end)
 		end
 	)
-end
-
----@param pkg plug.Package
----@param counter function
-local function clone_or_pull(pkg, counter)
-	if Filter.to_update(pkg) then
-		pull(pkg, counter)
-	elseif Filter.to_install(pkg) then
-		clone(pkg, counter)
-	end
 end
 
 ---@param pkg plug.Package
@@ -419,7 +414,6 @@ end
 ---| '"remove"'
 ---| '"build"'
 ---| '"resolve"'
----| '"sync"'
 
 ---Boilerplate around operations (autocmds, counter initialization, etc.)
 ---@param op Operation
@@ -486,14 +480,6 @@ end
 ---Removes packages found on |paq-dir| that aren't listed in your
 ---configuration.
 function M.clean() exe_op("remove", remove, find_unlisted()) end
-
----Executes |paq.clean|, |paq.update|, and |paq.install|. Note that all
----paq operations are performed asynchronously, so messages might be printed
----out of order.
-function M.sync()
-	M.clean()
-	exe_op("sync", clone_or_pull, vim.tbl_filter(Filter.not_removed, Pkgs))
-end
 
 ---@param opts plug.Config
 function M.setup(opts)
@@ -587,8 +573,6 @@ if not _G.loaded_plug then
 			M.log_open()
 		elseif fargs[1] == 'cleanlog' then
 			M.log_clean()
-		elseif fargs[1] == 'sync' then
-			M.sync()
 		elseif fargs[1] == 'update' then
 			M.update(fargs[2])
 		elseif fargs[1] == 'build' then
