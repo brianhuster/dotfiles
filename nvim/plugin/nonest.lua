@@ -1,4 +1,4 @@
-vim.env.EDITOR = vim.v.progpath
+vim.env.EDITOR = vim.v.progpath .. ' --clean -u ' .. vim.fn.shellescape(vim.fn.expand(vim.fn.expand('<script>')))
 
 if not vim.env.NVIM then
 	return
@@ -19,13 +19,14 @@ api.nvim_create_autocmd('VimEnter', {
 		local bufname = api.nvim_buf_get_name(0)
 		local wins_num = vim.rpcrequest(chan, 'nvim_eval', 'len(nvim_list_wins())')
 		if wins_num == 1 then
-			vim.rpcrequest(chan, 'nvim_command', 'vsplit')
+			vim.rpcnotify(chan, 'nvim_command', 'vsplit')
 		end
-		vim.rpcrequest(chan, 'nvim_exec_lua', "vim.cmd.edit(...)", { bufname })
+		vim.rpcnotify(chan, 'nvim_exec_lua', "vim.cmd.edit(...)", { bufname })
 		local parent_buf = vim.rpcrequest(chan, 'nvim_call_function', 'bufnr', { bufname })
-		vim.rpcrequest(chan, 'nvim_create_autocmd', { 'WinClosed', 'BufDelete', 'BufWipeOut', 'WinLeave' }, {
+		vim.rpcnotify(chan, 'nvim_create_autocmd', { 'WinClosed', 'BufDelete', 'BufWipeOut', 'WinLeave' }, {
 			buffer = parent_buf,
-			command = ([[ silent! call rpcnotify(sockconnect('pipe', '%s', #{ rpc: v:true }), 'nvim_command', 'quitall!') ]]):format(vim.v.servername),
+			command = ([[ call rpcnotify(sockconnect('pipe', '%s', #{ rpc: v:true }), 'nvim_command', 'quitall!') ]])
+				:format(vim.v.servername),
 		})
 	end,
 })
