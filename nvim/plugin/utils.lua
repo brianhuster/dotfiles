@@ -5,6 +5,15 @@ command('GitBlameLine', function()
 	print(vim.fn.system { 'git', 'blame', '-L', vim.fn.line('.') .. ',+1', api.nvim_buf_get_name(0) })
 end, {})
 
+command('GitDiffHead', function()
+	local git_root = vim.fs.root(0, '.git')
+	if not git_root then
+		return vim.notify('Not a git repository', vim.log.levels.ERROR)
+	end
+	local path = vim.fs.relpath(git_root, api.nvim_buf_get_name(0))
+	vim.cmd(('tabedit %% | diffthis | vertical new | diffthis | read! git show HEAD^:%s'):format(path))
+end, { nargs = 0 })
+
 command('Sh', function(opts)
 	vim.cmd.term(opts.args)
 end, {

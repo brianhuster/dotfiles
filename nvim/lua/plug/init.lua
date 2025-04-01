@@ -318,6 +318,7 @@ local function resolve(pkg, opts)
 	if Filter.to_reclone(pkg) then
 		if rm(pkg.dir) then clone(pkg, to_load and load_plugin or nil) end
 	elseif Filter.to_install(pkg) then
+		
 		clone(pkg, to_load and load_plugin or nil)
 	else
 		if to_load then load_plugin(pkg) end
