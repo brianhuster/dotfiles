@@ -31,7 +31,6 @@ local command = vim.api.nvim_create_user_command
 
 ---@class plug.Config
 ---@field path Path?
----@field opt boolean?
 ---@field verbose boolean?
 ---@field log Path?
 ---@field lock Path?
@@ -47,7 +46,6 @@ local Config = {
 	pull_args = { "--tags", "--force", "--recurse-submodules", "--update-shallow" },
 	lock = vim.fs.joinpath(vim.fn.stdpath("data") --[[@as string]], "plug", "plug-lock.json"),
 	log = vim.fs.joinpath(vim.fn.stdpath("log") --[[@as string]], "plug.log"),
-	opt = false,
 	path = vim.fs.joinpath(vim.fn.stdpath("data") --[[@as string]], "plug"),
 	url_format = 'https://%s.git',
 	verbose = false,
@@ -81,7 +79,7 @@ local Filter = {
 	not_removed = function(p) return p.status ~= Status.REMOVED end,
 	removed     = function(p) return p.status == Status.REMOVED end,
 	loaded      = function(p) return p.status == Status.LOADED end,
-	built       = function(p) return p.status == Status.BUILT end,
+	built       = function(p) return p.status == Status.BUILT or p.status == Status.LOADED end,
 	to_install  = function(p) return p.status == Status.TO_INSTALL end,
 	to_update   = function(p) return p.status ~= Status.REMOVED and p.status ~= Status.TO_INSTALL and not p.pin end,
 	to_reclone  = function(p) return p.status == Status.TO_RECLONE end,
@@ -89,14 +87,10 @@ local Filter = {
 
 ---@param name string
 ---@param msg_op plug.Messages
----@param result string
----@param n integer?
----@param total integer?
-local function report(name, msg_op, result, n, total)
-	local count = n and (" [%d/%d]"):format(n, total) or ""
+---@param result 'ok'|'err'|'nop'
+local function report(name, msg_op, result)
 	vim.notify(
-		(" Plug:%s %s %s"):format(count, msg_op[result], name),
-		result == "err" and vim.log.levels.ERROR or vim.log.levels.INFO
+		("Plug: %s %s"):format(msg_op[result], name, vim.log.levels[result == 'err' and 'ERROR' or 'INFO'])
 	)
 end
 
@@ -207,26 +201,6 @@ local function log_update_changes(pkg, prev_hash, cur_hash)
 	)
 end
 
----Object to track result of operations (installs, updates, etc.)
----@param total integer
----@param callback function?
----@return function
-local function new_counter(total, callback)
-	local c = { ok = 0, err = 0, nop = 0 }
-	return vim.schedule_wrap(function(name, msg_op, result)
-		if c.ok + c.err + c.nop < total then
-			c[result] = c[result] + 1
-			if result ~= "nop" or Config.verbose then
-				report(name, msg_op, result, c.ok + c.nop, total)
-			end
-		end
-
-		if callback and c.ok + c.err + c.nop == total then
-			callback(c.ok, c.err, c.nop)
-		end
-	end)
-end
-
 local function lock_write()
 	-- remove run key since can have a function in it, and
 	-- json.encode doesn't support functions
@@ -277,8 +251,7 @@ local function load_plugin(pkg)
 end
 
 ---@param pkg plug.Package
----@param counter function
-local function clone(pkg, counter)
+local function clone(pkg)
 	local args = vim.list_extend({ "git", "clone", pkg.url }, Config.clone_args)
 	if pkg.branch then
 		vim.list_extend(args, { "-b", pkg.branch })
@@ -291,20 +264,18 @@ local function clone(pkg, counter)
 			lock_write()
 			vim.schedule(function() run_build(pkg, not pkg.opt and not Filter.loaded(pkg) and load_plugin or nil) end)
 		end
-		counter(pkg.name, Messages.install, ok and "ok" or "err")
 	end)
 end
 
 ---@param pkg plug.Package
----@param counter function
-local function pull(pkg, counter)
+local function pull(pkg)
 	local prev_hash = Lock[pkg.name] and Lock[pkg.name].hash or pkg.hash
 	vim.system(
 		vim.list_extend({ "git", "pull" }, Config.pull_args),
 		{ cwd = pkg.dir },
 		function(obj)
 			if obj.code ~= 0 then
-				counter(pkg.name, Messages.update, "err")
+				report(pkg.name, Messages.update, 'err')
 				local errmsg = ("\nFailed to update %s:\n%s\n"):format(pkg.name, obj.stderr)
 				write_log(errmsg)
 				return
@@ -314,13 +285,13 @@ local function pull(pkg, counter)
 			-- Thus the pkg.hash is left blank and we need to update it.
 			if cur_hash == prev_hash or prev_hash == "" then
 				pkg.hash = cur_hash
-				counter(pkg.name, Messages.update, "nop")
+				report(pkg.name, Messages.update, 'nop')
 				return
 			end
 			log_update_changes(pkg, prev_hash, cur_hash)
 			pkg.status, pkg.hash = Status.UPDATED, cur_hash
 			lock_write()
-			counter(pkg.name, Messages.update, "ok")
+			report(pkg.name, Messages.update, 'ok')
 			vim.schedule(function() run_build(pkg, not pkg.opt and not Filter.loaded(pkg) and load_plugin or nil) end)
 		end
 	)
@@ -348,12 +319,14 @@ local function reclone(pkg)
 end
 
 ---@param pkg plug.Package
----@param counter function
-local function resolve(pkg, counter)
+local function resolve(pkg)
+	if pkg.dependencies then
+		iter(pkg.dependencies):each(function(dep) resolve(Pkgs[dep]) end)
+	end
 	if Filter.to_reclone(pkg) then
 		reclone(Pkgs[pkg.name])
 	elseif Filter.to_install(pkg) then
-		clone(pkg, counter)
+		clone(pkg)
 	elseif not pkg.opt and not Filter.loaded(pkg) then
 		load_plugin(pkg)
 	end
@@ -374,11 +347,16 @@ local function register(pkg)
 	if not name then
 		return vim.notify(" Plug: Failed to parse " .. vim.inspect(pkg), vim.log.levels.ERROR)
 	end
-	local opt = pkg.opt or Config.opt and pkg.opt == nil
 	local dir = vim.fs.joinpath(Config.path, name)
 	local ok, hash = pcall(get_git_hash, dir)
 
 	if not Pkgs[name] then Pkgs[name] = {} end
+
+	if Pkgs[name].branch and pkg.branch ~= Pkgs[name].branch then
+		vim.notify(('Conflicting branch of package %s (%s vs %s)'):format(name, Pkgs[name].branch, pkg.branch),
+			vim.log.levels.ERROR)
+		return
+	end
 
 	Pkgs[name] = {
 		name = name,
@@ -392,16 +370,15 @@ local function register(pkg)
 		pin = pkg.pin,
 		build = pkg.build,
 		url = url,
-		opt = opt
+		opt = pkg.opt
 	}
 	return Pkgs[name]
 end
 
 ---@param pkg plug.Package
----@param counter function
-local function remove(pkg, counter)
+local function remove(pkg)
 	local ok = rm(pkg.dir)
-	counter(pkg.name, Messages.remove, ok and "ok" or "err")
+	report(pkg.name, Messages.remove, ok and 'ok' or 'err')
 	if ok then
 		Pkgs[pkg.name] = { name = pkg.name, status = Status.REMOVED }
 		lock_write()
@@ -427,25 +404,10 @@ local function exe_op(op, fn, pkgs, opts)
 		if not silent then
 			vim.notify(" Plug: Nothing to " .. op)
 		end
-
-		vim.api.nvim_exec_autocmds("User", {
-			pattern = "PlugDone" .. op:gsub("^%l", string.upper),
-		})
 		return
 	end
 
-	local function after(ok, err, nop)
-		local summary = " Plug: %s complete. %d ok; %d errors;" .. (nop > 0 and " %d no-ops" or "")
-		vim.notify(string.format(summary, op, ok, err, nop))
-
-		vim.api.nvim_exec_autocmds("User", { pattern = "PlugDone" .. op:gsub("^%l", string.upper), })
-
-		-- This makes the logfile reload if there were changes while the job was running
-		vim.cmd.checktime { args = { vim.fn.fnameescape(Config.log) }, mods = { emsg_silent = true } }
-	end
-
-	local counter = new_counter(#pkgs, after)
-	iter(pkgs):each(function(pkg) fn(pkg, counter) end)
+	iter(pkgs):each(function(pkg) fn(pkg) end)
 end
 
 local function calculate_diffs()
@@ -474,7 +436,15 @@ function M.install() exe_op("install", clone, vim.tbl_filter(Filter.to_install, 
 ---will be executed.
 ---@param name string?
 function M.update(name)
-	exe_op("update", pull, name and { Pkgs[name] } or vim.tbl_filter(Filter.to_update, Pkgs))
+	if not name then
+		exe_op("update", pull, vim.tbl_filter(Filter.to_update, Pkgs))
+	else
+		local deps = Pkgs[name].dependencies
+		if deps then
+			iter(deps):each(function(d) M.update(d[name]) end)
+		end
+		pull(Pkgs[name])
+	end
 end
 
 ---Removes packages found on |paq-dir| that aren't listed in your
