@@ -10,10 +10,11 @@
 ---@field status Status
 ---@field hash string
 ---@field pin boolean
----@field opt boolean
+---@field optional boolean
 ---@field build string | function
 ---@field url string
 ---@field dependencies string[]
+---@field condition boolean|fun():boolean
 
 ---@class plug.Declaration
 ---@field [1] string
@@ -21,12 +22,13 @@
 ---@field as? string
 ---@field config? function
 ---@field build? string|function
----@field opt? boolean
+---@field optional? boolean
 ---@field pin? boolean
 ---@field url? string
 ---@field dependencies? plug.Dependencies
+---@field condition? boolean|fun():boolean
 
-local uv, iter = vim.uv, vim.iter
+local uv, iter, M = vim.uv, vim.iter, {}
 local command = vim.api.nvim_create_user_command
 
 ---@class plug.Config
@@ -60,17 +62,17 @@ local Messages = {
 }
 
 local Lock = {} -- Table of pgks loaded from the lockfile
-local Pkgs = {} -- Table of pkgs loaded from the user configuration
+M.Pkgs = {} -- Table of pkgs loaded from the user configuration
 
 ---@enum Status
 local Status = {
-	INSTALLED = 1,
-	UPDATED = 2,
-	REMOVED = 3,
-	TO_INSTALL = 4,
-	TO_RECLONE = 5,
-	BUILT = 6,
-	LOADED = 7
+	INSTALLED = 'installed',
+	UPDATED = 'updated',
+	REMOVED = 'removed',
+	TO_INSTALL = 'to install',
+	TO_RECLONE = 'to reclone',
+	BUILT = 'built',
+	LOADED = 'loaded',
 }
 
 -- stylua: ignore
@@ -115,7 +117,7 @@ end
 local function run_build(pkg, callback)
 	if Filter.built(pkg) then return end
 	if pkg.dependencies then
-		iter(pkg.dependencies):each(function(dep) run_build(Pkgs[dep], callback) end)
+		iter(pkg.dependencies):each(function(dep) run_build(M.Pkgs[dep], callback) end)
 	end
 	local t, ok = type(pkg.build), false
 	if t == "function" then
@@ -142,7 +144,7 @@ local function find_unlisted()
 	for name, type in vim.fs.dir(path) do
 		if type == "directory" and name ~= "paq-nvim" then
 			local dir = vim.fs.joinpath(path, name)
-			local pkg = Pkgs[name]
+			local pkg = M.Pkgs[name]
 			if not pkg or pkg.dir ~= dir then
 				table.insert(unlisted, { name = name, dir = dir })
 			end
@@ -204,7 +206,7 @@ end
 local function lock_write()
 	-- remove run key since can have a function in it, and
 	-- json.encode doesn't support functions
-	local pkgs = vim.deepcopy(Pkgs)
+	local pkgs = vim.deepcopy(M.Pkgs)
 	for p, _ in pairs(pkgs) do
 		pkgs[p].build = nil
 		pkgs[p].config = nil
@@ -215,7 +217,7 @@ local function lock_write()
 	end
 	-- Ignore if fail
 	pcall(file_write, Config.lock, "w", result)
-	Lock = Pkgs
+	Lock = M.Pkgs
 end
 
 local function lock_load()
@@ -223,23 +225,26 @@ local function lock_load()
 	if exists then
 		local ok, result = pcall(vim.json.decode, data)
 		if ok then
-			Lock = not vim.tbl_isempty(result) and result or Pkgs
+			Lock = not vim.tbl_isempty(result) and result or M.Pkgs
 			-- Repopulate 'build' key so 'vim.deep_equal' works
 			for name, pkg in pairs(result) do
-				pkg.build = Pkgs[name] and Pkgs[name].build or nil
+				pkg.build = M.Pkgs[name] and M.Pkgs[name].build or nil
 			end
 		end
 	else
 		lock_write()
-		Lock = Pkgs
+		Lock = M.Pkgs
 	end
 end
 
 ---@param pkg plug.Package
 local function load_plugin(pkg)
+	if pkg.name == 'img-clip.nvim' then
+		debug.debug()
+	end
 	if Filter.loaded(pkg) then return end
 	if pkg.dependencies then
-		iter(pkg.dependencies):each(function(dep) load_plugin(Pkgs[dep]) end)
+		iter(pkg.dependencies):each(function(dep) load_plugin(M.Pkgs[dep]) end)
 	end
 	vim.opt.rtp:prepend(pkg.dir)
 	if pkg.config then pkg.config() end
@@ -251,7 +256,8 @@ local function load_plugin(pkg)
 end
 
 ---@param pkg plug.Package
-local function clone(pkg)
+---@param callback fun(plug.Package)?
+local function clone(pkg, callback)
 	local args = vim.list_extend({ "git", "clone", pkg.url }, Config.clone_args)
 	if pkg.branch then
 		vim.list_extend(args, { "-b", pkg.branch })
@@ -261,8 +267,9 @@ local function clone(pkg)
 		local ok = obj.code == 0
 		if ok then
 			pkg.status = Status.INSTALLED
+			pkg.hash = get_git_hash(pkg.dir)
 			lock_write()
-			vim.schedule(function() run_build(pkg, not pkg.opt and not Filter.loaded(pkg) and load_plugin or nil) end)
+			vim.schedule(function() run_build(pkg, callback) end)
 		end
 	end)
 end
@@ -292,50 +299,34 @@ local function pull(pkg)
 			pkg.status, pkg.hash = Status.UPDATED, cur_hash
 			lock_write()
 			report(pkg.name, Messages.update, 'ok')
-			vim.schedule(function() run_build(pkg, not pkg.opt and not Filter.loaded(pkg) and load_plugin or nil) end)
+			vim.schedule(function() run_build(pkg) end)
 		end
 	)
 end
 
 ---@param pkg plug.Package
-local function reclone(pkg)
-	local ok = rm(pkg.dir)
-	if not ok then
-		return
-	end
-	local args = vim.list_extend({ "git", "clone", pkg.url }, Config.clone_args)
-	if pkg.branch then
-		vim.list_extend(args, { "-b", pkg.branch })
-	end
-	table.insert(args, pkg.dir)
-	vim.system(args, {}, function(obj)
-		if obj.code == 0 then
-			pkg.status = Status.INSTALLED
-			pkg.hash = get_git_hash(pkg.dir)
-			lock_write()
-			vim.schedule(function() run_build(pkg, not pkg.opt and not Filter.loaded(pkg) and load_plugin or nil) end)
-		end
-	end)
-end
-
----@param pkg plug.Package
-local function resolve(pkg)
+local function resolve(pkg, noload)
+	local to_load = not noload and not pkg.optional
 	if pkg.dependencies then
-		iter(pkg.dependencies):each(function(dep) resolve(Pkgs[dep]) end)
+		iter(pkg.dependencies):each(function(dep) resolve(M.Pkgs[dep], pkg.optional) end)
 	end
 	if Filter.to_reclone(pkg) then
-		reclone(Pkgs[pkg.name])
+		if rm(pkg.dir) then clone(pkg, to_load and load_plugin or nil) end
 	elseif Filter.to_install(pkg) then
-		clone(pkg)
-	elseif not pkg.opt and not Filter.loaded(pkg) then
-		load_plugin(pkg)
+		clone(pkg, to_load and to_load or nil)
+	else
+		if to_load then load_plugin(pkg) end
 	end
 end
 
 ---@param pkg string|plug.Declaration
----@return plug.Package?
+---@return plug.Package|{}
 local function register(pkg)
 	pkg = type(pkg) == "string" and { pkg } or pkg
+	local check = pkg.condition == nil and true or pkg.condition
+	check = type(check) == "function" and check() or check
+	if not check then return {} end
+
 	if pkg.dependencies then
 		vim.validate('pkg.dependencies', pkg.dependencies, vim.islist, 'a list')
 	end
@@ -345,34 +336,35 @@ local function register(pkg)
 
 	local name = pkg.as or vim.fs.basename(url:gsub("%.git$", "")) -- Infer name from `url`
 	if not name then
-		return vim.notify(" Plug: Failed to parse " .. vim.inspect(pkg), vim.log.levels.ERROR)
+		vim.notify(" Plug: Failed to parse " .. vim.inspect(pkg), vim.log.levels.ERROR)
+		return {}
 	end
 	local dir = vim.fs.joinpath(Config.path, name)
 	local ok, hash = pcall(get_git_hash, dir)
 
-	if not Pkgs[name] then Pkgs[name] = {} end
+	if not M.Pkgs[name] then M.Pkgs[name] = {} end
 
-	if Pkgs[name].branch and pkg.branch ~= Pkgs[name].branch then
-		vim.notify(('Conflicting branch of package %s (%s vs %s)'):format(name, Pkgs[name].branch, pkg.branch),
+	if M.Pkgs[name].branch and pkg.branch ~= M.Pkgs[name].branch then
+		vim.notify(('Conflicting branch of package %s (%s vs %s)'):format(name, M.Pkgs[name].branch, pkg.branch),
 			vim.log.levels.ERROR)
-		return
+		return {}
 	end
 
-	Pkgs[name] = {
+	M.Pkgs[name] = {
 		name = name,
 		branch = pkg.branch,
 		config = pkg.config,
 		dependencies = pkg.dependencies and
-			vim.tbl_map(function(dep) return register(dep).name end, pkg.dependencies),
+			vim.tbl_map(function(d) return register(d).name or nil end, pkg.dependencies) or nil,
 		dir = dir,
 		status = uv.fs_stat(dir) and Status.INSTALLED or Status.TO_INSTALL,
 		hash = ok and hash or "",
 		pin = pkg.pin,
 		build = pkg.build,
 		url = url,
-		opt = pkg.opt
+		optional = pkg.optional
 	}
-	return Pkgs[name]
+	return M.Pkgs[name]
 end
 
 ---@param pkg plug.Package
@@ -380,20 +372,15 @@ local function remove(pkg)
 	local ok = rm(pkg.dir)
 	report(pkg.name, Messages.remove, ok and 'ok' or 'err')
 	if ok then
-		Pkgs[pkg.name] = { name = pkg.name, status = Status.REMOVED }
+		M.Pkgs[pkg.name] = { name = pkg.name, status = Status.REMOVED }
 		lock_write()
 	end
 end
 
----@alias Operation
----| '"install"'
----| '"update"'
----| '"remove"'
----| '"build"'
----| '"resolve"'
+---@alias plug.Operation 'install'|'update'|'remove'|'resolve'
 
 ---Boilerplate around operations (autocmds, counter initialization, etc.)
----@param op Operation
+---@param op plug.Operation
 ---@param fn function
 ---@param pkgs plug.Package[]
 ---@param opts? { silent: boolean? }
@@ -412,23 +399,21 @@ end
 
 local function calculate_diffs()
 	for name, lock_pkg in pairs(Lock) do
-		local pack_pkg = Pkgs[name]
+		local pack_pkg = M.Pkgs[name]
 		if pack_pkg and Filter.not_removed(lock_pkg) and not vim.deep_equal(lock_pkg, pack_pkg) then
 			iter { 'branch', 'url' }:each(function(k)
 				if lock_pkg[k] ~= pack_pkg[k] then
-					Pkgs[name].status = Status.TO_RECLONE
+					M.Pkgs[name].status = Status.TO_RECLONE
 				end
 			end)
 		end
 	end
 end
 
-local M = {}
-
 ---Installs all packages listed in your configuration. If a package is already
 ---installed, the function ignores it. If a package has a `build` argument,
 ---it'll be executed after the package is installed.
-function M.install() exe_op("install", clone, vim.tbl_filter(Filter.to_install, Pkgs)) end
+function M.install() exe_op("install", clone, vim.tbl_filter(Filter.to_install, M.Pkgs)) end
 
 ---Updates the installed packages listed in your configuration. If a package
 ---hasn't been installed with |PaqInstall|, the function ignores it. If a
@@ -437,13 +422,13 @@ function M.install() exe_op("install", clone, vim.tbl_filter(Filter.to_install, 
 ---@param name string?
 function M.update(name)
 	if not name then
-		exe_op("update", pull, vim.tbl_filter(Filter.to_update, Pkgs))
+		exe_op("update", pull, vim.tbl_filter(Filter.to_update, M.Pkgs))
 	else
-		local deps = Pkgs[name].dependencies
+		local deps = M.Pkgs[name].dependencies
 		if deps then
 			iter(deps):each(function(d) M.update(d[name]) end)
 		end
-		pull(Pkgs[name])
+		pull(M.Pkgs[name])
 	end
 end
 
@@ -460,48 +445,13 @@ function M.setup(opts)
 		pkgs = vim.tbl_map(register, pkgs)
 		lock_load()
 		calculate_diffs()
-		exe_op("resolve", resolve, pkgs, { silent = true })
-	end
-end
-
----Queries paq's packages storage with predefined
----filters by passing one of the following strings:
---- - "installed"
---- - "to_install"
---- - "to_update"
----@param filter string
-function M.query(filter)
-	vim.validate('filter', filter, 'string')
-	if not Filter[filter] then
-		error(string.format("No filter with name: %q", filter))
-	end
-	return vim.deepcopy(vim.tbl_filter(Filter[filter], Pkgs))
-end
-
-function M.list()
-	local installed = vim.tbl_filter(Filter.installed, Lock)
-	local removed = vim.tbl_filter(Filter.removed, Lock)
-	local sort_by_name = function(t)
-		table.sort(t, function(a, b) return a.name < b.name end)
-	end
-	sort_by_name(installed)
-	sort_by_name(removed)
-	local markers = { "+", "*" }
-	for header, pkgs in pairs {
-		["Installed packages:"] = installed,
-		["Recently removed:"] = removed,
-	} do
-		if #pkgs ~= 0 then
-			print(header)
-			for _, pkg in ipairs(pkgs) do
-				print(" ", markers[pkg.status] or " ", pkg.name)
-			end
-		end
+		exe_op("resolve", resolve, pkgs)
 	end
 end
 
 function M.log_open()
 	vim.cmd.split(Config.log)
+	vim.bo.autoread = true
 	vim.cmd("silent! normal! Gzz")
 end
 
@@ -518,11 +468,11 @@ function M.cmdline_complete(_, L, _)
 		return table.concat(subcommands, '\n')
 	else
 		if subcommand == 'update' then
-			return table.concat(vim.tbl_keys(Pkgs), '\n')
+			return table.concat(vim.tbl_keys(M.Pkgs), '\n')
 		elseif subcommand == 'build' then
-			return table.concat(vim.tbl_map(function(p) return p.build and p.name or nil end, Pkgs), '\n')
+			return table.concat(vim.tbl_map(function(p) return p.build and p.name or nil end, M.Pkgs), '\n')
 		elseif subcommand == 'add' then
-			return table.concat(vim.tbl_map(function(p) return not Filter.loaded(p) and p.name or nil end, Pkgs), '\n')
+			return table.concat(vim.tbl_map(function(p) return not Filter.loaded(p) and p.name or nil end, M.Pkgs), '\n')
 		else
 			return ''
 		end
@@ -537,8 +487,6 @@ if not _G.loaded_plug then
 			M.install()
 		elseif fargs[1] == 'clean' then
 			M.clean()
-		elseif fargs[1] == 'list' then
-			M.list()
 		elseif fargs[1] == 'log' then
 			M.log_open()
 		elseif fargs[1] == 'cleanlog' then
@@ -548,7 +496,7 @@ if not _G.loaded_plug then
 		elseif fargs[1] == 'build' then
 			M.build(fargs[2])
 		elseif fargs[1] == 'add' then
-			load_plugin(Pkgs[fargs[2]])
+			load_plugin(M.Pkgs[fargs[2]])
 		end
 	end, { bar = true, nargs = '+', complete = "custom,v:lua.require'plug'.cmdline_complete" })
 end
