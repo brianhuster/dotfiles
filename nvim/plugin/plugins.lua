@@ -28,10 +28,6 @@ local plugins_list = {
 			}
 		end
 	},
-	{
-		'echasnovski/mini.animate',
-		config = function() require('mini.animate').setup() end
-	},
 	'neovim/nvim-lspconfig',
 	'williamboman/mason.nvim',
 	'echasnovski/mini.pick',
@@ -251,7 +247,7 @@ local plugins_list = {
 			}
 		end
 	},
-	{ 'brianhuster/live-preview.nvim', opt = true },
+	{ 'brianhuster/live-preview.nvim', optional = true },
 	{
 		'folke/which-key.nvim',
 		config = function()
@@ -279,27 +275,29 @@ local plugins_list = {
 		end
 	},
 	{
-		'github/copilot.vim',
-		config = function()
-			vim.keymap.set('i', '<M-CR>', 'copilot#Accept("\\<CR>")', {
-				expr = true,
-				replace_keycodes = false
-			})
-			vim.keymap.set('i', '<M-w>', '<Plug>(copilot-accept-word)', {
-				expr = true,
-				replace_keycodes = false
-			})
-			vim.keymap.set('i', '<M-l>', '<Plug>(copilot-accept-line)', {
-				expr = true,
-				replace_keycodes = false
-			})
-			vim.g.copilot_no_tab_map = true
-			vim.cmd [[au BufEnter * let b:copilot_enabled = v:false]]
-		end,
-	},
-	{
 		'CopilotC-Nvim/CopilotChat.nvim',
 		build = 'make tiktoken',
+		dependencies = {
+			{
+				'github/copilot.vim',
+				config = function()
+					vim.keymap.set('i', '<M-CR>', 'copilot#Accept("\\<CR>")', {
+						expr = true,
+						replace_keycodes = false
+					})
+					vim.keymap.set('i', '<M-w>', '<Plug>(copilot-accept-word)', {
+						expr = true,
+						replace_keycodes = false
+					})
+					vim.keymap.set('i', '<M-l>', '<Plug>(copilot-accept-line)', {
+						expr = true,
+						replace_keycodes = false
+					})
+					vim.g.copilot_no_tab_map = true
+					vim.cmd [[au BufEnter * let b:copilot_enabled = v:false]]
+				end,
+			},
+		},
 		config = function()
 			require('CopilotChat').setup {
 				model = "claude-3.5-sonnet",
@@ -310,7 +308,7 @@ local plugins_list = {
 	{
 		'yetone/avante.nvim',
 		build = 'make',
-		opt = true,
+		optional = true,
 		dependencies = { 'HakonHarnes/img-clip.nvim' },
 		config = function()
 			require('avante').setup {

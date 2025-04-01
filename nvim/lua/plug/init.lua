@@ -14,7 +14,6 @@
 ---@field build string | function
 ---@field url string
 ---@field dependencies string[]
----@field condition boolean|fun():boolean
 
 ---@class plug.Declaration
 ---@field [1] string
@@ -78,7 +77,6 @@ local Status = {
 -- stylua: ignore
 local Filter = {
 	installed   = function(p) return p.status ~= Status.REMOVED and p.status ~= Status.TO_INSTALL end,
-	not_removed = function(p) return p.status ~= Status.REMOVED end,
 	removed     = function(p) return p.status == Status.REMOVED end,
 	loaded      = function(p) return p.status == Status.LOADED end,
 	built       = function(p) return p.status == Status.BUILT or p.status == Status.LOADED end,
@@ -168,7 +166,7 @@ end
 ---@param path Path Path to remove
 ---@return boolean
 local function rm(path)
-	local recursive = vim.fn.isdirectory(path) == 1 and true or nil
+	local recursive = vim.fn.isdirectory(path) == 1
 	if vim.fn.has('nvim-0.11') == 1 then
 		return pcall(vim.fs.rm, path, { recursive = recursive })
 	end
@@ -239,9 +237,6 @@ end
 
 ---@param pkg plug.Package
 local function load_plugin(pkg)
-	if pkg.name == 'img-clip.nvim' then
-		debug.debug()
-	end
 	if Filter.loaded(pkg) then return end
 	if pkg.dependencies then
 		iter(pkg.dependencies):each(function(dep) load_plugin(M.Pkgs[dep]) end)
@@ -305,15 +300,25 @@ local function pull(pkg)
 end
 
 ---@param pkg plug.Package
-local function resolve(pkg, noload)
-	local to_load = not noload and not pkg.optional
+---@param opts? { to_load: boolean }
+local function resolve(pkg, opts)
+	local default_opts = { to_load = true }
+	opts = vim.tbl_deep_extend("force", default_opts, opts or {})
+	local to_load = not pkg.optional and opts.to_load
+
+	local lock_pkg = Lock[pkg.name]
+	if lock_pkg and not Filter.removed(pkg) then
+		pkg.status = (lock_pkg.url ~= pkg.url or lock_pkg.branch ~= pkg.branch)
+			and Status.TO_RECLONE or pkg.status
+	end
+
 	if pkg.dependencies then
-		iter(pkg.dependencies):each(function(dep) resolve(M.Pkgs[dep], pkg.optional) end)
+		iter(pkg.dependencies):each(function(dep) resolve(M.Pkgs[dep], { to_load = to_load }) end)
 	end
 	if Filter.to_reclone(pkg) then
 		if rm(pkg.dir) then clone(pkg, to_load and load_plugin or nil) end
 	elseif Filter.to_install(pkg) then
-		clone(pkg, to_load and to_load or nil)
+		clone(pkg, to_load and load_plugin or nil)
 	else
 		if to_load then load_plugin(pkg) end
 	end
@@ -397,19 +402,6 @@ local function exe_op(op, fn, pkgs, opts)
 	iter(pkgs):each(function(pkg) fn(pkg) end)
 end
 
-local function calculate_diffs()
-	for name, lock_pkg in pairs(Lock) do
-		local pack_pkg = M.Pkgs[name]
-		if pack_pkg and Filter.not_removed(lock_pkg) and not vim.deep_equal(lock_pkg, pack_pkg) then
-			iter { 'branch', 'url' }:each(function(k)
-				if lock_pkg[k] ~= pack_pkg[k] then
-					M.Pkgs[name].status = Status.TO_RECLONE
-				end
-			end)
-		end
-	end
-end
-
 ---Installs all packages listed in your configuration. If a package is already
 ---installed, the function ignores it. If a package has a `build` argument,
 ---it'll be executed after the package is installed.
@@ -444,7 +436,6 @@ function M.setup(opts)
 		vim.validate('pkgs', pkgs, vim.islist, 'a list')
 		pkgs = vim.tbl_map(register, pkgs)
 		lock_load()
-		calculate_diffs()
 		exe_op("resolve", resolve, pkgs)
 	end
 end
@@ -462,17 +453,21 @@ end
 ---@param L string
 ---@return string
 function M.cmdline_complete(_, L, _)
-	local subcommands = { 'install', 'clean', 'list', 'log', 'cleanlog', 'sync', 'update', 'build', 'add' }
+	local subcommands = { 'install', 'clean', 'log', 'cleanlog', 'sync', 'update', 'build', 'add' }
 	local subcommand = vim.split(L, ' ')[2]
 	if not vim.split(L, ' ')[3] then
 		return table.concat(subcommands, '\n')
 	else
 		if subcommand == 'update' then
-			return table.concat(vim.tbl_keys(M.Pkgs), '\n')
+			return iter(vim.tbl_keys(M.Pkgs)):join('\n')
 		elseif subcommand == 'build' then
-			return table.concat(vim.tbl_map(function(p) return p.build and p.name or nil end, M.Pkgs), '\n')
+			return iter(vim.tbl_values(M.Pkgs))
+				:map(function(p) return p.build and p.name or nil end)
+				:join('\n')
 		elseif subcommand == 'add' then
-			return table.concat(vim.tbl_map(function(p) return not Filter.loaded(p) and p.name or nil end, M.Pkgs), '\n')
+			return iter(vim.tbl_values(M.Pkgs))
+				:map(function(p) return not Filter.loaded(p) and p.name or nil end)
+				:join('\n')
 		else
 			return ''
 		end
@@ -502,5 +497,3 @@ if not _G.loaded_plug then
 end
 
 return M
-
--- vim: fothod=marker
