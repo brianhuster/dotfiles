@@ -89,9 +89,8 @@ local Filter = {
 ---@param msg_op plug.Messages
 ---@param result 'ok'|'err'|'nop'
 local function report(name, msg_op, result)
-	vim.notify(
-		("Plug: %s %s"):format(msg_op[result], name, vim.log.levels[result == 'err' and 'ERROR' or 'INFO'])
-	)
+	vim.notify(("Plug: %s %s")
+		:format(msg_op[result], name, vim.log.levels[result == 'err' and 'ERROR' or 'INFO']))
 end
 
 ---@param path string
@@ -99,15 +98,20 @@ end
 ---@param data string
 local function file_write(path, flags, data)
 	local err_msg = "Failed to %s '" .. path .. "'"
-	local file = assert(uv.fs_open(path, flags, 0x1A4), err_msg:format("open"))
-	assert(uv.fs_write(file, data), err_msg:format("write"))
-	assert(uv.fs_close(file), err_msg:format("close"))
+	local file = io.open(path, flags)
+	assert(file, err_msg:format("open"))
+	file:write(data)
+	file:close()
 end
 
 ---@param path string
 ---@return string
 local function file_read(path)
-	return table.concat(vim.fn.readfile(path), "\n")
+	local file = io.open(path, "r")
+	if not file then return '' end
+	local data = file:read("*a")
+	file:close()
+	return data
 end
 
 ---@param pkg plug.Package
@@ -318,7 +322,6 @@ local function resolve(pkg, opts)
 	if Filter.to_reclone(pkg) then
 		if rm(pkg.dir) then clone(pkg, to_load and load_plugin or nil) end
 	elseif Filter.to_install(pkg) then
-		
 		clone(pkg, to_load and load_plugin or nil)
 	else
 		if to_load then load_plugin(pkg) end

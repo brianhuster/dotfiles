@@ -32,6 +32,12 @@ local plugins_list = {
 	'williamboman/mason.nvim',
 	'echasnovski/mini.pick',
 	{
+		'brianhuster/nonest.nvim',
+		config = function()
+			vim.g.nonest_edit_cmd = 'tabedit'
+		end
+	},
+	{
 		'williamboman/mason-lspconfig.nvim',
 		config = function()
 			local lang_servers = {
