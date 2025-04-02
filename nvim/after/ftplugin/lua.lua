@@ -15,6 +15,18 @@ if not vim.b.root_dir then
 	vim.b.root_dir = require('an.lua').find_root(vim.api.nvim_buf_get_name(0))
 end
 
+print('Adding snippets')
+require'an'.add_snippet(
+    "fn",
+    "function ${1:name}($2)\n\t${3:-- content}\nend",
+    { buffer = 0 }
+)
+require'an'.add_snippet(
+    "lfn",
+    "local function ${1:name}($2)\n\t${3:-- content}\nend",
+    { buffer = 0 }
+)
+
 vim.api.nvim_create_autocmd('LspAttach', {
 	buffer = 0,
 	callback = function(args)

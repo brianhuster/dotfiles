@@ -208,11 +208,16 @@ end
 local function lock_write()
 	-- remove run key since can have a function in it, and
 	-- json.encode doesn't support functions
-	local pkgs = vim.deepcopy(M.Pkgs)
-	for p, _ in pairs(pkgs) do
-		pkgs[p].build = nil
-		pkgs[p].config = nil
-	end
+	local pkgs = vim.iter(vim.deepcopy(M.Pkgs))
+		:map(function(field, p)
+			for k, v in pairs(p) do
+				if vim.tbl_contains({ 'function', 'userdata', 'thread' }, type(v)) then
+					p[k] = nil
+				end
+			end
+			return field, p
+		end)
+		:fold({}, function(acc, k, v) acc[k] = v return acc end)
 	local ok, result = pcall(vim.json.encode, pkgs)
 	if not ok then
 		error(vim.inspect(result))
@@ -281,7 +286,7 @@ local function pull(pkg)
 		{ cwd = pkg.dir },
 		function(obj)
 			if obj.code ~= 0 then
-				report(pkg.name, Messages.update, 'err')
+				vim.schedule(function() report(pkg.name, Messages.update, 'err') end)
 				local errmsg = ("\nFailed to update %s:\n%s\n"):format(pkg.name, obj.stderr)
 				write_log(errmsg)
 				return
@@ -291,14 +296,16 @@ local function pull(pkg)
 			-- Thus the pkg.hash is left blank and we need to update it.
 			if cur_hash == prev_hash or prev_hash == "" then
 				pkg.hash = cur_hash
-				report(pkg.name, Messages.update, 'nop')
+				vim.schedule(function() report(pkg.name, Messages.update, 'nop') end)
 				return
 			end
 			log_update_changes(pkg, prev_hash, cur_hash)
 			pkg.status, pkg.hash = Status.UPDATED, cur_hash
 			lock_write()
-			report(pkg.name, Messages.update, 'ok')
-			vim.schedule(function() run_build(pkg) end)
+			vim.schedule(function()
+				report(pkg.name, Messages.update, 'ok')
+				run_build(pkg)
+			end)
 		end
 	)
 end
@@ -435,11 +442,11 @@ function M.clean() exe_op("remove", remove, find_unlisted()) end
 ---@param opts plug.Config
 function M.setup(opts)
 	Config = vim.tbl_deep_extend("force", Config, opts)
+	lock_load()
 	if opts.ensure_installed then
 		local pkgs = opts.ensure_installed --[[@as plug.Dependencies ]]
 		vim.validate('pkgs', pkgs, vim.islist, 'a list')
 		pkgs = vim.tbl_map(register, pkgs)
-		lock_load()
 		exe_op("resolve", resolve, pkgs)
 	end
 end
