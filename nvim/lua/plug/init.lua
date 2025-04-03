@@ -144,7 +144,7 @@ local function find_unlisted()
 	local unlisted = {}
 	local path = Config.path
 	for name, type in vim.fs.dir(path) do
-		if type == "directory" and name ~= "paq-nvim" then
+		if type == "directory" then
 			local dir = vim.fs.joinpath(path, name)
 			local pkg = M.Pkgs[name]
 			if not pkg or pkg.dir ~= dir then
@@ -464,7 +464,7 @@ end
 ---@param L string
 ---@return string
 function M.cmdline_complete(_, L, _)
-	local subcommands = { 'install', 'clean', 'log', 'cleanlog', 'sync', 'update', 'build', 'add' }
+	local subcommands = { 'install', 'clean', 'log', 'cleanlog', 'update', 'build', 'add' }
 	local subcommand = vim.split(L, ' ')[2]
 	if not vim.split(L, ' ')[3] then
 		return table.concat(subcommands, '\n')
