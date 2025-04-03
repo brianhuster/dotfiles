@@ -366,7 +366,7 @@ local function register(pkg)
 		return {}
 	end
 
-	M.Pkgs[name] = {
+	M.Pkgs = vim.tbl_deep_extend("force", M.Pkgs, {
 		name = name,
 		branch = pkg.branch,
 		config = pkg.config,
@@ -379,7 +379,8 @@ local function register(pkg)
 		build = pkg.build,
 		url = url,
 		optional = pkg.optional
-	}
+	})
+
 	return M.Pkgs[name]
 end
 

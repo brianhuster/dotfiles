@@ -118,14 +118,14 @@ local plugins_list = {
 		end
 	},
 	{
-		'mfussenegger/nvim-dap',
-		config = function()
-			vim.keymap.set('n', '<Leader>b', '<cmd>DapToggleBreakpoint<CR>')
-			vim.keymap.set('n', ']D', '<cmd>DapContinue<CR>')
-		end,
-		dependencies = {
-			'igorlfs/nvim-dap-view'
-		}
+		'igorlfs/nvim-dap-view',
+		dependencies = {{
+			'mfussenegger/nvim-dap',
+			config = function()
+				vim.keymap.set('n', '<Leader>b', '<cmd>DapToggleBreakpoint<CR>')
+				vim.keymap.set('n', ']D', '<cmd>DapContinue<CR>')
+			end,
+		}}
 	},
 	{
 		'theHamsta/nvim-dap-virtual-text',
