@@ -122,7 +122,10 @@ local plugins_list = {
 		config = function()
 			vim.keymap.set('n', '<Leader>b', '<cmd>DapToggleBreakpoint<CR>')
 			vim.keymap.set('n', ']D', '<cmd>DapContinue<CR>')
-		end
+		end,
+		dependencies = {
+			'igorlfs/nvim-dap-view'
+		}
 	},
 	{
 		'theHamsta/nvim-dap-virtual-text',
