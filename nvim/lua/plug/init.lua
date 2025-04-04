@@ -1,3 +1,5 @@
+---@see https://github.com/savq/paq-nvim
+
 ---@alias Path string
 ---@alias plug.Dependencies table<string|plug.Declaration>
 
@@ -25,7 +27,13 @@
 ---@field pin? boolean
 ---@field url? string
 ---@field dependencies? plug.Dependencies
----@field condition? boolean|fun():boolean
+
+---@class plug.Packspec
+---@field name string?
+---@field description string?
+---@field engines { nvim: string?, vim: string? }
+---@field repository? { type: string, url: string }
+---@field dependencies? table<string, string>
 
 local uv, iter, M = vim.uv, vim.iter, {}
 local command = vim.api.nvim_create_user_command
@@ -139,6 +147,19 @@ local function run_build(pkg, callback)
 	if callback then callback(pkg) end
 end
 
+---@param pkg plug.Package
+---@return plug.Packspec
+local function read_packspec(pkg)
+	local data = file_read(vim.fs.joinpath(pkg.dir, "pkg.json"))
+	if not data then return {} end
+	local ok, result = pcall(vim.json.decode, data)
+	if not ok then
+		error("Plug : " .. vim.inspect(result))
+		return {}
+	end
+	return result
+end
+
 ---@return plug.Package
 local function find_unlisted()
 	local unlisted = {}
@@ -220,7 +241,7 @@ local function lock_write()
 		:fold({}, function(acc, k, v) acc[k] = v return acc end)
 	local ok, result = pcall(vim.json.encode, pkgs)
 	if not ok then
-		error(vim.inspect(result))
+		error(vim.inspect(''))
 	end
 	-- Ignore if fail
 	pcall(file_write, Config.lock, "w", result)
@@ -339,9 +360,6 @@ end
 ---@return plug.Package|{}
 local function register(pkg)
 	pkg = type(pkg) == "string" and { pkg } or pkg
-	local check = pkg.condition == nil and true or pkg.condition
-	check = type(check) == "function" and check() or check
-	if not check then return {} end
 
 	if pkg.dependencies then
 		vim.validate('pkg.dependencies', pkg.dependencies, vim.islist, 'a list')
@@ -360,13 +378,15 @@ local function register(pkg)
 
 	if not M.Pkgs[name] then M.Pkgs[name] = {} end
 
-	if M.Pkgs[name].branch and pkg.branch ~= M.Pkgs[name].branch then
+	local registered_pkg = M.Pkgs[name]
+
+	if registered_pkg.branch and pkg.branch ~= registered_pkg.branch then
 		vim.notify(('Conflicting branch of package %s (%s vs %s)'):format(name, M.Pkgs[name].branch, pkg.branch),
 			vim.log.levels.ERROR)
 		return {}
 	end
 
-	M.Pkgs[name] = vim.tbl_deep_extend("force", M.Pkgs, {
+	M.Pkgs[name] = vim.tbl_deep_extend("force", registered_pkg, {
 		name = name,
 		branch = pkg.branch,
 		config = pkg.config,

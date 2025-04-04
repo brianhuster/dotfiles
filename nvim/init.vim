@@ -14,7 +14,7 @@ set backspace=indent,eol,start
 set backupcopy=yes
 let g:mapleader=" "
 set messagesopt=hit-enter,wait:5000,history:10000
-set completeopt=menuone,noinsert,noinsert,fuzzy,preview,popup
+set completeopt=menuone,noselect,fuzzy,preview,popup
 set dictionary=/usr/share/dict/words
 set noswapfile
 set foldmethod=expr

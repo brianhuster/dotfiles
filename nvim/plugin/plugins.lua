@@ -118,22 +118,37 @@ local plugins_list = {
 		end
 	},
 	{
+		'echasnovski/mini.jump2d',
+		config = function()
+			require('mini.jump2d').setup {
+				mappings = {
+					start_jumping = '<Leader>j',
+				}
+			}
+		end
+	},
+	{
+		'mfussenegger/nvim-dap',
+	},
+	{
 		'igorlfs/nvim-dap-view',
-		dependencies = {{
+		dependencies = {
 			'mfussenegger/nvim-dap',
-			config = function()
-				vim.keymap.set('n', '<Leader>b', '<cmd>DapToggleBreakpoint<CR>')
-				vim.keymap.set('n', ']D', '<cmd>DapContinue<CR>')
-			end,
-		}}
+		}
 	},
 	{
 		'theHamsta/nvim-dap-virtual-text',
+		dependencies = {'mfussenegger/nvim-dap'},
 		config = function()
 			require('nvim-dap-virtual-text').setup()
 		end
 	},
-	'leoluz/nvim-dap-go',
+	{
+		'leoluz/nvim-dap-go',
+		dependencies = {
+			'mfussenegger/nvim-dap',
+		}
+	},
 	{
 		'nvim-treesitter/nvim-treesitter',
 		build = ':TSUpdate all',
