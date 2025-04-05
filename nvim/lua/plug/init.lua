@@ -33,7 +33,7 @@
 ---@field description string?
 ---@field engines { nvim: string?, vim: string? }
 ---@field repository? { type: string, url: string }
----@field dependencies? table<string, string>
+---@field dependencies? table<string, string> example: { 'nvim-lua/plenary.nvim': 'v0.1.0', 'nvim-telescope/telescope.nvim': 'master' }
 
 local uv, iter, M = vim.uv, vim.iter, {}
 local command = vim.api.nvim_create_user_command
@@ -148,7 +148,7 @@ local function run_build(pkg, callback)
 end
 
 ---@param pkg plug.Package
----@return plug.Packspec
+---@return plug.Packspec|{}
 local function read_packspec(pkg)
 	local data = file_read(vim.fs.joinpath(pkg.dir, "pkg.json"))
 	if not data then return {} end
@@ -158,6 +158,12 @@ local function read_packspec(pkg)
 		return {}
 	end
 	return result
+end
+
+---@param ver string
+---@return boolean
+local function is_ver_compatible(ver)
+	return vim.version.range(ver):has(vim.version())
 end
 
 ---@return plug.Package
