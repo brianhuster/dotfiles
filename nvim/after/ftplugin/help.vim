@@ -1,8 +1,8 @@
 setl omnifunc=s:Complete
-
+let &l:iskeyword = '!-~,^*,^|,^",192-255'
 
 let b:undo_ftplugin = exists('b:undo_ftplugin') && type(b:undo_ftplugin) == v:t_string ? b:undo_ftplugin : ''
-			\ . '\n setl omnifunc<'
+	\ . '\n setl ofu< isk<'
 
 if !exists('*s:Complete')
 	func s:Complete(findstart, base)
