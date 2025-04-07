@@ -1,30 +1,32 @@
 "silent language vi_vn.utf-8
 set mouse=nvc
 set number
-set noexpandtab
-set autoindent
-set cindent
-set nocursorline
-set shiftwidth=4
-set tabstop=4
+set autoindent cindent
+set shiftwidth=4 tabstop=4 noexpandtab
 set clipboard=unnamedplus
 set autowriteall
-set nomodeline
+set cursorline
 set backspace=indent,eol,start
 set backupcopy=yes
 let g:mapleader=" "
 set messagesopt=hit-enter,wait:5000,history:10000
 set completeopt=menuone,noselect,fuzzy,preview,popup
-set dictionary=/usr/share/dict/words
+set dictionary+=/usr/share/dict/words
 set noswapfile
-set foldmethod=expr
-set nofoldenable
+set foldmethod=expr nofoldenable
 set smoothscroll
 set wildmode=noselect:full
 set confirm
-set spelloptions=camel
-set spelllang=en
-set spell
+set spell spelllang=en spelloptions+=camel
+let &spellfile = fnamemodify($MYVIMRC, ':p:h') . '/spell/en.utf-8.add'
+let &statusline = "%<%f %h%w%m%r " .
+	\ "%=%{% &showcmdloc == 'statusline' ? '%-10.S ' : '' %}" .
+	\ "%{% exists('b:keymap_name') ? '<'..b:keymap_name..'> ' : '' %}" .
+	\ "%{% &ruler ? ( &rulerformat == '' ? '%-14.(%l,%c%V%) %P' : &rulerformat ) : '' %}"
+
+if has('nvim')
+	let &statusline .= '%{%v:lua.vim.lsp.status()%}'
+endif
 
 au InsertLeavePre,TextChanged,TextChangedP * if &modifiable && !&readonly | silent! write | endif
 au FocusGained,BufEnter * checktime

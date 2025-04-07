@@ -1,7 +1,7 @@
 ---@see https://github.com/savq/paq-nvim
 
----@alias Path string
----@alias plug.Dependencies table<string|plug.Declaration>
+---@alias plug.Path string
+---@alias plug.Dependencies string[]|plug.Declaration[]
 
 ---@class plug.Package
 ---@field name string
@@ -39,14 +39,13 @@ local uv, iter, M = vim.uv, vim.iter, {}
 local command = vim.api.nvim_create_user_command
 
 ---@class plug.Config
----@field path Path?
+---@field path plug.Path?
 ---@field verbose boolean?
----@field log Path?
----@field lock Path?
+---@field log plug.Path?
+---@field lock plug.Path?
 ---@field url_format string?
 ---@field clone_args string[]?
 ---@field pull_args string[]?
----@field ensure_installed plug.Dependencies?
 
 local Config = {
 	-- stylua: ignore
@@ -162,7 +161,7 @@ end
 
 ---@param ver string
 ---@return boolean
-local function is_ver_compatible(ver)
+local function check_engine(ver)
 	return vim.version.range(ver):has(vim.version())
 end
 
@@ -182,7 +181,7 @@ local function find_unlisted()
 	return unlisted
 end
 
----@param dir Path
+---@param dir plug.Path
 ---@return string
 local function get_git_hash(dir)
 	local first_line = function(path)
@@ -194,7 +193,7 @@ local function get_git_hash(dir)
 end
 
 ---Remove files or directories
----@param path Path Path to remove
+---@param path plug.Path Path to remove
 ---@return boolean
 local function rm(path)
 	local recursive = vim.fn.isdirectory(path) == 1
@@ -233,8 +232,6 @@ local function log_update_changes(pkg, prev_hash, cur_hash)
 end
 
 local function lock_write()
-	-- remove run key since can have a function in it, and
-	-- json.encode doesn't support functions
 	local pkgs = vim.iter(vim.deepcopy(M.Pkgs))
 		:map(function(field, p)
 			for k, v in pairs(p) do
@@ -440,15 +437,8 @@ local function exe_op(op, fn, pkgs, opts)
 	iter(pkgs):each(function(pkg) fn(pkg) end)
 end
 
----Installs all packages listed in your configuration. If a package is already
----installed, the function ignores it. If a package has a `build` argument,
----it'll be executed after the package is installed.
 function M.install() exe_op("install", clone, vim.tbl_filter(Filter.to_install, M.Pkgs)) end
 
----Updates the installed packages listed in your configuration. If a package
----hasn't been installed with |PaqInstall|, the function ignores it. If a
----package had changes and it has a `build` argument, then the `build` argument
----will be executed.
 ---@param name string?
 function M.update(name)
 	if not name then
@@ -462,20 +452,25 @@ function M.update(name)
 	end
 end
 
----Removes packages found on |paq-dir| that aren't listed in your
----configuration.
 function M.clean() exe_op("remove", remove, find_unlisted()) end
 
+--- Add an optional plugin to the current session
+---@param name string
+function M.add(name) load_plugin(M.Pkgs[name]) end
+
+--- Configure the plugin manager
 ---@param opts plug.Config
-function M.setup(opts)
+function M.config(opts)
+	vim.validate('opts', opts, 'table')
 	Config = vim.tbl_deep_extend("force", Config, opts)
+end
+
+---@param pkgs plug.Dependencies
+function M:__call(pkgs)
+	vim.validate('pkgs', pkgs, vim.islist, 'a list')
 	lock_load()
-	if opts.ensure_installed then
-		local pkgs = opts.ensure_installed --[[@as plug.Dependencies ]]
-		vim.validate('pkgs', pkgs, vim.islist, 'a list')
-		pkgs = vim.tbl_map(register, pkgs)
-		exe_op("resolve", resolve, pkgs)
-	end
+	pkgs = vim.tbl_map(register, pkgs)
+	exe_op("resolve", resolve, pkgs)
 end
 
 function M.log_open()
@@ -529,9 +524,10 @@ if not _G.loaded_plug then
 		elseif fargs[1] == 'build' then
 			M.build(fargs[2])
 		elseif fargs[1] == 'add' then
-			load_plugin(M.Pkgs[fargs[2]])
+			M.add(fargs[2])
 		end
 	end, { bar = true, nargs = '+', complete = "custom,v:lua.require'plug'.cmdline_complete" })
 end
 
+setmetatable(M, M)
 return M

@@ -242,6 +242,7 @@ local plugins_list = {
 		end
 	},
 	'brianhuster/nvim-treesitter-endwise',
+	'chrisbra/Colorizer',
 	{ 'windwp/nvim-ts-autotag',      config = function() require('nvim-ts-autotag').setup() end },
 	'OXY2DEV/patterns.nvim',
 	'lambdalisue/vim-suda',
@@ -370,10 +371,11 @@ local plugins_list = {
 	'kristijanhusak/vim-dadbod-completion',
 }
 
-require 'plug'.setup {
+require 'plug'.config {
 	url_format = "https://github.com/%s.git",
-	ensure_installed = plugins_list
 }
+
+require 'plug'(plugins_list)
 
 -- -- codeium.nvim
 -- 		require("codeium").setup({

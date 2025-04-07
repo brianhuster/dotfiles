@@ -4,7 +4,6 @@ vim.lsp.enable('lua_ls')
 
 api.nvim_create_autocmd('LspAttach', {
 	callback = function(args)
-		vim.wo.statusline = '%f %m%r%h%w%{%v:lua.vim.lsp.status()%}'
 		local client = vim.lsp.get_client_by_id(args.data.client_id)
 		if not client then return end
 		if client:supports_method('textDocument/completion') and vim.lsp.completion then
