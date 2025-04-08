@@ -5,20 +5,21 @@ local os = uv.os_uname().sysname:lower()
 local cmd = {}
 local executable = vim.fn.executable
 
+local title = 'Neovim: Enter password:'
+
 if os == 'linux' then
 	if executable 'kdialog' then
-		cmd = { 'kdialog', '--password', 'Enter password:' }
+		cmd = { 'kdialog', '--password', title }
 	elseif executable 'zenity' then
-		cmd = { 'zenity', '--password' }
+		cmd = { 'zenity', '--password', '--title', title }
 	end
 elseif os == 'darwin' then
-	if executable 'osascript' then
-		cmd = { 'osascript', '-e', 'display dialog "Enter password:" default answer "" with hidden answer' }
-	elseif executable 'security' then
-		cmd = { 'security', 'find-generic-password', '-wa', 'Enter password:' }
-	end
+	cmd = { 'osascript', '-e', ('display dialog "%s" default answer "" with hidden answer'):format(title) }
 elseif os == 'windows' then
-	cmd = { 'powershell', '-Command', '&{Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.MessageBox]::Show("Enter password:", "Enter password:", "OKCancel,SystemModal,Password")}' }
+	cmd = {
+		'powershell', '-Command',
+		('&{Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.MessageBox]::Show("%s", "%s", "OKCancel,SystemModal,Password")}')
+			:format(title, title) }
 end
 
 if #cmd > 0 then
