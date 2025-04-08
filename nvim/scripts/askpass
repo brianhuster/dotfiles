@@ -2,26 +2,19 @@
 
 local uv = vim.uv or vim.loop
 local os = uv.os_uname().sysname:lower()
-local cmd = {}
 local executable = vim.fn.executable
-
 local title = 'Neovim: Enter password:'
 
-if os == 'linux' then
-	if executable 'kdialog' then
-		cmd = { 'kdialog', '--password', title }
-	elseif executable 'zenity' then
-		cmd = { 'zenity', '--password', '--title', title }
-	end
-elseif os == 'darwin' then
-	cmd = { 'osascript', '-e', ('display dialog "%s" default answer "" with hidden answer'):format(title) }
-elseif os == 'windows' then
-	cmd = {
+---@type table<string, string[]>
+local commands = {
+	linux = executable 'kdialog' and { 'kdialog', '--password', title }
+		or (executable 'zenity' and { 'zenity', '--password', '--title', title })
+		or {},
+	darwin = { 'osascript', '-e', ('display dialog "%s" default answer "" with hidden answer'):format(title) },
+	windows = {
 		'powershell', '-Command',
 		('&{Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.MessageBox]::Show("%s", "%s", "OKCancel,SystemModal,Password")}')
-			:format(title, title) }
-end
+			:format(title, title) },
+}
 
-if #cmd > 0 then
-	io.stdout:write(vim.fn.system(cmd))
-end
+io.stdout:write(vim.fn.system(commands[os]))
