@@ -388,7 +388,6 @@ local function register(pkg)
 			vim.log.levels.ERROR)
 		return {}
 	end
-
 	M.Pkgs[name] = vim.tbl_deep_extend("force", registered_pkg, {
 		name = name,
 		branch = pkg.branch,
@@ -463,6 +462,17 @@ function M.add(name) load_plugin(M.Pkgs[name]) end
 function M.config(opts)
 	vim.validate('opts', opts, 'table')
 	Config = vim.tbl_deep_extend("force", Config, opts)
+end
+
+---@param name string
+function M.build(name)
+	run_build(M.Pkgs[name], function(pkg)
+		if pkg.status == Status.BUILT then
+			vim.notify(("Plug: %s %s"):format(Messages.build, pkg.name), vim.log.levels.INFO)
+		else
+			vim.notify(("Plug: %s %s"):format(Messages.build, pkg.name), vim.log.levels.ERROR)
+		end
+	end)
 end
 
 ---@param pkgs plug.Dependencies

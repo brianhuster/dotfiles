@@ -243,7 +243,6 @@ local plugins_list = {
 	'chrisbra/Colorizer',
 	{ 'windwp/nvim-ts-autotag',      config = function() require('nvim-ts-autotag').setup() end },
 	'OXY2DEV/patterns.nvim',
-	'lambdalisue/vim-suda',
 	'brianhuster/snipexec.nvim',
 	'uga-rosa/ccc.nvim',
 	{
@@ -346,6 +345,7 @@ local plugins_list = {
 				'ravitemer/mcphub.nvim',
 				config = function()
 					require('mcphub').setup {
+						config = vim.fn.expand("~/.config/mcphub/servers.json"),
 						extensions = {
 							codecompanion = {
 								show_result_in_chat = true, -- Show the mcp tool result in the chat buffer

@@ -99,6 +99,10 @@ let g:loaded_perl_provider = 1
 autocmd QuickFixCmdPost [^l]* cwindow
 autocmd QuickFixCmdPost l* lwindow
 
+let $SUDO_ASKPASS = expand('<sfile>:p:h') . '/scripts/askpass'
+command! SudoWrite :silent! w !sudo tee %
+command! SudoRead :silent! r !sudo cat %
+
 func! s:OpenImgBuf(file) abort
 	term imgcat %
 	exe 'bwipeout!' a:file

@@ -1,0 +1,26 @@
+#!/usr/bin/env -S nvim -l
+
+local uv = vim.uv or vim.loop
+local os = uv.os_uname().sysname:lower()
+local cmd = {}
+local executable = vim.fn.executable
+
+if os == 'linux' then
+	if executable 'kdialog' then
+		cmd = { 'kdialog', '--password', 'Enter password:' }
+	elseif executable 'zenity' then
+		cmd = { 'zenity', '--password' }
+	end
+elseif os == 'darwin' then
+	if executable 'osascript' then
+		cmd = { 'osascript', '-e', 'display dialog "Enter password:" default answer "" with hidden answer' }
+	elseif executable 'security' then
+		cmd = { 'security', 'find-generic-password', '-wa', 'Enter password:' }
+	end
+elseif os == 'windows' then
+	cmd = { 'powershell', '-Command', '&{Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.MessageBox]::Show("Enter password:", "Enter password:", "OKCancel,SystemModal,Password")}' }
+end
+
+if #cmd > 0 then
+	io.stdout:write(vim.fn.system(cmd))
+end
