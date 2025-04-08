@@ -16,7 +16,7 @@ if !exists('*s:Complete')
 					return i " Include the ' in the completion
 				endif
 			endfor
-		elseif type(a:base) == v:t_string
+		elseif type(a:base)
 			return taglist('^' .. a:base)
 				\ ->map({_, item -> #{word: item->get('name'), kind: item->get('kind')}})
 				\ ->extend(getcompletion(a:base, 'help'))

@@ -73,8 +73,6 @@ local plugins_list = {
 		'tpope/vim-surround',
 		dependencies = { 'tpope/vim-repeat' },
 	},
-	'mg979/vim-visual-multi',
-	-- 'christoomey/vim-tmux-navigator',
 	{
 		'mfussenegger/nvim-jdtls', -- Java development
 		config = function()
@@ -323,12 +321,14 @@ local plugins_list = {
 			}
 		end
 	},
-	'MunifTanjim/nui.nvim',
 	{
 		'yetone/avante.nvim',
 		build = 'make',
 		optional = true,
-		dependencies = { 'HakonHarnes/img-clip.nvim' },
+		dependencies = {
+			'HakonHarnes/img-clip.nvim',
+			'MunifTanjim/nui.nvim',
+		},
 		config = function()
 			require('avante').setup {
 				provider = "copilot",
@@ -336,7 +336,27 @@ local plugins_list = {
 		end
 	},
 	{
+		'ravitemer/mcphub.nvim',
+		build = 'npm install -g mcp-hub@latest',
+	},
+	{
 		'olimorris/codecompanion.nvim',
+		dependencies = {
+			{
+				'ravitemer/mcphub.nvim',
+				config = function()
+					require('mcphub').setup {
+						extensions = {
+							codecompanion = {
+								show_result_in_chat = true, -- Show the mcp tool result in the chat buffer
+								make_vars = true, -- make chat #variables from MCP server resources
+							}
+						}
+					}
+				end
+			},
+			"j-hui/fidget.nvim"
+		},
 		config = function()
 			require('codecompanion').setup {
 				adapters = {
@@ -347,6 +367,21 @@ local plugins_list = {
 							},
 						},
 					}),
+				},
+				strategies = {
+					chat = {
+						tools = {
+							mcp = {
+								callback = function()
+									return require("mcphub.extensions.codecompanion")
+								end,
+								description = "Call tools and resources from the MCP Servers",
+								opts = {
+									requires_approval = true,
+								}
+							}
+						}
+					}
 				}
 			}
 		end
