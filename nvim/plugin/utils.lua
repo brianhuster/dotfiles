@@ -1,10 +1,6 @@
 local api = vim.api
 local command = api.nvim_create_user_command
 
-command('GitBlameLine', function()
-	print(vim.fn.system { 'git', 'blame', '-L', vim.fn.line('.') .. ',+1', api.nvim_buf_get_name(0) })
-end, {})
-
 command('GitDiffHead', function()
 	local git_root = vim.fs.root(0, '.git')
 	if not git_root then

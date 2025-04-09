@@ -103,6 +103,8 @@ let $SUDO_ASKPASS = expand('<sfile>:p:h') . '/scripts/askpass'
 command! SudoWrite :silent! w !sudo tee %
 command! SudoRead :silent! r !sudo cat %
 
+command! GitBlameLine echo system([ 'git', 'blame', '-L', line('.') .. ',+1', expand('%') ])
+
 func! s:OpenImgBuf(file) abort
 	term imgcat %
 	exe 'bwipeout!' a:file
@@ -166,9 +168,11 @@ if has('nvim')
 	endif
 	set foldexpr=v:lua.vim.treesitter.foldexpr()
 	set exrc
+	lua if vim.loader then vim.loader.enable() end
 
 	au TermOpen * setl nonumber norelativenumber | startinsert
-
-	lua if vim.loader then vim.loader.enable() end
 	au FileType * lua pcall(vim.treesitter.start)
+	if getfsize($NVIM_LOG_FILE) > pow(1024, 3)
+		call delete($NVIM_LOG_FILE)
+	endif
 endif
