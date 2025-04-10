@@ -1,6 +1,6 @@
 setl iskeyword+=.,-,/
 setl formatprg=fish_indent
-setl omnifunc=FishComplete
+setl omnifunc=s:Complete
 for path in split(system("fish -c 'echo $fish_function_path'"))
 	exe 'setl path+=' . path
 endfor
@@ -10,8 +10,8 @@ let b:match_words = escape('<%(begin|function|if|switch|while|for)>:<end>', '<>%
 let b:undo_ftplugin = exists('b:undo_ftplugin') && type(b:undo_ftplugin) == v:t_string ? b:undo_ftplugin : ''
 			\ . '\n setl iskeyword< suffixesadd< formatprg< omnifunc< path<'
 
-if !exists('*FishComplete')
-	func FishComplete(findstart, base)
+if !exists('s:Complete')
+	func s:Complete(findstart, base)
 		if a:findstart
 			return getline('.') =~# '\v^\s*$' ? -1 : 0
 		else
@@ -19,7 +19,7 @@ if !exists('*FishComplete')
 				return []
 			endif
 			let results = []
-			let completions = system(['fish', '-c', 'complete -C '.shellescape(a:base)])
+			let completions = system(['fish', '--no-config', '-c', 'complete -C '.shellescape(a:base)])
 			let cmd = substitute(a:base, '\v\S+$', '', '')
 			for line in split(completions, '\n')
 				let tokens = split(line, '\t')
