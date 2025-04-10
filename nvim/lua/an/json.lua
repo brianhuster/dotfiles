@@ -94,7 +94,7 @@ end
 
 --- Hàm dùng cho 'formatexpr'
 -- Gọi từ chế độ format (ví dụ với gq) sẽ định dạng vùng hiện tại
-function M.format_expr()
+function M.formatexpr()
 	local line = vim.v.lnum
 	local count = vim.v.count
 	M.format_range(line, line + count - 1)
