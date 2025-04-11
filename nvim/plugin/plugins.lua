@@ -68,8 +68,7 @@ local plugins_list = {
 				end,
 			}
 		end
-	},
-	{
+	},{
 		'tpope/vim-surround',
 		dependencies = { 'tpope/vim-repeat' },
 	},

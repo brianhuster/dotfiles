@@ -86,7 +86,7 @@ local Filter = {
 	installed   = function(p) return p.status ~= Status.REMOVED and p.status ~= Status.TO_INSTALL end,
 	removed     = function(p) return p.status == Status.REMOVED end,
 	loaded      = function(p) return p.status == Status.LOADED end,
-	built       = function(p) return p.status == Status.BUILT or p.status == Status.LOADED end,
+	built       = function(p) return not p.status == Status.INSTALLED and not p.status == Status.UPDATED end,
 	to_install  = function(p) return p.status == Status.TO_INSTALL end,
 	to_update   = function(p) return p.status ~= Status.REMOVED and p.status ~= Status.TO_INSTALL and not p.pin end,
 	to_reclone  = function(p) return p.status == Status.TO_RECLONE end,
@@ -125,6 +125,7 @@ end
 ---@param callback fun(pkg: plug.Package)?
 local function run_build(pkg, callback)
 	if Filter.built(pkg) then return end
+	vim.opt.rtp:append(pkg.dir)
 	if pkg.dependencies then
 		iter(pkg.dependencies):each(function(dep) run_build(M.Pkgs[dep], callback) end)
 	end

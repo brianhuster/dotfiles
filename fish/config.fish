@@ -32,3 +32,10 @@ set -gx PATH $PATH \
     ~/.local/share/nvim/mason/bin/
 set -gx ANDROID_HOME $D/Android/Sdk
 set -gx ANDROID_USER_HOME /media/brianhuster/D/.android/
+
+function n8n
+    docker run -it -p 5678:5678 \
+        -v n8n_data:/home/node/.n8n \
+        docker.n8n.io/n8nio/n8n \
+        start --tunnel
+end
