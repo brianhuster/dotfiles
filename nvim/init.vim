@@ -99,6 +99,16 @@ let g:loaded_perl_provider = 1
 autocmd QuickFixCmdPost [^l]* cwindow
 autocmd QuickFixCmdPost l* lwindow
 
+" Make sure that yank operations are also saved to register 1 - 9 instead of
+" just 0 like default.
+function! s:YankShift()
+  for i in range(9, 1, -1)
+    call setreg(i, getreg(i - 1))
+  endfor
+endfunction
+
+au TextYankPost * if v:event.operator == 'y' | call s:YankShift() | endif
+
 let $SUDO_ASKPASS = expand('<sfile>:p:h') . '/scripts/askpass'
 command! SudoWrite :silent! w !sudo tee %
 command! SudoRead :silent! r !sudo cat %

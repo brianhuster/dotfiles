@@ -17,8 +17,8 @@ if test -z "$NVIM"
     # visual mode, but due to fish_cursor_default, is redundant here
     set fish_cursor_visual block
 
-    bind -M visual fish_clipboard_copy
-    bind -M normal fish_clipboard_paste
+    bind -M visual y fish_clipboard_copy
+    bind -M normal p fish_clipboard_paste
 end
 
 set -x OLLAMA_MODELS "/media/brianhuster/D/.ollama/models"
