@@ -1,1 +1,1 @@
-au BufRead,BufNewFile */doc/*.txt if match(getline('$'), 'ft=help') > -1 | setl ft=help | endif
+au BufRead,BufNewFile **/doc/*.txt if getline(1) =~ '^#!.*nvim -l' | setfiletype help | endif
