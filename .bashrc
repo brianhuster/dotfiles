@@ -137,9 +137,7 @@ export ANDROID_USER_HOME="$D/.android/"
 
 source $DATA/blesh/ble.sh
 
-n8n() {
-    docker run -it -p 5678:5678 \
-        -v n8n_data:/home/node/.n8n \
-        docker.n8n.io/n8nio/n8n \
-        start --tunnel
-}
+alias n8n="sudo docker run -it -p 5678:5678 \
+    -v n8n_data:/home/node/.n8n \
+    docker.n8n.io/n8nio/n8n \
+    start --tunnel"

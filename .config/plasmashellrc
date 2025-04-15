@@ -2,9 +2,6 @@
 1920x1080 screen: Height=580
 1920x1080 screen: Width=448
 
-[PlasmaTransientsConfig]
-PreloadWeight=0
-
 [PlasmaViews][Panel 102][Defaults]
 thickness=26
 
