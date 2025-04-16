@@ -43,6 +43,8 @@ vim.api.nvim_create_autocmd('ColorScheme', {
 	end,
 })
 
+vim.lsp.inlay_hint.enable()
+
 api.nvim_create_user_command("CopyDiagnostic", function()
 	local diagnostics = vim.diagnostic.get(0, { lnum = vim.fn.line('.') })
 	local messages = {}

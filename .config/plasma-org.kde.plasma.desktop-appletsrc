@@ -38,7 +38,7 @@ immutability=1
 plugin=org.kde.plasma.kickoff
 
 [Containments][473][Applets][474][Configuration]
-PreloadWeight=97
+PreloadWeight=100
 popupHeight=673
 popupWidth=863
 
@@ -77,7 +77,7 @@ immutability=1
 plugin=org.kde.plasma.systemtray
 
 [Containments][473][Applets][478][Configuration]
-PreloadWeight=92
+PreloadWeight=100
 SystrayContainmentId=479
 
 [Containments][473][Applets][491]
@@ -207,7 +207,7 @@ immutability=1
 plugin=org.kde.plasma.volume
 
 [Containments][479][Applets][480][Configuration]
-PreloadWeight=67
+PreloadWeight=87
 
 [Containments][479][Applets][480][Configuration][General]
 migrated=true
@@ -273,7 +273,7 @@ immutability=1
 plugin=org.kde.plasma.clipboard
 
 [Containments][479][Applets][489][Configuration]
-PreloadWeight=92
+PreloadWeight=97
 
 [Containments][479][Applets][490]
 immutability=1
@@ -297,14 +297,14 @@ immutability=1
 plugin=org.kde.plasma.networkmanagement
 
 [Containments][479][Applets][495][Configuration]
-PreloadWeight=92
+PreloadWeight=100
 
 [Containments][479][Applets][496]
 immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][479][Applets][496][Configuration]
-PreloadWeight=84
+PreloadWeight=100
 
 [Containments][479][Applets][501]
 immutability=1
@@ -330,7 +330,7 @@ PreloadWeight=42
 [Containments][479][General]
 extraItems=org.kde.plasma.volume,org.kde.plasma.keyboardindicator,org.kde.kdeconnect,org.kde.kupapplet,org.kde.plasma.mediacontroller,org.kde.plasma.nightcolorcontrol,org.kde.plasma.printmanager,org.kde.plasma.notifications,org.kde.plasma.devicenotifier,org.kde.plasma.networkmanagement,org.kde.plasma.vault,org.kde.plasma.keyboardlayout,org.kde.plasma.manage-inputmethod,org.kde.plasma.clipboard,org.kde.kscreen,org.kde.plasma.bluetooth,org.kde.plasma.battery
 knownItems=org.kde.plasma.volume,org.kde.plasma.keyboardindicator,org.kde.kdeconnect,org.kde.kupapplet,org.kde.plasma.battery,org.kde.plasma.mediacontroller,org.kde.plasma.nightcolorcontrol,org.kde.plasma.printmanager,org.kde.plasma.notifications,org.kde.plasma.devicenotifier,org.kde.plasma.networkmanagement,org.kde.plasma.vault,org.kde.plasma.keyboardlayout,org.kde.plasma.manage-inputmethod,org.kde.plasma.clipboard,org.kde.plasma.bluetooth,org.kde.kscreen
-shownItems=org.kde.plasma.battery
+shownItems=org.kde.plasma.battery,org.kde.plasma.bluetooth,org.kde.plasma.volume
 
 [Containments][504]
 activityId=0ff518ea-0a5c-4f8f-af53-35ba6ee841fc
