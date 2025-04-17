@@ -15,7 +15,6 @@ if not vim.b.root_dir then
 	vim.b.root_dir = require('an.lua').find_root(vim.api.nvim_buf_get_name(0))
 end
 
-print('Adding snippets')
 require'an'.add_snippet(
     "fn",
     "function ${1:name}($2)\n\t${3:-- content}\nend",

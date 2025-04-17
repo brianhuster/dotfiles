@@ -1,6 +1,6 @@
 "silent language vi_vn.utf-8
 set mouse=nvc
-set number
+set number relativenumber
 set autoindent cindent
 set shiftwidth=4 tabstop=4 noexpandtab
 set clipboard=unnamedplus
@@ -11,7 +11,6 @@ set backupcopy=yes
 let g:mapleader=" "
 set messagesopt=hit-enter,wait:5000,history:10000
 set completeopt=menuone,noselect,fuzzy,preview,popup
-set dictionary+=/usr/share/dict/words
 set noswapfile
 set foldmethod=expr nofoldenable
 set smoothscroll

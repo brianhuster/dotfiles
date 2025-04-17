@@ -29,26 +29,10 @@ local plugins_list = {
 		end
 	},
 	'neovim/nvim-lspconfig',
-	'williamboman/mason.nvim',
-	'echasnovski/mini.pick',
 	{
-		'williamboman/mason-lspconfig.nvim',
+		'williamboman/mason.nvim',
 		config = function()
-			local lang_servers = {
-				"arduino_language_server",
-				"dockerls",
-				"bashls",
-				"clangd",
-				"cssls", "tailwindcss", "html", "ts_ls",
-				"jsonls",
-				'jdtls',
-				"lua_ls",
-				"marksman",
-				"pylsp",
-				"volar",
-				"gopls",
-			}
-			require('mason').setup({
+			require 'mason'.setup {
 				ui = {
 					icons = {
 						package_installed = "✓",
@@ -56,16 +40,6 @@ local plugins_list = {
 						package_uninstalled = "✗"
 					}
 				}
-			})
-			require("mason-lspconfig").setup {
-				ensure_installed = lang_servers,
-			}
-			require("mason-lspconfig").setup_handlers {
-				function(server_name)
-					if server_name ~= 'lua_ls' then
-						require("lspconfig")[server_name].setup {}
-					end
-				end,
 			}
 		end
 	},

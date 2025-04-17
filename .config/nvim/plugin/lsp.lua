@@ -1,6 +1,19 @@
 local api = vim.api
 
-vim.lsp.enable('lua_ls')
+vim.lsp.enable {
+	"arduino_language_server",
+	"dockerls",
+	"bashls",
+	"clangd",
+	"cssls", "tailwindcss", "html", "ts_ls",
+	"jsonls",
+	'jdtls',
+	"lua_ls",
+	"marksman",
+	"pylsp",
+	"volar",
+	"gopls",
+}
 
 api.nvim_create_autocmd('LspAttach', {
 	callback = function(args)
@@ -37,9 +50,9 @@ else
 	})
 end
 
-vim.api.nvim_create_autocmd('ColorScheme', {
+api.nvim_create_autocmd('ColorScheme', {
 	callback = function()
-		vim.api.nvim_set_hl(0, 'LspReferenceTarget', {})
+		api.nvim_set_hl(0, 'LspReferenceTarget', {})
 	end,
 })
 
