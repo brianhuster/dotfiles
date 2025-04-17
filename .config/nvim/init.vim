@@ -46,7 +46,8 @@ nnoremap <Del> "_D
 xnoremap <Del> "_D
 
 inoremap <C-b> <cmd>normal! ^<CR>
-inoremap <C-e> <cmd>normal! $<CR>
+inoremap <C-e> <End>
+inoremap <C-Space> <C-x><C-o>
 
 map <MiddleMouse> <Nop>
 map <2-MiddleMouse> <Nop>

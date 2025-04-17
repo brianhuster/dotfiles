@@ -134,6 +134,7 @@ export OLLAMA_MODELS="$D/.ollama/models"
 export PATH="$HOME/gems/bin:$D/.android-studio/bin:/usr/local/go/bin:$HOME/go/bin:$D/Android/Sdk/platform-tools:$D/Android/Sdk/emulator:$D/Android/Sdk/tools:$DATA/nvim/mason/bin:$PATH"
 export ANDROID_HOME="$D/Android/Sdk"
 export ANDROID_USER_HOME="$D/.android/"
+export PROMPT_COMMAND='printf "\033]133;A\007"'
 
 source $DATA/blesh/ble.sh
 
