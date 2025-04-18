@@ -8,6 +8,7 @@ set autowriteall
 set cursorline
 set backspace=indent,eol,start
 set backupcopy=yes
+set ignorecase smartcase
 let g:mapleader=" "
 set messagesopt=hit-enter,wait:5000,history:10000
 set completeopt=menuone,noselect,fuzzy,preview,popup
@@ -186,3 +187,5 @@ if has('nvim')
 		call delete($NVIM_LOG_FILE)
 	endif
 endif
+
+packadd! nohlsearch
