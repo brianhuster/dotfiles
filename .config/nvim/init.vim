@@ -17,7 +17,7 @@ set foldmethod=expr nofoldenable
 set smoothscroll
 set wildmode=noselect:full
 set confirm
-set scrolloff
+set scrolloff=10
 set spell spelllang=en spelloptions+=camel
 let &spellfile = fnamemodify($MYVIMRC, ':p:h') . '/spell/en.utf-8.add'
 let &statusline = "%<%f %h%w%m%r " .
