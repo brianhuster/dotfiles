@@ -290,6 +290,7 @@ local plugins_list = {
 					vim.g.copilot_no_tab_map = true
 					vim.cmd [[au BufEnter * let b:copilot_enabled = v:false]]
 				end,
+				optional = true
 			},
 		},
 		config = function()
@@ -382,6 +383,7 @@ local plugins_list = {
 		config = function() vim.g.db_ui_use_nerd_fonts = 1 end
 	},
 	'kristijanhusak/vim-dadbod-completion',
+	{ 'glacambre/firenvim', build = ":call firenvim#install(0)" }
 }
 
 require 'plug'.config {
