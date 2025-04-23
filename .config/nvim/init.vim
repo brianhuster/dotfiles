@@ -3,7 +3,7 @@ set mouse=nvc
 set number relativenumber
 set autoindent cindent
 set shiftwidth=4 tabstop=4 noexpandtab
-set clipboard=unnamedplus
+au UIEnter * set clipboard=unnamedplus
 set autowriteall
 set cursorline
 set backspace=indent,eol,start
