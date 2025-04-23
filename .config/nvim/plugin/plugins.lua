@@ -101,6 +101,9 @@ local plugins_list = {
 	},
 	{
 		'mfussenegger/nvim-dap',
+		config = function()
+			require('dap.ext.vscode').json_decode = vim.fn.JsoncDecode
+		end
 	},
 	{
 		'igorlfs/nvim-dap-view',
