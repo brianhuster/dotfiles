@@ -3,7 +3,6 @@ set mouse=nvc
 set number relativenumber
 set autoindent cindent
 set shiftwidth=4 tabstop=4 noexpandtab
-au UIEnter * set clipboard=unnamedplus
 set autowriteall
 set cursorline
 set backspace=indent,eol,start
@@ -182,6 +181,7 @@ if has('nvim')
 	set exrc
 	lua if vim.loader then vim.loader.enable() end
 
+	au UIEnter * set clipboard=unnamedplus
 	au TermOpen * setl nonumber norelativenumber | startinsert
 	au FileType * lua pcall(vim.treesitter.start)
 	if getfsize($NVIM_LOG_FILE) > pow(1024, 3)

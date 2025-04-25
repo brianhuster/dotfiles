@@ -19,8 +19,11 @@ api.nvim_create_autocmd('LspAttach', {
 	callback = function(args)
 		local client = vim.lsp.get_client_by_id(args.data.client_id)
 		if not client then return end
-		if client:supports_method('textDocument/completion') and vim.lsp.completion then
+		if client:supports_method('textDocument/completion') then
 			vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
+		end
+		if vim.lsp.document_color and client:supports_method('textDocument/documentColor') then
+			vim.lsp.document_color.enable(true, args.buf, { style = 'virtual' })
 		end
 		if client:supports_method('workspace/symbol') then
 			vim.keymap.set('n', 'grs', function() vim.lsp.buf.workspace_symbol() end,

@@ -221,7 +221,6 @@ local plugins_list = {
 		end
 	},
 	'brianhuster/nvim-treesitter-endwise',
-	'chrisbra/Colorizer',
 	{ 'windwp/nvim-ts-autotag',      config = function() require('nvim-ts-autotag').setup() end },
 	'OXY2DEV/patterns.nvim',
 	'brianhuster/snipexec.nvim',
@@ -386,7 +385,10 @@ local plugins_list = {
 		config = function() vim.g.db_ui_use_nerd_fonts = 1 end
 	},
 	'kristijanhusak/vim-dadbod-completion',
-	{ 'glacambre/firenvim', build = ":call firenvim#install(0)" }
+	{ 'glacambre/firenvim', build = ":call firenvim#install(0)" },
+	{
+		'chrisbra/Colorizer', optional = vim.fn.has('nvim-0.12') == 1
+	}
 }
 
 require 'plug'.config {
