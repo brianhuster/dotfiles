@@ -95,6 +95,7 @@ local plugins_list = {
 			vim.g['sneak#label'] = 1
 		end
 	},
+	"mg979/vim-visual-multi",
 	{
 		'mfussenegger/nvim-dap',
 		config = function()
