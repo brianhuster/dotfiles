@@ -90,13 +90,9 @@ local plugins_list = {
 		end
 	},
 	{
-		'echasnovski/mini.jump2d',
+		'justinmk/vim-sneak',
 		config = function()
-			require('mini.jump2d').setup {
-				mappings = {
-					start_jumping = '<Leader>j',
-				}
-			}
+			vim.g['sneak#label'] = 1
 		end
 	},
 	{
@@ -317,7 +313,7 @@ local plugins_list = {
 	},
 	{
 		'ravitemer/mcphub.nvim',
-		build = 'npm install -g mcp-hub@latest',
+		build = 'sudo npm install -g mcp-hub@latest',
 	},
 	{
 		'olimorris/codecompanion.nvim',
