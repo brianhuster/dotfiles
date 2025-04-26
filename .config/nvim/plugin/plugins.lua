@@ -29,6 +29,7 @@ local plugins_list = {
 		end
 	},
 	'neovim/nvim-lspconfig',
+	'b0o/SchemaStore.nvim', -- schema for Json_ls and yaml_ls
 	{
 		'williamboman/mason.nvim',
 		config = function()
@@ -376,6 +377,7 @@ local plugins_list = {
 			pcall(require('supermaven-nvim.api').use_free_version)
 		end
 	},
+	"rafamadriz/friendly-snippets",
 	'tpope/vim-dadbod',
 	{
 		'kristijanhusak/vim-dadbod-ui',

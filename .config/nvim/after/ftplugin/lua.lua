@@ -31,10 +31,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 	callback = function(args)
 		local client = vim.lsp.get_client_by_id(args.data.client_id)
 		if not client then return end
-		if client:supports_method('textDocument/completion') then
-			vim.bo.omnifunc = 'v:lua.vim.lsp.omnifunc'
-		end
-		if client:supports_method('textDocument/Hover') then
+		if client:supports_method('textDocument/hover') then
 			vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = 0 })
 		end
 	end,

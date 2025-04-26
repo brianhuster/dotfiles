@@ -2,6 +2,7 @@ local api = vim.api
 
 vim.lsp.enable {
 	"arduino_language_server",
+	"basics_ls",
 	"dockerls",
 	"bashls",
 	"clangd",
@@ -31,6 +32,10 @@ api.nvim_create_autocmd('LspAttach', {
 		end
 	end,
 })
+
+vim.keymap.set('i', '<c-space>', function()
+	vim.lsp.completion.get()
+end)
 
 vim.cmd "au LspProgress * redrawstatus"
 
