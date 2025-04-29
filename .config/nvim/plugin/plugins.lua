@@ -216,6 +216,7 @@ local plugins_list = {
 		config = function()
 			vim.g.lexima_map_escape = ''
 			vim.g.lexima_enable_endwise_rules = 0
+			vim.g.lexima_enable_basic_rules = 0
 		end
 	},
 	'brianhuster/nvim-treesitter-endwise',
