@@ -51,39 +51,17 @@ inoremap <C-b> <cmd>normal! ^<CR>
 inoremap <C-e> <End>
 inoremap <C-Space> <C-x><C-o>
 
-map <MiddleMouse> <Nop>
-map <2-MiddleMouse> <Nop>
-map <3-MiddleMouse> <Nop>
-map <4-MiddleMouse> <Nop>
-imap <MiddleMouse> <Nop>
-imap <2-MiddleMouse> <Nop>
-imap <3-MiddleMouse> <Nop>
-imap <4-MiddleMouse> <Nop>
+for num in [ '', '2-', '3-', '4-' ]
+	exe $"map <{num}MiddleMouse> <Nop>"
+	exe $"imap <{num}MiddleMouse> <Nop>"
+endfor
 
-tnoremap <A-h> <C-\><C-N><C-w>h
-tnoremap <A-j> <C-\><C-N><C-w>j
-tnoremap <A-k> <C-\><C-N><C-w>k
-inoremap <A-h> <C-\><C-N><C-w>h
-inoremap <A-j> <C-\><C-N><C-w>j
-inoremap <A-k> <C-\><C-N><C-w>k
-inoremap <A-l> <C-\><C-N><C-w>l
-nnoremap <A-h> <C-w>h
-nnoremap <A-j> <C-w>j
-nnoremap <A-k> <C-w>k
-nnoremap <A-l> <C-w>l
-
-tnoremap <A-Up> <C-\><C-N><C-w>k
-tnoremap <A-Down> <C-\><C-N><C-w>j
-tnoremap <A-Left> <C-\><C-N><C-w>h
-tnoremap <A-Right> <C-\><C-N><C-w>l
-inoremap <A-Up> <C-\><C-N><C-w>k
-inoremap <A-Down> <C-\><C-N><C-w>j
-inoremap <A-Left> <C-\><C-N><C-w>h
-inoremap <A-Right> <C-\><C-N><C-w>l
-nnoremap <A-Up> <C-w>k
-nnoremap <A-Down> <C-w>j
-nnoremap <A-Left> <C-w>h
-nnoremap <A-Right> <C-w>l
+for mode in [ 't', 'i' ]
+	for direction in [ 'h', 'j', 'k', 'l' ]
+		exe $"{mode}noremap <C-w>{direction} <C-\\><C-n><C-w>{direction}"
+		exe $"{mode}noremap <C-w><C-{direction}> <C-\\><C-n><C-w>{direction}"
+	endfor
+endfor
 
 tnoremap <expr> <C-R> '<C-\><C-N>"'.nr2char(getchar()).'pi'
 
