@@ -63,8 +63,8 @@ function M.select(items, opts, on_choice)
 	local width = 0
 	local au = api.nvim_create_autocmd
 
-	for _, item in ipairs(vim.list_extend(items, { title })) do
-		local item_text = tostring(opts.format_item and opts.format_item(item) or item)
+	for i, item in ipairs(vim.list_extend({ title }, items)) do
+		local item_text = tostring(i > 1 and opts.format_item and opts.format_item(item) or item)
 		width = math.max(width, #item_text)
 	end
 
@@ -107,6 +107,7 @@ function M.select(items, opts, on_choice)
 	end
 
 	vim.bo[buf].completeopt = "menu,menuone,noinsert,noselect,popup,fuzzy"
+	vim.bo[buf].buftype = 'nofile'
 
 	vim.keymap.set({'n', 'i'}, '<Esc>', close_picker, { buffer = buf })
 

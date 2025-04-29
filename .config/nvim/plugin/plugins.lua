@@ -270,30 +270,28 @@ local plugins_list = {
 		end
 	},
 	{
+		'github/copilot.vim',
+		config = function()
+			vim.keymap.set('i', '<M-CR>', 'copilot#Accept("\\<CR>")', {
+				expr = true,
+				replace_keycodes = false
+			})
+			vim.keymap.set('i', '<M-w>', '<Plug>(copilot-accept-word)', {
+				expr = true,
+				replace_keycodes = false
+			})
+			vim.keymap.set('i', '<M-l>', '<Plug>(copilot-accept-line)', {
+				expr = true,
+				replace_keycodes = false
+			})
+			vim.g.copilot_no_tab_map = true
+			vim.cmd [[au BufEnter * let b:copilot_enabled = v:false]]
+		end,
+		optional = true
+	},
+	{
 		'CopilotC-Nvim/CopilotChat.nvim',
 		build = 'make tiktoken',
-		dependencies = {
-			{
-				'github/copilot.vim',
-				config = function()
-					vim.keymap.set('i', '<M-CR>', 'copilot#Accept("\\<CR>")', {
-						expr = true,
-						replace_keycodes = false
-					})
-					vim.keymap.set('i', '<M-w>', '<Plug>(copilot-accept-word)', {
-						expr = true,
-						replace_keycodes = false
-					})
-					vim.keymap.set('i', '<M-l>', '<Plug>(copilot-accept-line)', {
-						expr = true,
-						replace_keycodes = false
-					})
-					vim.g.copilot_no_tab_map = true
-					vim.cmd [[au BufEnter * let b:copilot_enabled = v:false]]
-				end,
-				optional = true
-			},
-		},
 		config = function()
 			require('CopilotChat').setup {
 				model = "claude-3.5-sonnet",
@@ -385,7 +383,7 @@ local plugins_list = {
 		config = function() vim.g.db_ui_use_nerd_fonts = 1 end
 	},
 	'kristijanhusak/vim-dadbod-completion',
-	{ 'glacambre/firenvim', build = ":call firenvim#install(0)" },
+	{ 'glacambre/firenvim',            build = ":call firenvim#install(0)" },
 	{
 		'chrisbra/Colorizer', optional = vim.fn.has('nvim-0.12') == 1
 	}
