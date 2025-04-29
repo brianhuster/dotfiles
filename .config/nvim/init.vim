@@ -56,10 +56,10 @@ for num in [ '', '2-', '3-', '4-' ]
 	exe $"imap <{num}MiddleMouse> <Nop>"
 endfor
 
-for mode in [ 't', 'i' ]
+for mode in [ 'n', 't', 'i' ]
 	for direction in [ 'h', 'j', 'k', 'l' ]
-		exe $"{mode}noremap <C-w>{direction} <C-\\><C-n><C-w>{direction}"
-		exe $"{mode}noremap <C-w><C-{direction}> <C-\\><C-n><C-w>{direction}"
+		exe $"{mode}noremap <A-{direction}> <C-\\><C-n><C-w>{direction}"
+		exe $"{mode}noremap <A-{direction}> <C-\\><C-n><C-w>{direction}"
 	endfor
 endfor
 
