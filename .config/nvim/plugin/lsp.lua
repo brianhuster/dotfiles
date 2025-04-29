@@ -13,6 +13,7 @@ vim.lsp.enable {
 	"marksman",
 	"pylsp",
 	"volar",
+	"vimls",
 	"gopls",
 }
 
