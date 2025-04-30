@@ -11,7 +11,7 @@ set ignorecase smartcase
 let g:mapleader=" "
 let g:vim_indent_cont = shiftwidth() " Continuational line indentation in Vimscript file
 set messagesopt=hit-enter,wait:5000,history:10000
-set completeopt=menuone,noselect,fuzzy,preview,popup
+set completeopt=menuone,noselect,preview,popup
 set noswapfile
 set foldmethod=expr nofoldenable
 set smoothscroll

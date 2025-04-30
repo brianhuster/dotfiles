@@ -128,7 +128,7 @@ end
 ---@return any
 function M.pipe(expr, ...)
 	local pipeline = { ... }
-	for _, f in pipeline do
+	for _, f in ipairs(pipeline) do
 		if type(f) ~= "function" then
 			error("Expect a function")
 		end

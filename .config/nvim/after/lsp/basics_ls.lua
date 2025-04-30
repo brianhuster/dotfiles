@@ -2,6 +2,7 @@
 return {
 	cmd = { "basics-language-server" },
 	name = "basics_ls",
+
 	settings = {
 		buffer = {
 			enable = false

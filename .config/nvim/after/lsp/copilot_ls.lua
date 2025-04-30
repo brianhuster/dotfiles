@@ -25,7 +25,18 @@ return {
 	---@param bufnr integer
 	on_attach = function(client, bufnr)
 		vim.keymap.set('i', '<M-c>', function()
-			client:request('textDocument/inlineDocument')
+			client:request('textDocument/inlineCompletion', {
+				textDocument = {
+					uri = vim.uri_from_bufnr(bufnr),
+				},
+				position = {
+					line = vim.fn.line('.'),
+					character = vim.fn.col('.')
+				},
+				context = {
+					triggerKind = 1,
+				}
+			})
 		end)
 	end
 }
