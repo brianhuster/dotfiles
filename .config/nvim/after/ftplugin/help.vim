@@ -18,5 +18,6 @@ endif
 
 func s:Tagfunc(pattern, flags, info) abort
 	let [ pattern, flags, info ] = [ a:pattern, a:flags, a:info ]
+
 	return taglist('\V' .. pattern)
 endfunc

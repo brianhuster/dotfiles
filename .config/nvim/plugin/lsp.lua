@@ -3,7 +3,6 @@ local api = vim.api
 vim.lsp.enable {
 	"arduino_language_server",
 	"basics_ls",
-	"copilot_ls",
 	"dockerls",
 	"bashls",
 	"clangd",
