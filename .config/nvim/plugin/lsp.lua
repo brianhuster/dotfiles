@@ -15,6 +15,7 @@ vim.lsp.enable {
 	"volar",
 	"vimls",
 	"gopls",
+	'yamlls'
 }
 
 api.nvim_create_autocmd('LspAttach', {

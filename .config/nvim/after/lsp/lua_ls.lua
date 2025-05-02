@@ -7,6 +7,11 @@ return {
 		Lua = {
 			runtime = {
 				version = 'LuaJIT',
+				path = {
+					'lua/?.lua',
+					'lua/?/init.lua'
+				},
+
 			},
 			workspace = {
 				checkThirdParty = false,

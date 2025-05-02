@@ -290,6 +290,20 @@ local plugins_list = {
 		optional = true
 	},
 	{
+		"copilotlsp-nvim/copilot-lsp",
+		config = function()
+			vim.g.copilot_nes_debounce = 500
+			vim.lsp.enable("copilot_ls")
+			vim.keymap.set({ "n", "i", "x" }, "<M-<tab>>", function()
+				local nes = require("copilot-lsp.nes")
+				-- Try to jump to the start of the suggestion edit.
+				-- If already at the start, then apply the pending suggestion and jump to the end of the edit.
+				return nes.walk_cursor_start_edit()
+					or (nes.apply_pending_nes() and nes.walk_cursor_end_edit())
+			end)
+		end,
+	},
+	{
 		'CopilotC-Nvim/CopilotChat.nvim',
 		build = 'make tiktoken',
 		config = function()

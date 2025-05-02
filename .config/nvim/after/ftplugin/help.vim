@@ -1,4 +1,3 @@
-setl omnifunc=s:Complete
 let &l:iskeyword = '!-~,^*,^|,^",192-255'
 " @type string
 let s:tags_files = globpath(&rtp, 'doc/tags', 0, 1, 1)
@@ -7,17 +6,5 @@ let s:tags_files = globpath(&rtp, 'doc/tags', 0, 1, 1)
 	\ ->join(',')
 exe 'setl tags+=' .. s:tags_files
 
-setl tagfunc=s:Tagfunc
-
 let b:undo_ftplugin = exists('b:undo_ftplugin') && type(b:undo_ftplugin) == v:t_string ? b:undo_ftplugin : ''
 	\ . '\n setl ofu< isk< tags< tagfunc<'
-
-if exists('*s:Tagfunc')
-	finish
-endif
-
-func s:Tagfunc(pattern, flags, info) abort
-	let [ pattern, flags, info ] = [ a:pattern, a:flags, a:info ]
-
-	return taglist('\V' .. pattern)
-endfunc
