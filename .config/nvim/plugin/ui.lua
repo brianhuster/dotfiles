@@ -6,9 +6,8 @@ vim.ui.select = function(...)
 end
 
 vim.g.health = { style = 'float' }
-
-local extui = require 'vim._extui'
-if extui then
-	extui.enable {}
-	vim.o.cmdheight = 0
-end
+require 'vim._extui'.enable {
+	msg = {
+		pos = 'box'
+	}
+}
