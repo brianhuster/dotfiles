@@ -6,8 +6,6 @@ vim.ui.select = function(...)
 end
 
 vim.g.health = { style = 'float' }
-require 'vim._extui'.enable {
-	msg = {
-		pos = 'box'
-	}
-}
+if vim.fn.has('nvim-0.12') == 1 then
+	require 'vim._extui'.enable {}
+end

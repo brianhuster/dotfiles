@@ -74,7 +74,8 @@ cnoremap <expr> <Down> pumvisible() ? '<C-b><Down>' : '<Down>'
 
 let did_install_default_menus = 1
 let did_install_syntax_menu = 1
-let g:loaded_perl_provider = 1
+let g:loaded_perl_provider = 0
+let g:loaded_ruby_provider = 0
 
 autocmd QuickFixCmdPost [^l]* cwindow
 autocmd QuickFixCmdPost l* lwindow

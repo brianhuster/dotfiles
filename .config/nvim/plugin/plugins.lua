@@ -28,6 +28,7 @@ local plugins_list = {
 			}
 		end
 	},
+	'vim-jp/vimdoc-ja',
 	'neovim/nvim-lspconfig',
 	'b0o/SchemaStore.nvim', -- schema for Json_ls and yaml_ls
 	{
@@ -294,7 +295,7 @@ local plugins_list = {
 		config = function()
 			vim.g.copilot_nes_debounce = 500
 			vim.lsp.enable("copilot_ls")
-			vim.keymap.set({ "n", "i", "x" }, "<M-<tab>>", function()
+			vim.keymap.set({ "n", "i", "x" }, "<C-x><C-c>", function()
 				local nes = require("copilot-lsp.nes")
 				-- Try to jump to the start of the suggestion edit.
 				-- If already at the start, then apply the pending suggestion and jump to the end of the edit.
