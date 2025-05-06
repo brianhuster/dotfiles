@@ -3,3 +3,4 @@ node_modules
 pack/
 **__pycache__/
 lazy-lock.json
+tags
