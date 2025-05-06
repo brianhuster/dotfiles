@@ -2,7 +2,6 @@ local M = {}
 
 local api = vim.api
 
----@source https://github.com/neovim/nvim-lspconfig/blob/master/lua/lspconfig/configs/lua_ls.lua
 ---@param fname string
 ---@return string
 function M.find_root(fname)
@@ -12,34 +11,20 @@ end
 --- @param module string
 ---@return string
 function M.includeexpr(module)
-  ---@param fname string
-  ---@return boolean
-  local function filereadable(fname)
-    return vim.fn.filereadable(fname) == 1
-  end
+	module = module:gsub('%.', '/')
 
-  local fname = module:gsub('%.', '/')
+	local root = vim.fs.root(vim.api.nvim_buf_get_name(0), 'lua') or vim.fn.getcwd()
+	for _, fname in ipairs { module, vim.fs.joinpath(root, 'lua', module) } do
+		for _, suf in ipairs { '.lua', '/init.lua' } do
+			local path = fname .. suf
+			if vim.uv.fs_stat(path) then
+				return path
+			end
+		end
+	end
 
-  -- For normal Lua projects
-  local lua_ver = { vim.g.lua_version, vim.g.lua_subversion }
-  if filereadable(fname .. '.lua') then
-    return fname .. '.lua'
-  end
-  if vim.version.ge(lua_ver, { 5, 3 }) and filereadable(fname .. '/init.lua') then
-    return fname .. '/init.lua'
-  end
-
-  -- For Nvim Lua
-  local root = vim.fs.root(vim.api.nvim_buf_get_name(0), 'lua') or vim.fn.getcwd()
-  for _, suf in ipairs { '.lua', '/init.lua' } do
-    local path = vim.fs.joinpath(root, 'lua', fname .. suf)
-    if filereadable(path) then
-      return path
-    end
-  end
-
-  local modInfo = vim.loader.find(module)[1]
-  return modInfo and modInfo.modpath or module
+	local modInfo = vim.loader.find(module)[1]
+	return modInfo and modInfo.modpath or module
 end
 
 ---@param keyword string
@@ -71,7 +56,6 @@ local function lookup_help(keyword, opts)
 	end
 end
 
----@TODO: Support Vimscript better, possibly using Treesitter node
 function M.keywordprg()
 	local temp_isk = vim.o.iskeyword
 	vim.cmd("set iskeyword+=.,#")

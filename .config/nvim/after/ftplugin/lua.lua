@@ -1,30 +1,14 @@
-vim.bo.path = nil
-if not vim.fn.has('nvim-0.11') then
+if vim.fn.has('nvim-0.11') == 0 then
 	vim.bo.omnifunc = "v:lua.vim.lua_omnifunc"
-	vim.bo.includeexpr = "v:lua.require'an.lua'.includeexpr(v:fname)"
 	vim.bo.include = [[\v<((do|load)file|require)[^''"]*[''"]\zs[^''"]+]]
 end
-vim.bo.keywordprg = ':LuaKeywordPrg'
+vim.bo.includeexpr = "v:lua.require'an.lua'.includeexpr(v:fname)"
+vim.bo.keywordprg = ':NvimLuaKeywordPrg'
 vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = 0 })
 
-vim.api.nvim_buf_create_user_command(0, 'LuaKeywordPrg', function()
+vim.api.nvim_buf_create_user_command(0, 'NvimLuaKeywordPrg', function()
 	require('an.lua').keywordprg()
 end, { nargs = '*' })
-
-if not vim.b.root_dir then
-	vim.b.root_dir = require('an.lua').find_root(vim.api.nvim_buf_get_name(0))
-end
-
-require'an'.add_snippet(
-    "fn",
-    "function ${1:name}($2)\n\t${3:-- content}\nend",
-    { buffer = 0 }
-)
-require'an'.add_snippet(
-    "lfn",
-    "local function ${1:name}($2)\n\t${3:-- content}\nend",
-    { buffer = 0 }
-)
 
 vim.api.nvim_create_autocmd('LspAttach', {
 	buffer = 0,

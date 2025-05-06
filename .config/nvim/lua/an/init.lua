@@ -15,25 +15,6 @@ function M.ins_autocomplete(shortcut, triggers)
 	end
 end
 
----@param trigger string trigger string for snippet
----@param body string snippet text that will be expanded
----@param opts? vim.keymap.set.Opts
-function M.add_snippet(trigger, body, opts)
-	local commands = { '<C-x>s', '<C-x><C-s>' }
-	for _, k in ipairs(commands) do
-		vim.keymap.set("i", k .. trigger, function()
-			-- If abbrev is expanded with keys like "(", ")", "<cr>", "<space>",
-			-- don't expand the snippet. Only accept "<c-]>" as trigger key.
-			local c = vim.fn.nr2char(vim.fn.getchar(0) --[[@as integer]])
-			if c ~= "" then
-				vim.api.nvim_feedkeys(trigger .. c, "i", true)
-				return
-			end
-			vim.snippet.expand(body)
-		end, opts)
-	end
-end
-
 ---Prompts the user to pick from a list of items, allowing arbitrary
 ---(potentially asynchronous) work until `on_choice`.
 ---

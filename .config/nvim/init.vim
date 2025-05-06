@@ -23,7 +23,7 @@ let &spellfile = fnamemodify($MYVIMRC, ':p:h') . '/spell/en.utf-8.add'
 let &statusline = "%<%f %h%w%m%r " .
 	\ "%=%{% &showcmdloc == 'statusline' ? '%-10.S ' : '' %}" .
 	\ "%{% exists('b:keymap_name') ? '<'..b:keymap_name..'> ' : '' %}" .
-	\ "%{% &ruler ? ( &rulerformat == '' ? '%-14.(%l,%c%V%) %P' : &rulerformat ) : '' %}"
+	\ "%{% &ruler ? ( &rulerformat == '' ? '%-15.(%l,%c%V%) %P' : &rulerformat ) : '' %}"
 
 if has('nvim')
 	let &statusline .= '%{%v:lua.vim.lsp.status()%}'
