@@ -138,7 +138,7 @@ export PROMPT_COMMAND='printf "\033]133;A\007"'
 
 source $DATA/blesh/ble.sh
 
-alias n8n="sudo docker run -it -p 5678:5678 \
+alias n8n-docker="sudo docker run -it -p 5678:5678 \
     -v n8n_data:/home/node/.n8n \
     docker.n8n.io/n8nio/n8n \
     start --tunnel"

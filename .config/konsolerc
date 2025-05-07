@@ -7,10 +7,13 @@ DefaultProfile=Brianhuster.profile
 [General]
 ConfigVersion=1
 
+[KFileDialog Settings]
+listViewIconSize=64
+
 [MainWindow]
 1280x800 screen: Window-Maximized=true
-1920x1080 screen: Height=714
-1920x1080 screen: Width=887
+1920x1080 screen: Height=403
+1920x1080 screen: Width=768
 1920x1080 screen: Window-Maximized=true
 1920x1080 screen: XPosition=516
 1920x1080 screen: YPosition=173

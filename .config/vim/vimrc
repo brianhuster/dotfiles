@@ -10,7 +10,7 @@ let &t_TE = "\<Esc>[>4;m"
 
 syntax on
 filetype plugin on
-set termguicolors
+set termguicolors clipboard=unnamedplus
 packadd! comment
 packadd! matchit
 runtime! ftplugin/man.vim
