@@ -9,7 +9,7 @@ module.exports = (plugin) => {
 		'JsoncDecode', async (args) => {
 			const [ str ] = args
 			if (typeof(str) !== 'string') {
-				plugin.nvim.call('nvim_echo', [
+				plugin.nvim.request('nvim_echo', [
 					[[ 'Error calling vimscript function JsoncDecode: expect a string' ]],
 					true,
 					{ err: true }

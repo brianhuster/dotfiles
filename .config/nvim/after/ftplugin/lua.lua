@@ -3,10 +3,10 @@ if vim.fn.has('nvim-0.11') == 0 then
 	vim.bo.include = [[\v<((do|load)file|require)[^''"]*[''"]\zs[^''"]+]]
 end
 vim.bo.includeexpr = "v:lua.require'an.lua'.includeexpr(v:fname)"
-vim.bo.keywordprg = ':NvimLuaKeywordPrg'
+vim.bo.keywordprg = ':LuaKeywordPrg'
 vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = 0 })
 
-vim.api.nvim_buf_create_user_command(0, 'NvimLuaKeywordPrg', function()
+vim.api.nvim_buf_create_user_command(0, 'LuaKeywordPrg', function()
 	require('an.lua').keywordprg()
 end, { nargs = '*' })
 
