@@ -142,8 +142,6 @@ if executable('ibus')
 	augroup IBusHandler
 		autocmd InsertEnter * call s:IbusOn()
 		autocmd InsertLeave * call s:IbusOff()
-		autocmd FocusGained * call s:IbusOn()
-		autocmd FocusLost * call s:IbusOff()
 		autocmd ExitPre * call s:IbusOn()
 	augroup END
 	call s:IbusOff()
@@ -163,7 +161,6 @@ if has('nvim')
 
 	au UIEnter * set clipboard=unnamedplus
 	au TermOpen * setl nonumber norelativenumber | startinsert
-	au FileType * lua pcall(vim.treesitter.start)
 	if getfsize($NVIM_LOG_FILE) > pow(1024, 3)
 		call delete($NVIM_LOG_FILE)
 	endif

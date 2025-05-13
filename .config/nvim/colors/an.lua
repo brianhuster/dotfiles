@@ -21,8 +21,8 @@ end
 
 au("OptionSet", { "termguicolors", "background" }, function()
 	if (o.termguicolors and (o.bg == "dark")) then
-		return colorscheme("an")
+		colorscheme "an"
 	else
-		return colorscheme("default")
+		colorscheme "default"
 	end
 end)

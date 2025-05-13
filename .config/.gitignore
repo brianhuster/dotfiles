@@ -33,6 +33,8 @@
 !kwinrc
 !kwinrulesrc
 !lattedockrc
+!mozc
+!mozc/**
 !plasma-org.kde.plasma.desktop-appletsrc
 !plasmarc
 !plasmashellrc

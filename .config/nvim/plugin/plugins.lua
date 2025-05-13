@@ -5,88 +5,15 @@ vim.g.did_install_syntax_menu = 1
 
 local plugins_list = {
 	{
-		"brianhuster/direx.nvim",
-		dependencies = {
-			{ 'echasnovski/mini.icons', config = function() require('mini.icons').setup() end }
-		},
-		config = function()
-			local previewer ---@type string
-			if vim.fn.executable('nvcat') == 1 then
-				previewer = [[nvcat -clean {}]]
-			elseif vim.fn.executable('bat') == 1 then
-				previewer =
-				[[bat --style=numbers --color=always --paging=always --wrap=never --theme=ansi --pager=never --decorations=never {}]]
-			end
-			require('direx.config').set {
-				iconfunc = function(p)
-					local get = require('mini.icons').get
-					local icon, hl = get(p:sub(-1) == '/' and 'directory' or 'file', p)
-					icon = icon .. ' '
-					return { icon = icon, hl = hl }
-				end,
-				fzfprg = ("fzf --preview %s "):format(vim.fn.shellescape(previewer))
-			}
-		end
-	},
-	'vim-jp/vimdoc-ja',
-	'neovim/nvim-lspconfig',
-	'b0o/SchemaStore.nvim', -- schema for Json_ls and yaml_ls
-	{
-		'williamboman/mason.nvim',
-		config = function()
-			require 'mason'.setup {
-				ui = {
-					icons = {
-						package_installed = "✓",
-						package_pending = "➜",
-						package_uninstalled = "✗"
-					}
-				}
-			}
-		end
-	},
-	{
 		'tpope/vim-surround',
 		dependencies = { 'tpope/vim-repeat' },
 	},
 	{
-		'mfussenegger/nvim-jdtls', -- Java development
+		'echasnovski/mini.jump2d',
 		config = function()
-			vim.cmd [[
-			nnoremap <A-o> <Cmd>lua require'jdtls'.organize_imports()<CR>
-			nnoremap crv <Cmd>lua require('jdtls').extract_variable()<CR>
-			vnoremap crv <Esc><Cmd>lua require('jdtls').extract_variable(true)<CR>
-			nnoremap crc <Cmd>lua require('jdtls').extract_constant()<CR>
-			vnoremap crc <Esc><Cmd>lua require('jdtls').extract_constant(true)<CR>
-			vnoremap crm <Esc><Cmd>lua require('jdtls').extract_method(true)<CR>
-
-
-			" If using nvim-dap
-			" This requires java-debug and vscode-java-test bundles, see install steps in this README further below.
-			nnoremap <leader>df <Cmd>lua require'jdtls'.test_class()<CR>
-			nnoremap <leader>dn <Cmd>lua require'jdtls'.test_nearest_method()<CR>
-			]]
-		end
-	},
-	{ 'echasnovski/mini.trailspace', config = function() require('mini.trailspace').setup {} end },
-	{
-		'nvimdev/indentmini.nvim',
-		config = function()
-			vim.cmd [[
-				hi default link IndentLine Comment
-				hi default link IndentLineCurrent Comment
-			]]
-			require('indentmini').setup {}
-		end
-	},
-	'nvim-lua/plenary.nvim', -- dependency of many plugins
-	'NeogitOrg/neogit',
-	{
-		'echasnovski/mini.diff',
-		config = function()
-			require('mini.diff').setup {
-				view = {
-					style = 'sign'
+			require 'mini.jump2d'.setup {
+				mappings = {
+					start_jumping = '<Leader>j',
 				}
 			}
 		end
@@ -98,31 +25,6 @@ local plugins_list = {
 		end
 	},
 	"mg979/vim-visual-multi",
-	{
-		'mfussenegger/nvim-dap',
-		config = function()
-			require('dap.ext.vscode').json_decode = vim.fn.JsoncDecode
-		end
-	},
-	{
-		'igorlfs/nvim-dap-view',
-		dependencies = {
-			'mfussenegger/nvim-dap',
-		}
-	},
-	{
-		'theHamsta/nvim-dap-virtual-text',
-		dependencies = { 'mfussenegger/nvim-dap' },
-		config = function()
-			require('nvim-dap-virtual-text').setup()
-		end
-	},
-	{
-		'leoluz/nvim-dap-go',
-		dependencies = {
-			'mfussenegger/nvim-dap',
-		}
-	},
 	{
 		'nvim-treesitter/nvim-treesitter',
 		build = ':TSUpdate all',
@@ -213,19 +115,6 @@ local plugins_list = {
 		end
 	},
 	{
-		'cohama/lexima.vim',
-		config = function()
-			vim.g.lexima_map_escape = ''
-			vim.g.lexima_enable_endwise_rules = 0
-			vim.g.lexima_enable_basic_rules = 0
-		end
-	},
-	'brianhuster/nvim-treesitter-endwise',
-	{ 'windwp/nvim-ts-autotag',      config = function() require('nvim-ts-autotag').setup() end },
-	'OXY2DEV/patterns.nvim',
-	'brianhuster/snipexec.nvim',
-	'uga-rosa/ccc.nvim',
-	{
 		'glacambre/firenvim',
 		build = ':call firenvim#install(0)',
 		config = function()
@@ -270,139 +159,250 @@ local plugins_list = {
 			})
 		end
 	},
-	{
-		'github/copilot.vim',
-		config = function()
-			vim.keymap.set('i', '<M-CR>', 'copilot#Accept("\\<CR>")', {
-				expr = true,
-				replace_keycodes = false
-			})
-			vim.keymap.set('i', '<M-w>', '<Plug>(copilot-accept-word)', {
-				expr = true,
-				replace_keycodes = false
-			})
-			vim.keymap.set('i', '<M-l>', '<Plug>(copilot-accept-line)', {
-				expr = true,
-				replace_keycodes = false
-			})
-			vim.g.copilot_no_tab_map = true
-			vim.cmd [[au BufEnter * let b:copilot_enabled = v:false]]
-		end,
-		optional = true
-	},
-	{
-		"copilotlsp-nvim/copilot-lsp",
-		config = function()
-			vim.g.copilot_nes_debounce = 500
-			vim.lsp.enable("copilot_ls")
-			vim.keymap.set({ "n", "i", "x" }, "<C-a>", function()
-				local nes = require("copilot-lsp.nes")
-				-- Try to jump to the start of the suggestion edit.
-				-- If already at the start, then apply the pending suggestion and jump to the end of the edit.
-				return nes.walk_cursor_start_edit()
-					or (nes.apply_pending_nes() and nes.walk_cursor_end_edit())
-			end)
-		end,
-	},
-	{
-		'CopilotC-Nvim/CopilotChat.nvim',
-		build = 'make tiktoken',
-		config = function()
-			require('CopilotChat').setup {
-				model = "claude-3.5-sonnet",
-			}
-		end
-	},
-	{
-		'yetone/avante.nvim',
-		build = 'make',
-		optional = true,
-		dependencies = {
-			'HakonHarnes/img-clip.nvim',
-			'MunifTanjim/nui.nvim',
+}
+
+if not vim.g.vscode then
+	vim.list_extend(plugins_list, {
+		{
+			"brianhuster/direx.nvim",
+			dependencies = {
+				{ 'echasnovski/mini.icons', config = function() require('mini.icons').setup() end }
+			},
+			config = function()
+				local previewer ---@type string
+				if vim.fn.executable('nvcat') == 1 then
+					previewer = [[nvcat -clean {}]]
+				elseif vim.fn.executable('bat') == 1 then
+					previewer =
+					[[bat --style=numbers --color=always --paging=always --wrap=never --theme=ansi --pager=never --decorations=never {}]]
+				end
+				require('direx.config').set {
+					iconfunc = function(p)
+						local get = require('mini.icons').get
+						local icon, hl = get(p:sub(-1) == '/' and 'directory' or 'file', p)
+						icon = icon .. ' '
+						return { icon = icon, hl = hl }
+					end,
+					fzfprg = ("fzf --preview %s "):format(vim.fn.shellescape(previewer))
+				}
+			end
 		},
-		config = function()
-			require('avante').setup {
-				provider = "copilot",
+		'vim-jp/vimdoc-ja',
+		'neovim/nvim-lspconfig',
+		'b0o/SchemaStore.nvim', -- schema for Json_ls and yaml_ls
+		{
+			'williamboman/mason.nvim',
+			config = function()
+				require 'mason'.setup {}
+			end
+		},
+		{
+			'brianhuster/supermaven-nvim',
+			config = function()
+				require('supermaven-nvim').setup {
+					keymaps = {
+						accept_suggestion = "<M-CR>",
+						accept_word = "<M-w>",
+					},
+				}
+				pcall(require('supermaven-nvim.api').use_free_version)
+			end
+		},
+		"rafamadriz/friendly-snippets",
+		'tpope/vim-dadbod',
+		{
+			'kristijanhusak/vim-dadbod-ui',
+			config = function() vim.g.db_ui_use_nerd_fonts = 1 end
+		},
+		'kristijanhusak/vim-dadbod-completion',
+		{ 'glacambre/firenvim',          build = ":call firenvim#install(0)" },
+		'mfussenegger/nvim-jdtls', -- Java development
+		{ 'echasnovski/mini.trailspace', config = function() require('mini.trailspace').setup {} end },
+		{
+			'nvimdev/indentmini.nvim',
+			config = function()
+				vim.cmd [[
+					hi default link IndentLine Comment
+					hi default link IndentLineCurrent Comment
+				]]
+				require('indentmini').setup {}
+			end
+		},
+		'nvim-lua/plenary.nvim', -- dependency of many plugins
+		'NeogitOrg/neogit',
+		{
+			'echasnovski/mini.diff',
+			config = function()
+				require('mini.diff').setup {
+					view = {
+						style = 'sign'
+					}
+				}
+			end
+		},
+		{
+			'mfussenegger/nvim-dap',
+			config = function()
+				require('dap.ext.vscode').json_decode = vim.fn.JsoncDecode
+			end
+		},
+		{
+			'igorlfs/nvim-dap-view',
+			dependencies = {
+				'mfussenegger/nvim-dap',
 			}
-		end
-	},
-	{
-		'ravitemer/mcphub.nvim',
-		build = 'sudo npm install -g mcp-hub@latest',
-	},
-	{
-		'olimorris/codecompanion.nvim',
-		dependencies = {
-			{
-				'ravitemer/mcphub.nvim',
-				config = function()
-					require('mcphub').setup {
+		},
+		{
+			'theHamsta/nvim-dap-virtual-text',
+			dependencies = { 'mfussenegger/nvim-dap' },
+			config = function()
+				require('nvim-dap-virtual-text').setup()
+			end
+		},
+		{
+			'leoluz/nvim-dap-go',
+			dependencies = {
+				'mfussenegger/nvim-dap',
+			}
+		},
+		'brianhuster/nvim-treesitter-endwise',
+		{ 'windwp/nvim-ts-autotag', config = function() require('nvim-ts-autotag').setup() end },
+		'OXY2DEV/patterns.nvim',
+		{
+			'cohama/lexima.vim',
+			config = function()
+				vim.g.lexima_map_escape = ''
+				vim.g.lexima_enable_endwise_rules = 0
+				vim.g.lexima_enable_basic_rules = 0
+			end
+		},
+		'uga-rosa/ccc.nvim',
+		{
+			'github/copilot.vim',
+			config = function()
+				vim.keymap.set('i', '<M-CR>', 'copilot#Accept("\\<CR>")', {
+					expr = true,
+					replace_keycodes = false
+				})
+				vim.keymap.set('i', '<M-w>', '<Plug>(copilot-accept-word)', {
+					expr = true,
+					replace_keycodes = false
+				})
+				vim.keymap.set('i', '<M-l>', '<Plug>(copilot-accept-line)', {
+					expr = true,
+					replace_keycodes = false
+				})
+				vim.g.copilot_no_tab_map = true
+				vim.cmd [[au BufEnter * let b:copilot_enabled = v:false]]
+			end,
+			optional = true
+		},
+		{
+			"copilotlsp-nvim/copilot-lsp",
+			config = function()
+				vim.g.copilot_nes_debounce = 500
+				vim.lsp.enable("copilot_ls")
+				vim.keymap.set({ "n", "i", "x" }, "<M-a>", function()
+					local nes = require("copilot-lsp.nes")
+					-- Try to jump to the start of the suggestion edit.
+					-- If already at the start, then apply the pending suggestion and jump to the end of the edit.
+					return nes.walk_cursor_start_edit()
+						or (nes.apply_pending_nes() and nes.walk_cursor_end_edit())
+				end)
+			end,
+		},
+		{
+			'CopilotC-Nvim/CopilotChat.nvim',
+			build = 'make tiktoken',
+			config = function()
+				require('CopilotChat').setup {
+					model = "claude-3.5-sonnet",
+				}
+			end
+		},
+		{
+			'yetone/avante.nvim',
+			build = 'make',
+			dependencies = {
+				'HakonHarnes/img-clip.nvim',
+				'MunifTanjim/nui.nvim',
+			},
+			config = function()
+				require('avante').setup {
+					provider = "copilot",
+					copilot = {
+						model = 'claude-3.5-sonnet'
+					}, -- The system_prompt type supports both a string and a function that returns a string. Using a function here allows dynamically updating the prompt with mcphub
+					system_prompt = function()
+						local hub = require("mcphub").get_hub_instance()
+						return hub:get_active_servers_prompt()
+					end,
+					-- The custom_tools type supports both a list and a function that returns a list. Using a function here prevents requiring mcphub before it's loaded
+					custom_tools = function()
+						return {
+							require("mcphub.extensions.avante").mcp_tool(),
+						}
+					end,
+				}
+			end
+		},
+		{
+			'ravitemer/mcphub.nvim',
+			build = 'sudo npm install -g mcp-hub@latest',
+			config = function()
+				require 'mcphub'.setup {
+					extensions = {
+						avante = {
+							make_slash_commands = true, -- make /slash commands from MCP server prompts
+						},
 						config = vim.fn.expand("~/.config/mcphub/servers.json"),
-						extensions = {
-							codecompanion = {
-								show_result_in_chat = true, -- Show the mcp tool result in the chat buffer
-								make_vars = true, -- make chat #variables from MCP server resources
-							}
+						codecompanion = {
+							show_result_in_chat = true, -- Show the mcp tool result in the chat buffer
+							make_vars = true, -- make chat #variables from MCP server resources
 						}
 					}
-				end
-			},
-			"j-hui/fidget.nvim"
+				}
+			end
 		},
-		config = function()
-			require('codecompanion').setup {
-				adapters = {
-					copilot = require("codecompanion.adapters").extend("copilot", {
-						schema = {
-							model = {
-								default = "claude-3.5-sonnet",
-							},
-						},
-					}),
+		{
+			'olimorris/codecompanion.nvim',
+			dependencies = {
+				{
+					'ravitemer/mcphub.nvim',
 				},
-				strategies = {
-					chat = {
-						tools = {
-							mcp = {
-								callback = function()
-									return require("mcphub.extensions.codecompanion")
-								end,
-								description = "Call tools and resources from the MCP Servers",
-								opts = {
-									requires_approval = true,
+				"j-hui/fidget.nvim"
+			},
+			config = function()
+				require('codecompanion').setup {
+					adapters = {
+						copilot = require("codecompanion.adapters").extend("copilot", {
+							schema = {
+								model = {
+									default = "claude-3.5-sonnet",
+								},
+							},
+						}),
+					},
+					strategies = {
+						chat = {
+							tools = {
+								mcp = {
+									callback = function()
+										return require("mcphub.extensions.codecompanion")
+									end,
+									description = "Call tools and resources from the MCP Servers",
+									opts = {
+										requires_approval = true,
+									}
 								}
 							}
 						}
 					}
 				}
-			}
-		end
-	},
-	{
-		'brianhuster/supermaven-nvim',
-		config = function()
-			require('supermaven-nvim').setup {
-				keymaps = {
-					accept_suggestion = "<M-CR>",
-					accept_word = "<M-w>",
-				},
-			}
-			pcall(require('supermaven-nvim.api').use_free_version)
-		end
-	},
-	"rafamadriz/friendly-snippets",
-	'tpope/vim-dadbod',
-	{
-		'kristijanhusak/vim-dadbod-ui',
-		config = function() vim.g.db_ui_use_nerd_fonts = 1 end
-	},
-	'kristijanhusak/vim-dadbod-completion',
-	{ 'glacambre/firenvim',            build = ":call firenvim#install(0)" },
-	{
-		'chrisbra/Colorizer', optional = vim.fn.has('nvim-0.12') == 1
-	}
-}
+			end
+		},
+	})
+end
 
 require 'plug'.config {
 	url_format = "https://github.com/%s.git",
