@@ -27,7 +27,7 @@ api.nvim_create_autocmd('VimEnter', {
 		local parent_buf = vim.rpcrequest(chan, 'nvim_call_function', 'bufnr', { bufname })
 		vim.rpcnotify(chan, 'nvim_create_autocmd', { 'WinClosed', 'BufDelete', 'BufWipeOut', 'TabClosed' }, {
 			buffer = parent_buf,
-			command = ([[ call rpcnotify(sockconnect('pipe', '%s', #{ rpc: v:true }), 'nvim_command', 'quitall!') ]])
+			command = ([[call rpcnotify(sockconnect('pipe', '%s', #{ rpc: v:true }), 'nvim_command', 'quitall!')]])
 				:format(v.servername),
 			once = true
 		})

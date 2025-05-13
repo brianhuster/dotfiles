@@ -1,4 +1,4 @@
-if _G.loaded_dap_javascript then
+if _G.loaded_dap_javascript or vim.g.vscode then
 	return
 end
 

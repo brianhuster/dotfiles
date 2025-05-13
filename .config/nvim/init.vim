@@ -163,7 +163,6 @@ if has('nvim')
 
 	au UIEnter * set clipboard=unnamedplus
 	au TermOpen * setl nonumber norelativenumber | startinsert
-	au FileType * lua pcall(vim.treesitter.start)
 	if getfsize($NVIM_LOG_FILE) > pow(1024, 3)
 		call delete($NVIM_LOG_FILE)
 	endif

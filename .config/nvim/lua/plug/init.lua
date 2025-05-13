@@ -104,9 +104,9 @@ end
 ---@param flags string
 ---@param data string
 local function file_write(path, flags, data)
-	local err_msg = "Failed to %s '" .. path .. "'"
+	local err_msg = "Failed to %s '%s'"
 	local file = io.open(path, flags)
-	assert(file, err_msg:format("open"))
+	assert(file, err_msg:format("open", path))
 	file:write(data)
 	file:close()
 end
@@ -121,6 +121,11 @@ local function file_read(path)
 	return data
 end
 
+---@param data string
+local function write_log(data)
+	file_write(Config.log, "a+", ('%s %s'):format(os.date("%Y-%m-%d %H:%M:%S"), data))
+end
+
 ---@param pkg plug.Package
 ---@param callback fun(pkg: plug.Package)?
 local function run_build(pkg, callback)
@@ -129,22 +134,35 @@ local function run_build(pkg, callback)
 	if pkg.dependencies then
 		iter(pkg.dependencies):each(function(dep) run_build(M.Pkgs[dep], callback) end)
 	end
-	local t, ok = type(pkg.build), false
+	---@param ok boolean
+	---@param err string
+	local function after(ok, err)
+		report(pkg.name, Messages.build, ok and 'ok' or 'err')
+		if not ok then
+			write_log(err)
+		end
+		if ok then pkg.status = Status.BUILT end
+		if callback then callback(pkg) end
+	end
+	local t, ok, err = type(pkg.build), false, ''
 	if t == "function" then
-		ok = pcall(pkg.build --[[@as function]])
+		ok, err = pcall(pkg.build --[[@as function]])
 		report(pkg.name, Messages.build, ok and "ok" or "err")
+		after(ok, err)
 	elseif t == "string" and pkg.build:sub(1, 1) == ":" then
-		ok = pcall(vim.cmd --[[@as function]], pkg.build)
-		report(pkg.name, Messages.build, ok and "ok" or "err")
+		ok, error = pcall(vim.cmd --[[@as function]], pkg.build)
+		after(ok, err)
 	elseif t == "string" then
 		vim.system(
 			{ vim.o.shell, vim.o.shellcmdflag, pkg.build --[[@as string]] },
 			{ cwd = pkg.dir },
-			vim.schedule_wrap(function(obj) report(pkg.name, Messages.build, obj.code == 0 and "ok" or "err") end))
+			vim.schedule_wrap(function(obj)
+				report(pkg.name, Messages.build, obj.code == 0 and "ok" or "err")
+				local ok = obj.code == 0
+				after(ok, obj.stdout .. '\n' .. obj.stderr)
+			end))
 	end
 	vim.cmd.helptags { args = { vim.fs.joinpath(pkg.dir, "doc") }, mods = { emsg_silent = true } }
-	if ok then pkg.status = Status.BUILT end
-	if callback then callback(pkg) end
 end
 
 ---@param pkg plug.Package
@@ -202,11 +220,6 @@ local function rm(path)
 		return pcall(vim.fs.rm, path, { recursive = recursive })
 	end
 	return vim.fn.delete(path, recursive and "rf" or nil) == 0
-end
-
----@param data string
-local function write_log(data)
-	file_write(Config.log, "a+", ('%s %s'):format(os.date("%Y-%m-%d %H:%M:%S"), data))
 end
 
 ---@param pkg plug.Package
