@@ -1,4 +1,4 @@
-if _G.loaded_dap_lua then
+if _G.loaded_dap_lua or vim.g.vscode then
 	return
 end
 _G.loaded_dap_lua = true

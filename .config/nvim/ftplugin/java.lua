@@ -1,3 +1,5 @@
+if vim.g.vscode then return end
+
 local fs = vim.fs
 local config = {
 	cmd = { fs.joinpath(vim.fn.stdpath('data'), 'mason/bin/jdtls') },
