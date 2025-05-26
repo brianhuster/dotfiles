@@ -318,7 +318,7 @@ immutability=1
 plugin=org.kde.plasma.battery
 
 [Containments][479][Applets][516][Configuration]
-PreloadWeight=48
+PreloadWeight=58
 
 [Containments][479][ConfigDialog]
 DialogHeight=690
