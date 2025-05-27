@@ -12,7 +12,7 @@ vim.lsp.enable {
 	"lua_ls",
 	"marksman",
 	"pylsp",
-	"volar",
+	"vue_ls",
 	"vimls",
 	"gopls",
 	'yamlls'

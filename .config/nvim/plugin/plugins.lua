@@ -265,7 +265,7 @@ if not vim.g.vscode then
 				'mfussenegger/nvim-dap',
 			}
 		},
-		'brianhuster/nvim-treesitter-endwise',
+		'brianhuster/treesitter-endwise.nvim',
 		{ 'windwp/nvim-ts-autotag', config = function() require('nvim-ts-autotag').setup() end },
 		'OXY2DEV/patterns.nvim',
 		{
