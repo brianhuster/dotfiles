@@ -120,6 +120,7 @@ D="/media/$(whoami)/D"
 DATA="$HOME/.local/share"
 
 export EDITOR="nvim"
+export MANPAGER="nvim +Man!"
 
 if [ -z $NVIM ]; then
     set -o vi
