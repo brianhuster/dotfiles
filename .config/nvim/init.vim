@@ -20,12 +20,8 @@ set confirm
 set scrolloff=10
 set spell spelllang=en spelloptions+=camel
 let &spellfile = fnamemodify($MYVIMRC, ':p:h') . '/spell/en.utf-8.add'
-let &statusline = "%<%f %h%w%m%r " .
-	\ "%=%{% &showcmdloc == 'statusline' ? '%-10.S ' : '' %}" .
-	\ "%{% exists('b:keymap_name') ? '<'..b:keymap_name..'> ' : '' %}" .
-	\ "%{% &ruler ? ( &rulerformat == '' ? '%-15.(%l,%c%V%) %P' : &rulerformat ) : '' %}"
 
-if has('nvim')
+if has('nvim-0.11')
 	let &statusline .= '%{%v:lua.vim.lsp.status()%}'
 endif
 
@@ -128,38 +124,45 @@ function! Terminal()
 endfunction
 
 if $QT_IM_MODULE == 'ibus'
+	let s:eng_im = 'xkb:us::eng'
 	let s:GetCurrentImLang = {-> trim(system('ibus engine')) }
 	let s:SwitchIm = {im -> system($'ibus engine {im}')}
-	let s:eng_im = 'xkb:us::eng'
-elseif $QT_IM_MODULE == 'fcitx'
-	let s:GetCurrentImLang = {-> trim(system('fcitx5-remote -n'))}
-	let s:SwitchIm = {im -> system($'fcitx5-remote -s {im}')}
-	let s:eng_im = 'keyboard-us'
+
+	function! s:ImActivateFunc(enable)
+		let enable = a:enable
+		if !enable
+			let s:im_prev_engine = s:GetCurrentImLang()
+			call s:SwitchIm(s:eng_im)
+		else
+			let l:current_engine = s:GetCurrentImLang()
+			if l:current_engine !~? s:eng_im
+				let s:im_prev_engine = l:current_engine
+			endif
+			call s:SwitchIm(s:im_prev_engine)
+		endif
+	endfunction
+
+elseif $QT_IM_MODULE ==# 'fcitx'
+	func! s:ImActivateFunc(enable)
+		let enable = a:enable
+		if !enable
+			call system("fcitx5-remote -c")
+		else
+			call system("fcitx5-remote -o")
+		endif
+	endfunc
 endif
 
-function! s:ImActivateFunc(enable)
-	let enable = a:enable
-	if !enable
-		let s:im_prev_engine = s:GetCurrentImLang()
-		call s:SwitchIm(s:eng_im)
-	else
-		let l:current_engine = s:GetCurrentImLang()
-		if l:current_engine !~? s:eng_im
-			let s:im_prev_engine = l:current_engine
-		endif
-		call s:SwitchIm(s:im_prev_engine)
-	endif
-endfunction
-
 if $QT_IM_MODULE == 'ibus' || $QT_IM_MODULE == 'fcitx'
+	call s:ImActivateFunc(0)
 	if has('nvim')
 		augroup imHandler
 			autocmd InsertEnter,ExitPre * call s:ImActivateFunc(1)
 			autocmd InsertLeave * call s:ImActivateFunc(0)
-			autocmd VimEnter * call s:ImActivateFunc(0)
 		augroup END
 	else
 		set imactivatefunc=s:ImActivateFunc
+		set iminsert=2
 	endif
 else
 	set keymap=vietnamese-telex-user
