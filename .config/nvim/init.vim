@@ -127,26 +127,40 @@ function! Terminal()
 	endif
 endfunction
 
+if $QT_IM_MODULE == 'ibus'
+	let s:GetCurrentImLang = {-> trim(system('ibus engine')) }
+	let s:SwitchIm = {im -> system($'ibus engine {im}')}
+	let s:eng_im = 'xkb:us::eng'
+elseif $QT_IM_MODULE == 'fcitx'
+	let s:GetCurrentImLang = {-> trim(system('fcitx5-remote -n'))}
+	let s:SwitchIm = {im -> system($'fcitx5-remote -s {im}')}
+	let s:eng_im = 'keyboard-us'
+endif
 
-function! s:ImeOff()
-	let s:ibus_prev_engine = trim(system('ibus engine'))
-	silent !ibus engine xkb:us::eng
-endfunction
-
-function! s:ImeOn()
-	let l:current_engine = trim(system('ibus engine'))
-	if l:current_engine !~? 'xkb:us::eng'
-		let s:ibus_prev_engine = l:current_engine
+function! s:ImActivateFunc(enable)
+	let enable = a:enable
+	if !enable
+		let s:im_prev_engine = s:GetCurrentImLang()
+		call s:SwitchIm(s:eng_im)
+	else
+		let l:current_engine = s:GetCurrentImLang()
+		if l:current_engine !~? s:eng_im
+			let s:im_prev_engine = l:current_engine
+		endif
+		call s:SwitchIm(s:im_prev_engine)
 	endif
-	execute 'silent !ibus engine' s:ibus_prev_engine
 endfunction
 
-if executable('ibus')
-	augroup ibusHandler
-		autocmd InsertEnter,ExitPre * call s:ImeOn()
-		autocmd InsertLeave * call s:ImeOff()
-	augroup END
-	call s:ImeOff()
+if $QT_IM_MODULE == 'ibus' || $QT_IM_MODULE == 'fcitx'
+	if has('nvim')
+		augroup imHandler
+			autocmd InsertEnter,ExitPre * call s:ImActivateFunc(1)
+			autocmd InsertLeave * call s:ImActivateFunc(0)
+			autocmd VimEnter * call s:ImActivateFunc(0)
+		augroup END
+	else
+		set imactivatefunc=s:ImActivateFunc
+	endif
 else
 	set keymap=vietnamese-telex-user
 endif

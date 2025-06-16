@@ -389,6 +389,7 @@ if not vim.g.vscode then
 				}
 			end
 		},
+		"seandewar/actually-doom.nvim"
 	})
 end
 

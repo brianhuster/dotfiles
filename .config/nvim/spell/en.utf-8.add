@@ -16,3 +16,4 @@ feat
 Nvim
 keymap
 '.stdpath('config').'/init.vim'
+const
