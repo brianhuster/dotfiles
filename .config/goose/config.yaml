@@ -1,6 +1,6 @@
-GOOSE_MODEL: gpt-4.1
-GOOSE_MODE: auto
 GOOSE_PROVIDER: github_copilot
+GOOSE_MODE: smart_approve
+GOOSE_MODEL: gpt-4.1
 extensions:
   computercontroller:
     bundled: true

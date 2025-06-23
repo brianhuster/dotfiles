@@ -14,9 +14,6 @@ set termguicolors clipboard=unnamedplus
 packadd! comment
 packadd! matchit
 runtime! ftplugin/man.vim
-if !has('clipboard')
-	echoerr "This Vim is not compiled with clipboard support."
-endif
 
 if !has('lua')
 	echoerr "This Vim is not compiled with Lua support."

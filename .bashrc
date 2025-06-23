@@ -122,8 +122,9 @@ DATA="$HOME/.local/share"
 export EDITOR="nvim"
 export MANPAGER="nvim +Man!"
 
-if [ -z $NVIM ]; then
-    set -o vi
+# if $VIM is not set and $TERM_PROGRAM is not 'vscode'
+if [ -z $VIM ] && [ "$TERM_PROGRAM" != "vscode" ]; then
+	set -o vi
 fi
 
 export NVM_DIR="$HOME/.nvm"
