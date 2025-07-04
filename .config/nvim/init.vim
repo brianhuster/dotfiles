@@ -20,6 +20,8 @@ set confirm
 set scrolloff=10
 set spell spelllang=en spelloptions+=camel
 let &spellfile = fnamemodify($MYVIMRC, ':p:h') . '/spell/en.utf-8.add'
+let g:did_install_default_menus = 1
+let g:did_install_syntax_menu = 1
 
 if has('nvim-0.11')
 	let &statusline .= '%{%v:lua.vim.lsp.status()%}'
@@ -176,6 +178,9 @@ if has('nvim')
 	set foldexpr=v:lua.vim.treesitter.foldexpr()
 	set exrc
 	lua if vim.loader then vim.loader.enable() end
+
+	let g:loaded_netrw = 1
+	let g:loaded_netrwPlugin = 1
 
 	au UIEnter * set clipboard=unnamedplus
 	au TermOpen * setl nonumber norelativenumber | startinsert

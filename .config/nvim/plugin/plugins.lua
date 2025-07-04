@@ -1,7 +1,6 @@
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
-vim.g.did_install_default_menus = 1
-vim.g.did_install_syntax_menu = 1
+if vim.pack then
+	return
+end
 
 local plugins_list = {
 	{
@@ -151,7 +150,6 @@ local plugins_list = {
 					-- Built-in completion
 					{ mode = 'i', keys = '<C-x>' },
 				},
-
 				clues = {
 					-- Enhance this by adding descriptions for <Leader> mapping groups
 					miniclue.gen_clues.builtin_completion(),
@@ -215,7 +213,6 @@ if not vim.g.vscode then
 			config = function() vim.g.db_ui_use_nerd_fonts = 1 end
 		},
 		'kristijanhusak/vim-dadbod-completion',
-		{ 'glacambre/firenvim',          build = ":call firenvim#install(0)" },
 		'mfussenegger/nvim-jdtls', -- Java development
 		{ 'echasnovski/mini.trailspace', config = function() require('mini.trailspace').setup {} end },
 		{

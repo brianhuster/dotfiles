@@ -55,9 +55,11 @@ local function get_matched_items(items, regex, bang, opts)
   local results_num = 0
   for i, item in ipairs(items) do
     if cond(item) then
-      item.nvim_cfilter = {
-        lnum = i - 1,
-      }
+      if opts.max_matches then
+        item.nvim_cfilter = {
+          lnum = i - 1,
+        }
+      end
       table.insert(results, item)
       if opts.max_matches then
         results_num = results_num + 1
