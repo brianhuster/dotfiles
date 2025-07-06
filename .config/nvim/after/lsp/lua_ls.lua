@@ -23,7 +23,4 @@ return {
 			}
 		}
 	},
-	on_attach = function(client, bufnr)
-		require('an.lua').auto_require(client, bufnr)
-	end,
 }

@@ -1,10 +1,14 @@
 if vim.fn.has('nvim-0.11') == 0 then
-	vim.bo.omnifunc = "v:lua.vim.lua_omnifunc"
-	vim.bo.include = [[\v<((do|load)file|require)[^''"]*[''"]\zs[^''"]+]]
 	vim.bo.includeexpr = "v:lua.require'an.lua'.includeexpr(v:fname)"
 end
 vim.bo.keywordprg = ':LuaKeywordPrg'
 vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = 0 })
+
+vim.cmd.setlocal "path-=."
+
+if pcall(require, 'nvim-treesitter') then
+	vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+end
 
 vim.api.nvim_buf_create_user_command(0, 'LuaKeywordPrg', function()
 	require('an.lua').keywordprg()
@@ -23,7 +27,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 vim.b.undo_ftplugin = table.concat({
 	vim.b.undo_ftplugin or '',
-	'setl omnifunc< includeexpr< keywordprg< path< include<',
+	'setl omnifunc< includeexpr< keywordprg< path< indentexpr<',
 	'delcommand -buffer LuaKeywordPrg',
 	'unmap <buffer> K'
 }, '\n')
