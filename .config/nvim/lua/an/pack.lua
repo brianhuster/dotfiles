@@ -1,0 +1,88 @@
+local M = {}
+
+---@alias an.pack.build function|string
+
+---@class an.pack.Spec: vim.pack.Spec
+---@field build? an.pack.build
+
+---@type table<string, { build: an.pack.build }>
+M.pkgs = {}
+
+---@param func function
+---@param ... any
+M.exec = function(func, ...)
+	local ok, msg = pcall(func, ...)
+	if not ok then
+		vim.notify(debug.traceback(msg), vim.log.levels.ERROR)
+	end
+end
+
+---@param pkgs (string|an.pack.Spec)[]
+function M.add(pkgs)
+	for _, pkg in ipairs(pkgs) do
+		if type(pkg) == 'table' and pkg.build then
+			M.pkgs[pkg.src] = { build = pkg.build }
+		end
+	end
+	M.exec(vim.pack.add, pkgs)
+end
+
+---@param action function|string
+---@param data { kind: 'install'|'update'|'delete', spec: vim.pack.Spec, path: string }
+local function build(action, data)
+	local t = type(action)
+	if t == 'nil' then
+		return
+	elseif t == 'function' then
+		M.exec(action)
+	elseif t == 'string' and action:sub(1, 1) == ':' then
+		M.exec(vim.cmd --[[@as function]], action)
+	else
+		local o = vim.o
+		vim.system(
+			{ o.shell, o.shellcmdflag, action },
+			{ cwd = data.path },
+			vim.schedule_wrap(function(obj)
+				vim.notify(obj.stdout)
+				vim.notify(obj.stderr, vim.log.levels.ERROR)
+			end)
+		)
+	end
+end
+
+---@return string
+M.PackUpdate_compl = function()
+	local dir = vim.fn.stdpath('data')..'/site/pack/core/opt'
+	return table.concat(vim.fn.readdir(dir), '\n')
+end
+
+M.PackDel_compl = M.PackUpdate_compl
+
+vim.api.nvim_create_autocmd('PackChanged', {
+	callback = function(args)
+		local data = args.data
+		if not (data.kind == 'install' or data.kind == 'update') then
+			return
+		end
+		build(M.pkgs[data.spec.src].build, data)
+	end
+})
+
+local command = vim.api.nvim_create_user_command
+
+command('PackUpdate', function(args)
+	local name, bang = args.args, args.bang
+	vim.pack.update(name == '' and nil or { name },
+		{ force = bang })
+end, {
+	bang = true,
+	nargs = '?',
+	complete = "custom,v:lua.require'an.pack'.PackUpdate_compl"
+})
+
+command('PackDel', function(args)
+	local name = args.args
+	vim.pack.del { name }
+end, { nargs = 1, complete = "custom,v:lua.require'an.pack'.PackDel_compl" })
+
+return M

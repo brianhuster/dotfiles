@@ -1,7 +1,5 @@
 local M = {}
 
-local api = vim.api
-
 --- @param module string
 ---@return string
 function M.includeexpr(module)

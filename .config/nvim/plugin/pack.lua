@@ -2,13 +2,16 @@ if not vim.pack then
 	return
 end
 
+local pack = require 'an.pack'
+local exec = pack.exec
+
 ---@param name string
 ---@return string
 local github = function(name)
 	return "https://github.com/" .. name
 end
 
-vim.pack.add {
+pack.add {
 	github 'tpope/vim-repeat', -- dep of vim-surround
 	github 'tpope/vim-surround',
 	github 'echasnovski/mini.jump2d',
@@ -17,10 +20,14 @@ vim.pack.add {
 	github 'brianhuster/direx.nvim',
 	{
 		src = github 'nvim-treesitter/nvim-treesitter',
-		version = 'main'
+		version = 'main',
+		build = ':TSUpdate all'
 	},
 	github 'nvim-treesitter/nvim-treesitter-context',
-	github 'glacambre/firenvim',
+	{
+		src = github 'glacambre/firenvim',
+		build = ':call firenvim#install(0)'
+	},
 	github 'brianhuster/live-preview.nvim',
 	github 'folke/which-key.nvim',
 	github 'echasnovski/mini.clue',
@@ -28,7 +35,6 @@ vim.pack.add {
 	github 'neovim/nvim-lspconfig',
 	github 'b0o/SchemaStore.nvim',
 	github 'williamboman/mason.nvim',
-	github 'brianhuster/supermaven-nvim',
 	github 'rafamadriz/friendly-snippets',
 	github 'kristijanhusak/vim-dadbod-completion',
 	github 'mfussenegger/nvim-jdtls',
@@ -38,8 +44,6 @@ vim.pack.add {
 	github 'NeogitOrg/neogit',
 	github 'echasnovski/mini.diff',
 	github 'mfussenegger/nvim-dap',
-	github 'igorlfs/nvim-dap-view',
-	github 'theHamsta/nvim-dap-virtual-text',
 	github 'leoluz/nvim-dap-go',
 	github 'brianhuster/treesitter-endwise.nvim',
 	github 'windwp/nvim-ts-autotag',
@@ -47,62 +51,25 @@ vim.pack.add {
 	github 'cohama/lexima.vim',
 	github 'uga-rosa/ccc.nvim',
 	github 'github/copilot.vim',
-	github 'CopilotC-Nvim/CopilotChat.nvim',
+	{
+		src = github 'CopilotC-Nvim/CopilotChat.nvim',
+		build = 'make tiktoken'
+	},
+	github 'brianhuster/supermaven-nvim',
 	github 'HakonHarnes/img-clip.nvim', -- avante.nvim dep
 	github 'MunifTanjim/nui.nvim',   -- avante.nvim dep
-	github 'yetone/avante.nvim',
-	github 'ravitemer/mcphub.nvim',
+	{
+		src = github 'yetone/avante.nvim',
+		build = 'make'
+	},
+	{
+		src = github 'ravitemer/mcphub.nvim',
+		build = 'npm i -g mcp-hub@latest'
+	},
 	github 'j-hui/fidget.nvim', -- codecompanion dep
 	github 'olimorris/codecompanion.nvim',
 	github 'seandewar/actually-doom.nvim'
 }
-
----@param func function
----@param ... any
-local exec = function(func, ...)
-	local ok, msg = pcall(func, ...)
-	if not ok then
-		vim.notify(debug.traceback(msg), vim.log.levels.ERROR)
-	end
-end
-
----@param action function|string
----@param data { kind: 'install'|'update'|'delete', spec: vim.pack.Spec, path: string }
-local function build(action, data)
-	local t = type(action)
-	if t == 'function' then
-		exec(action)
-	elseif t == 'string' and action:sub(1, 1) == ':' then
-		exec(vim.cmd --[[@as function]], action)
-	else
-		local o = vim.o
-		vim.system(
-			{ o.shell, o.shellcmdflag, action },
-			{ cwd = data.path },
-			vim.schedule_wrap(function(obj)
-				vim.notify(obj.stdout)
-				vim.notify(obj.stderr, vim.log.levels.ERROR)
-			end)
-		)
-	end
-end
-
-vim.api.nvim_create_autocmd('PackChanged', {
-	callback = function(args)
-		local data = args.data
-		if not (data.kind == 'install' or data.kind == 'update') then
-			return
-		end
-		local build_dict = {
-			['nvim-treesitter'] = ':TSUpdate all',
-			firenvim = ':call firenvim#install(0)',
-			['CopilotChat.nvim'] = 'make tiktoken',
-			['avante.nvim'] = 'make',
-			['mcphub.nvim'] = 'npm i -g mcp-hub@latest'
-		}
-		build(build_dict[data.spec.name], data)
-	end
-})
 
 exec(require 'mini.jump2d'.setup, {
 	mappings = {
@@ -179,14 +146,6 @@ end
 
 exec(require 'mason'.setup, {})
 
-exec(require 'supermaven-nvim'.setup, {
-	keymaps = {
-		accept_suggestion = "<M-CR>",
-		accept_word = "<M-w>",
-	},
-})
-exec(require 'supermaven-nvim.api'.use_free_version)
-
 vim.cmd [[
 	hi default link IndentLine Comment
 	hi default link IndentLineCurrent Comment
@@ -197,14 +156,13 @@ exec(require('mini.diff').setup, {
 	view = {
 		style = 'sign'
 	}
-}
-)
+})
+
+exec(require 'mini.trailspace'.setup)
 
 exec(function()
 	require('dap.ext.vscode').json_decode = vim.fn.JsoncDecode
 end)
-
-exec(require 'nvim-dap-virtual-text'.setup)
 
 vim.keymap.set('i', '<M-CR>', 'copilot#Accept("\\<CR>")', {
 	expr = true,
@@ -224,6 +182,14 @@ vim.cmd [[au BufEnter * let b:copilot_enabled = v:false]]
 exec(require 'CopilotChat'.setup, {
 	model = 'claude-3.5-sonnet'
 })
+
+exec(require 'supermaven-nvim'.setup, {
+	keymaps = {
+		accept_suggestion = "<M-CR>",
+		accept_word = "<M-w>",
+	},
+})
+exec(require 'supermaven-nvim.api'.use_free_version)
 
 exec(require 'avante'.setup, {
 	provider = "copilot",
