@@ -64,7 +64,10 @@ vim.api.nvim_create_autocmd('PackChanged', {
 		if not (data.kind == 'install' or data.kind == 'update') then
 			return
 		end
-		build(M.pkgs[data.spec.src].build, data)
+		local build_spec = M.pkgs[data.spec.src] and M.pkgs[data.spec.src].build
+		if build_spec then
+			build(build_spec, data)
+		end
 	end
 })
 

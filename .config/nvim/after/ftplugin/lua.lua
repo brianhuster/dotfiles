@@ -4,6 +4,8 @@ end
 vim.bo.keywordprg = ':LuaKeywordPrg'
 vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = 0 })
 
+local buf = vim.api.nvim_get_current_buf()
+
 vim.cmd.setlocal "path-=."
 
 if pcall(require, 'nvim-treesitter') then
@@ -20,7 +22,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 		local client = vim.lsp.get_client_by_id(args.data.client_id)
 		if not client then return end
 		if client:supports_method('textDocument/hover') then
-			vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = 0 })
+			vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = buf })
 		end
 	end,
 })

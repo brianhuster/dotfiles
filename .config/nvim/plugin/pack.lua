@@ -43,6 +43,7 @@ pack.add {
 	github 'nvim-lua/plenary.nvim', -- dep of many plugins
 	github 'NeogitOrg/neogit',
 	github 'echasnovski/mini.diff',
+	github 'brianhuster/qfpeek.nvim',
 	github 'mfussenegger/nvim-dap',
 	github 'leoluz/nvim-dap-go',
 	github 'brianhuster/treesitter-endwise.nvim',
