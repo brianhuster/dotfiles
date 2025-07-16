@@ -38,8 +38,6 @@ pack.add {
 	github 'rafamadriz/friendly-snippets',
 	github 'kristijanhusak/vim-dadbod-completion',
 	github 'mfussenegger/nvim-jdtls',
-	github 'echasnovski/mini.trailspace',
-	github 'nvimdev/indentmini.nvim',
 	github 'nvim-lua/plenary.nvim', -- dep of many plugins
 	github 'NeogitOrg/neogit',
 	github 'echasnovski/mini.diff',
@@ -143,23 +141,16 @@ do
 		end,
 		fzfprg = ("fzf --preview %s "):format(vim.fn.shellescape(previewer))
 	})
+	vim.keymap.set('n', '<C-p>', '<cmd>DirexFzf<CR>')
 end
 
 exec(require 'mason'.setup, {})
-
-vim.cmd [[
-	hi default link IndentLine Comment
-	hi default link IndentLineCurrent Comment
-]]
-exec(require('indentmini').setup, {})
 
 exec(require('mini.diff').setup, {
 	view = {
 		style = 'sign'
 	}
 })
-
-exec(require 'mini.trailspace'.setup)
 
 exec(function()
 	require('dap.ext.vscode').json_decode = vim.fn.JsoncDecode

@@ -1,5 +1,12 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhistcnt =3
-let g:netrw_dirhist_3='/media/brianhuster/D/Projects/phat-trien-ung-dung/Module3-phat-trien-ung-dung/backend'
-let g:netrw_dirhist_2='/media/brianhuster/D/Projects/vim'
-let g:netrw_dirhist_1='/home/brianhuster/.config/nvim'
+let g:netrw_dirhistcnt =4
+let g:netrw_dirhist_4='/home/brianhuster/.config/nvim/after/ftplugin'
+let g:netrw_dirhist_3='/home/brianhuster/.config/nvim/after'
+let g:netrw_dirhist_2='/home/brianhuster/.config/nvim'
+let g:netrw_dirhist_1='/home/brianhuster/.config/nvim/after/ftplugin'
+let g:netrw_dirhist_0='/home/brianhuster/.config/nvim/after'
+let g:netrw_dirhist_9='/home/brianhuster/.config/nvim'
+let g:netrw_dirhist_8='/home/brianhuster/.config/nvim/after/ftplugin'
+let g:netrw_dirhist_7='/home/brianhuster/.config/nvim/after'
+let g:netrw_dirhist_6='/home/brianhuster/.config/nvim'
+let g:netrw_dirhist_5='/home/brianhuster/.config/nvim/after/ftplugin'

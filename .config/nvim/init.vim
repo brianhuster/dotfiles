@@ -19,15 +19,15 @@ set wildmode=noselect:full
 set confirm
 set scrolloff=10
 set spell spelllang=en spelloptions+=camel
+set list
 let &spellfile = fnamemodify($MYVIMRC, ':p:h') . '/spell/en.utf-8.add'
 let g:did_install_default_menus = 1
 let g:did_install_syntax_menu = 1
-
 if has('nvim-0.11')
 	let &statusline .= '%{%v:lua.vim.lsp.status()%}'
 endif
 
-au InsertLeavePre,TextChanged,TextChangedP * if &modifiable && !&readonly | silent! write | endif
+au InsertLeavePre,TextChanged,TextChangedP * if &modifiable && !&readonly | silent! update | endif
 au FocusGained,BufEnter * checktime
 
 au BufEnter * if &buftype == 'terminal' | startinsert | setl nospell | endif
@@ -81,9 +81,9 @@ autocmd QuickFixCmdPost l* lwindow
 " Make sure that yank operations are also saved to register 1 - 9 instead of
 " just 0 like default.
 function! s:YankShift()
-  for i in range(9, 1, -1)
-    call setreg(i, getreg(i - 1))
-  endfor
+	for i in range(9, 1, -1)
+		call setreg(i, getreg(i - 1))
+	endfor
 endfunction
 
 au TextYankPost * if v:event.operator == 'y' | call s:YankShift() | endif
