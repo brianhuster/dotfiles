@@ -46,7 +46,6 @@ pack.add {
 	github 'leoluz/nvim-dap-go',
 	github 'brianhuster/treesitter-endwise.nvim',
 	github 'windwp/nvim-ts-autotag',
-	github 'OXY2DEV/patterns.nvim',
 	github 'cohama/lexima.vim',
 	github 'uga-rosa/ccc.nvim',
 	github 'github/copilot.vim',

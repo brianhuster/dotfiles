@@ -1,5 +1,80 @@
 local api = vim.api
 
+vim.lsp.config.basics_ls = {
+	cmd = { "basics-language-server" },
+	settings = {
+		buffer = {
+			enable = false
+		},
+		path = {
+			enable = true
+		},
+		snippet = {
+			enable = true,
+			sources = { vim.fs.joinpath(vim.fn.stdpath('data'),  'site/pack/core/opt/friendly-snippets/package.json') }
+		}
+	}
+}
+
+vim.lsp.config.json_ls = {
+	cmd = { 'vscode-json-language-server', '--stdio' },
+	filetypes = { 'json', 'jsonc' },
+	init_options = {
+		provideFormatter = true,
+	},
+	root_markers = { '.git' },
+	settings = {
+		json = {
+			schemas = require('schemastore').json.schemas(),
+			validate = { enable = true },
+		},
+	},
+}
+
+vim.lsp.config.lua_ls = {
+	cmd = { 'lua-language-server' },
+	filetypes = { 'lua' },
+	root_markers = { 'lua' },
+	settings = {
+		Lua = {
+			runtime = {
+				version = 'LuaJIT',
+				path = {
+					'lua/?.lua',
+					'lua/?/init.lua'
+				},
+			},
+			workspace = {
+				checkThirdParty = false,
+				library = {
+					vim.env.VIMRUNTIME,
+					"${3rd}/luv/library",
+					"${3rd}/busted/library",
+				}
+			}
+		}
+	},
+}
+
+vim.lsp.config.yaml_ls = {
+	cmd = { 'yaml-language-server', '--stdio' },
+	filetypes = { 'yaml', 'yaml.docker-compose', 'yaml.gitlab' },
+	root_markers = { '.git' },
+	settings = {
+		redhat = { telemetry = { enabled = false } },
+		yaml = {
+			schemaStore = {
+				-- You must disable built-in schemaStore support if you want to use
+				-- this plugin and its advanced options like `ignore`.
+				enable = false,
+				-- Avoid TypeError: Cannot read properties of undefined (reading 'length')
+				url = "",
+			},
+			schemas = require('schemastore').yaml.schemas(),
+		},
+	},
+}
+
 vim.lsp.enable {
 	"arduino_language_server",
 	"basics_ls",
@@ -41,24 +116,12 @@ end)
 
 vim.cmd "au LspProgress * redrawstatus"
 
-if vim.fn.has('nvim-0.11') == 1 then
-	vim.diagnostic.config({
-		virtual_lines = {
-			current_line = true
-		},
-		underline = true
-	})
-else
-	vim.diagnostic.config({
-		virtual_text = false,
-		-- float = true
-	})
-	api.nvim_create_autocmd({ "CursorMoved" }, {
-		callback = function()
-			vim.diagnostic.open_float(nil, { focusable = false })
-		end
-	})
-end
+vim.diagnostic.config {
+	virtual_lines = {
+		current_line = true
+	},
+	underline = true
+}
 
 api.nvim_create_autocmd('ColorScheme', {
 	callback = function()

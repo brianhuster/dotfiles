@@ -11,13 +11,19 @@ local listchars = {
 	leadmultispace = indent_char .. (' '):rep(shiftwidth() - 1)
 }
 vim.opt.listchars = listchars
+
+local function update_listchars()
+	listchars.leadmultispace = indent_char .. (' '):rep(vim.fn.shiftwidth() - 1)
+	vim.opt.listchars = listchars
+end
+
 vim.api.nvim_create_autocmd('OptionSet', {
 	pattern = { 'shiftwidth', 'tabstop' },
-	callback = function()
-		listchars.leadmultispace = indent_char .. (' '):rep(vim.fn.shiftwidth() - 1)
-		vim.opt.listchars = listchars
-	end
+	callback = update_listchars
 })
+
+---@diagnostic disable-next-line: param-type-mismatch
+vim.api.nvim_create_autocmd({ 'InsertEnter', 'InsertLeave' }, { callback = update_listchars })
 
 vim.cmd.colorscheme 'an'
 
