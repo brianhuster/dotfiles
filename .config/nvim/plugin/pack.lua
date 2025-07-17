@@ -33,7 +33,6 @@ pack.add {
 	github 'echasnovski/mini.clue',
 	github 'vim-jp/vimdoc-ja',
 	github 'neovim/nvim-lspconfig',
-	github 'b0o/SchemaStore.nvim',
 	github 'williamboman/mason.nvim',
 	github 'rafamadriz/friendly-snippets',
 	github 'kristijanhusak/vim-dadbod-completion',

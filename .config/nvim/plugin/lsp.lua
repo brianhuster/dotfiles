@@ -1,5 +1,7 @@
 local api = vim.api
 
+vim.pack.add {'https://github.com/b0o/SchemaStore.nvim'}
+
 vim.lsp.config.basics_ls = {
 	cmd = { "basics-language-server" },
 	settings = {
@@ -14,21 +16,6 @@ vim.lsp.config.basics_ls = {
 			sources = { vim.fs.joinpath(vim.fn.stdpath('data'),  'site/pack/core/opt/friendly-snippets/package.json') }
 		}
 	}
-}
-
-vim.lsp.config.json_ls = {
-	cmd = { 'vscode-json-language-server', '--stdio' },
-	filetypes = { 'json', 'jsonc' },
-	init_options = {
-		provideFormatter = true,
-	},
-	root_markers = { '.git' },
-	settings = {
-		json = {
-			schemas = require('schemastore').json.schemas(),
-			validate = { enable = true },
-		},
-	},
 }
 
 vim.lsp.config.lua_ls = {
@@ -53,6 +40,21 @@ vim.lsp.config.lua_ls = {
 				}
 			}
 		}
+	},
+}
+
+vim.lsp.config.json_ls = {
+	cmd = { 'vscode-json-language-server', '--stdio' },
+	filetypes = { 'json', 'jsonc' },
+	init_options = {
+		provideFormatter = true,
+	},
+	root_markers = { '.git' },
+	settings = {
+		json = {
+			schemas = require('schemastore').json.schemas(),
+			validate = { enable = true },
+		},
 	},
 }
 

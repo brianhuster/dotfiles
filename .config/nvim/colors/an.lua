@@ -1,28 +1,30 @@
 local colorscheme = vim.cmd.colorscheme
 local o = vim.o
 local hl = vim.api.nvim_set_hl
-local light_blue_alternative = "#82aaff"
-local bold_grey_alternative = "#FFDAB9"
+
+local colors = {
+	purple = { fg = '#a787af', ctermfg = 139 },
+	soft_cyan = { fg = "#7fdbca", ctermfg = 116 },
+	light_blue = { fg = "#72aaff", ctermfg = 75 },
+	peach_puff = { fg = "#FFDAB9", ctermfg = 223 },
+}
 
 colorscheme "default"
 o.bg = "dark"
 o.termguicolors = true
 
 for _, group in ipairs { "Identifier", "DiagnosticHint", "DiagnosticUnderlineHint" } do
-	hl(0, group, { fg = light_blue_alternative })
+	hl(0, group, colors.light_blue)
 end
+
 for _, group in ipairs { "Title", "Statement", "Todo" } do
-	hl(0, group, { fg = bold_grey_alternative })
+	hl(0, group, colors.peach_puff)
 end
 
-local function au(name, pattern, callback)
-	return vim.api.nvim_create_autocmd(name, { pattern = pattern, callback = callback })
+for _, group in ipairs { "Operator", "Delimiter" } do
+	hl(0, group, colors.purple)
 end
 
-au("OptionSet", { "termguicolors", "background" }, function()
-	if (o.termguicolors and (o.bg == "dark")) then
-		colorscheme "an"
-	else
-		colorscheme "default"
-	end
-end)
+for _, group in ipairs { "PreProc", "Type", "Constant" } do
+	hl(0, group, colors.soft_cyan)
+end
