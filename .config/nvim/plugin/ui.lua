@@ -1,5 +1,6 @@
 if vim.g.vscode then return end
 
+vim.o.list = true
 local shiftwidth = vim.fn.shiftwidth
 local indent_char = '|'
 local listchars = {

@@ -4,6 +4,7 @@ end
 
 local pack = require 'an.pack'
 local exec = pack.exec
+local autocmd = vim.api.nvim_create_autocmd
 
 ---@param name string
 ---@return string
@@ -12,6 +13,7 @@ local github = function(name)
 end
 
 pack.add {
+	github 'b0o/SchemaStore.nvim',
 	github 'tpope/vim-repeat', -- dep of vim-surround
 	github 'tpope/vim-surround',
 	github 'echasnovski/mini.jump2d',
@@ -24,6 +26,10 @@ pack.add {
 		build = ':TSUpdate all'
 	},
 	github 'nvim-treesitter/nvim-treesitter-context',
+	{
+		src = github 'nvim-treesitter/nvim-treesitter-textobjects',
+		version = 'main',
+	},
 	{
 		src = github 'glacambre/firenvim',
 		build = ':call firenvim#install(0)'
@@ -38,7 +44,6 @@ pack.add {
 	github 'kristijanhusak/vim-dadbod-completion',
 	github 'mfussenegger/nvim-jdtls',
 	github 'nvim-lua/plenary.nvim', -- dep of many plugins
-	github 'NeogitOrg/neogit',
 	github 'echasnovski/mini.diff',
 	github 'brianhuster/qfpeek.nvim',
 	github 'mfussenegger/nvim-dap',
@@ -104,6 +109,94 @@ exec(require 'treesitter-context'.setup, {
 vim.keymap.set("n", "[c", function()
 	require("treesitter-context").go_to_context(vim.v.count1)
 end, { silent = true })
+
+exec(function()
+	require("nvim-treesitter-textobjects").setup {
+		select = {
+			-- Automatically jump forward to textobj, similar to targets.vim
+			lookahead = true,
+			-- You can choose the select mode (default is charwise 'v')
+			--
+			-- Can also be a function which gets passed a table with the keys
+			-- * query_string: eg '@function.inner'
+			-- * method: eg 'v' or 'o'
+			-- and should return the mode ('v', 'V', or '<c-v>') or a table
+			-- mapping query_strings to modes.
+			selection_modes = {
+				['@parameter.outer'] = 'v', -- charwise
+				['@function.outer'] = 'V', -- linewise
+				['@class.outer'] = '<c-v>', -- blockwise
+			},
+			-- If you set this to `true` (default is `false`) then any textobject is
+			-- extended to include preceding or succeeding whitespace. Succeeding
+			-- whitespace has priority in order to act similarly to eg the built-in
+			-- `ap`.
+			--
+			-- Can also be a function which gets passed a table with the keys
+			-- * query_string: eg '@function.inner'
+			-- * selection_mode: eg 'v'
+			-- and should return true of false
+			include_surrounding_whitespace = false,
+		},  move = {
+			-- whether to set jumps in the jumplist
+			set_jumps = true,
+		},
+	}
+
+	-- keymaps
+	-- You can use the capture groups defined in `textobjects.scm`
+	vim.keymap.set({ "x", "o" }, "af", function()
+		require "nvim-treesitter-textobjects.select".select_textobject("@function.outer", "textobjects")
+	end)
+	vim.keymap.set({ "x", "o" }, "if", function()
+		require "nvim-treesitter-textobjects.select".select_textobject("@function.inner", "textobjects")
+	end)
+	vim.keymap.set({ "x", "o" }, "ac", function()
+		require "nvim-treesitter-textobjects.select".select_textobject("@class.outer", "textobjects")
+	end)
+	vim.keymap.set({ "x", "o" }, "ic", function()
+		require "nvim-treesitter-textobjects.select".select_textobject("@class.inner", "textobjects")
+	end)
+	-- You can also use captures from other query groups like `locals.scm`
+	vim.keymap.set({ "x", "o" }, "as", function()
+		require "nvim-treesitter-textobjects.select".select_textobject("@local.scope", "locals")
+	end)
+
+	vim.keymap.set({ "n", "x", "o" }, "]m", function()
+		require("nvim-treesitter-textobjects.move").goto_next_start("@function.outer", "textobjects")
+	end)
+	vim.keymap.set({ "n", "x", "o" }, "]]", function()
+		require("nvim-treesitter-textobjects.move").goto_next_start("@class.outer", "textobjects")
+	end)
+	-- You can also use captures from other query groups like `locals.scm` or `folds.scm`
+	vim.keymap.set({ "n", "x", "o" }, "]s", function()
+		require("nvim-treesitter-textobjects.move").goto_next_start("@local.scope", "locals")
+	end)
+	vim.keymap.set({ "n", "x", "o" }, "]z", function()
+		require("nvim-treesitter-textobjects.move").goto_next_start("@fold", "folds")
+	end)
+
+	vim.keymap.set({ "n", "x", "o" }, "]M", function()
+		require("nvim-treesitter-textobjects.move").goto_next_end("@function.outer", "textobjects")
+	end)
+	vim.keymap.set({ "n", "x", "o" }, "][", function()
+		require("nvim-treesitter-textobjects.move").goto_next_end("@class.outer", "textobjects")
+	end)
+
+	vim.keymap.set({ "n", "x", "o" }, "[m", function()
+		require("nvim-treesitter-textobjects.move").goto_previous_start("@function.outer", "textobjects")
+	end)
+	vim.keymap.set({ "n", "x", "o" }, "[[", function()
+		require("nvim-treesitter-textobjects.move").goto_previous_start("@class.outer", "textobjects")
+	end)
+
+	vim.keymap.set({ "n", "x", "o" }, "[M", function()
+		require("nvim-treesitter-textobjects.move").goto_previous_end("@function.outer", "textobjects")
+	end)
+	vim.keymap.set({ "n", "x", "o" }, "[]", function()
+		require("nvim-treesitter-textobjects.move").goto_previous_end("@class.outer", "textobjects")
+	end)
+end)
 
 exec(require('which-key').setup, {
 	preset = 'helix',
@@ -239,4 +332,50 @@ exec(require('codecompanion').setup, {
 			}
 		}
 	}
+})
+
+autocmd('FileType', {
+	pattern = 'java', once = true,
+	callback = function()
+		local fs = vim.fs
+		local config = {
+			cmd = { fs.joinpath(vim.fn.stdpath('data'), 'mason/bin/jdtls') },
+			root_dir = fs.dirname(fs.find({ 'gradlew', '.git', 'mvnw' }, { upward = true })[1]),
+		}
+		require('jdtls').start_or_attach(config)
+	end
+})
+
+autocmd('FileType', {
+	pattern = 'go', once = true,
+	callback = function()
+		require('dap-go').setup()
+	end
+})
+
+autocmd('FileType', {
+	pattern = { 'javascript', 'typescript', 'javascriptreact', 'typescriptreact' },
+	once = true,
+	callback = function()
+		local dap = require('dap')
+		dap.configurations.javascript = {
+			{
+				type = "pwa-node",
+				request = "launch",
+				name = "Launch file",
+				program = "${file}",
+				cwd = "${workspaceFolder}",
+			},
+		}
+		dap.adapters['pwa-node'] = {
+			type = "server",
+			host = "localhost",
+			port = "${port}",
+			executable = {
+				command = "node",
+				-- 💀 Make sure to update this path to point to your installation
+				args = { vim.fn.stdpath('data') .. "/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js", "${port}" },
+			}
+		}
+	end
 })

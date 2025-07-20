@@ -75,7 +75,7 @@ local command = vim.api.nvim_create_user_command
 
 command('PackUpdate', function(args)
 	local name, bang = args.args, args.bang
-	vim.pack.update(name == '' and nil or { name },
+	vim.pack.update(#name > 0 and { name } or nil,
 		{ force = bang })
 end, {
 	bang = true,

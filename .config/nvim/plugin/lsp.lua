@@ -1,7 +1,5 @@
 local api = vim.api
 
-vim.pack.add {'https://github.com/b0o/SchemaStore.nvim'}
-
 vim.lsp.config.basics_ls = {
 	cmd = { "basics-language-server" },
 	settings = {
@@ -125,19 +123,4 @@ vim.diagnostic.config {
 	underline = true
 }
 
-api.nvim_create_autocmd('ColorScheme', {
-	callback = function()
-		api.nvim_set_hl(0, 'LspReferenceTarget', {})
-	end,
-})
-
 vim.lsp.inlay_hint.enable()
-
-api.nvim_create_user_command("CopyDiagnostic", function()
-	local diagnostics = vim.diagnostic.get(0, { lnum = vim.fn.line('.') })
-	local messages = {}
-	for _, diagnostic in ipairs(diagnostics) do
-		table.insert(messages, diagnostic.message or '')
-	end
-	vim.fn.setreg(vim.v.register, table.concat(messages, "\n"))
-end, {})

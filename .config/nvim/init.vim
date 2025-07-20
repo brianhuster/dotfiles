@@ -19,7 +19,6 @@ set wildmode=noselect:full
 set confirm
 set scrolloff=10
 set spell spelllang=en spelloptions+=camel
-set list
 let &spellfile = fnamemodify($MYVIMRC, ':p:h') . '/spell/en.utf-8.add'
 let g:did_install_default_menus = 1
 let g:did_install_syntax_menu = 1
