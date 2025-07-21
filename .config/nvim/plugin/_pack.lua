@@ -70,7 +70,7 @@ pack.add {
 	},
 	github 'j-hui/fidget.nvim', -- codecompanion dep
 	github 'olimorris/codecompanion.nvim',
-	github 'seandewar/actually-doom.nvim'
+	github 'seandewar/actually-doom.nvim',
 }
 
 exec(require 'mini.jump2d'.setup, {
