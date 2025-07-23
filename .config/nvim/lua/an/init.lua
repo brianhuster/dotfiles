@@ -96,11 +96,13 @@ function M.select(items, opts, on_choice)
 	au("WinLeave", { buffer = buf, callback = close_picker })
 	au({"TextChangedI"}, { buffer = buf, callback = vim.schedule_wrap(complete) })
 	au("CompleteDonePre", { buffer = buf, callback = function()
-		local selected = vim.fn.complete_info().selected
+		local complete_info = vim.fn.complete_info()
+		local complete_items = complete_info.items
+		local selected = complete_info.selected
 		if selected == -1 then return complete() end
 		selected = selected + 1
 		close_picker()
-		on_choice(comp_items[selected].user_data, selected)
+		on_choice(complete_items[selected].user_data, selected)
 	end })
 end
 

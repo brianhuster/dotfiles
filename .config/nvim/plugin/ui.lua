@@ -1,7 +1,7 @@
 if vim.g.vscode then return end
 
 vim.o.list = true
-local shiftwidth = vim.fn.shiftwidth
+local shiftwidth = vim.fn.shiftwidth()
 local indent_char = '|'
 local listchars = {
 	tab = '| ',
@@ -9,13 +9,16 @@ local listchars = {
 	extends = '>',
 	precedes = '<',
 	nbsp = '␣',
-	leadmultispace = indent_char .. (' '):rep(shiftwidth() - 1)
+	leadmultispace = indent_char .. (' '):rep(shiftwidth - 1)
 }
 vim.opt.listchars = listchars
 
 local function update_listchars()
-	listchars.leadmultispace = indent_char .. (' '):rep(vim.fn.shiftwidth() - 1)
-	vim.opt.listchars = listchars
+	if shiftwidth ~= vim.fn.shiftwidth() then
+		shiftwidth = vim.fn.shiftwidth()
+		listchars.leadmultispace = indent_char .. (' '):rep(vim.fn.shiftwidth() - 1)
+		vim.opt.listchars = listchars
+	end
 end
 
 vim.api.nvim_create_autocmd('OptionSet', {
@@ -23,8 +26,7 @@ vim.api.nvim_create_autocmd('OptionSet', {
 	callback = update_listchars
 })
 
----@diagnostic disable-next-line: param-type-mismatch
-vim.api.nvim_create_autocmd({ 'InsertEnter', 'InsertLeave' }, { callback = update_listchars })
+vim.fn.timer_start(500, update_listchars, { ["repeat"] = -1 })
 
 vim.cmd.colorscheme 'an'
 

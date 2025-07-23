@@ -1,5 +1,7 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhistcnt =0
+let g:netrw_dirhistcnt =2
+let g:netrw_dirhist_2='/media/brianhuster/D/Projects/vim/runtime'
+let g:netrw_dirhist_1='/media/brianhuster/D/Projects/vim'
 let g:netrw_dirhist_0='/usr/local/share/vim/vim91/tutor'
 let g:netrw_dirhist_9='/home/brianhuster/.config/nvim/lua/an'
 let g:netrw_dirhist_8='/home/brianhuster/.config/nvim/lua'
@@ -8,5 +10,3 @@ let g:netrw_dirhist_6='/home/brianhuster/.config/nvim/keymap'
 let g:netrw_dirhist_5='/home/brianhuster/.config/nvim'
 let g:netrw_dirhist_4='/home/brianhuster/.config/nvim/after/ftplugin'
 let g:netrw_dirhist_3='/home/brianhuster/.config/nvim/after'
-let g:netrw_dirhist_2='/home/brianhuster/.config/nvim'
-let g:netrw_dirhist_1='/home/brianhuster/.config/nvim/after/ftplugin'

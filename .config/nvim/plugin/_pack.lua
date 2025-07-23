@@ -244,7 +244,7 @@ exec(require('mini.diff').setup, {
 })
 
 exec(function()
-	require('dap.ext.vscode').json_decode = vim.fn.JsoncDecode
+	require('dap.ext.vscode').json_decode = vim.fn.Json5Decode
 end)
 
 vim.keymap.set('i', '<M-CR>', 'copilot#Accept("\\<CR>")', {

@@ -1,4 +1,4 @@
---- Parse a jsonc string
+--- Parse a json5 string
 ---@param json string
 ---@return any
-function vim.fn.JsoncDecode(json) end
+function vim.fn.Json5Decode(json) end

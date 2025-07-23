@@ -50,14 +50,6 @@ local function build(action, data)
 	end
 end
 
----@return string
-M.PackUpdate_compl = function()
-	local dir = vim.fn.stdpath('data')..'/site/pack/core/opt'
-	return table.concat(vim.fn.readdir(dir), '\n')
-end
-
-M.PackDel_compl = M.PackUpdate_compl
-
 vim.api.nvim_create_autocmd('PackChanged', {
 	callback = function(args)
 		local data = args.data
@@ -73,9 +65,19 @@ vim.api.nvim_create_autocmd('PackChanged', {
 
 local command = vim.api.nvim_create_user_command
 
+---@return string
+M.PackUpdate_compl = function()
+	local dir = vim.fn.stdpath('data')..'/site/pack/core/opt'
+	return vim.iter(vim.fn.readdir(dir)):map(function(n)
+		return vim.fn.fnameescape(n)
+	end):join('\n')
+end
+
+M.PackDel_compl = M.PackUpdate_compl
+
 command('PackUpdate', function(args)
-	local name, bang = args.args, args.bang
-	vim.pack.update(#name > 0 and { name } or nil,
+	local names, bang = args.fargs, args.bang
+	vim.pack.update(names[1] and names or nil,
 		{ force = bang })
 end, {
 	bang = true,
@@ -84,8 +86,8 @@ end, {
 })
 
 command('PackDel', function(args)
-	local name = args.args
-	vim.pack.del { name }
+	local names = args.fargs
+	vim.pack.del(names)
 end, { nargs = 1, complete = "custom,v:lua.require'an.pack'.PackDel_compl" })
 
 return M
