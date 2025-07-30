@@ -6,6 +6,7 @@ vim.cmd [[
 	exe 'setl tags+=' .. s:tags_files
 ]]
 
+vim.bo.comments = ''
 vim.bo.keywordprg = ':HelpKeywordPrg'
 
 vim.api.nvim_buf_create_user_command(0, 'HelpKeywordPrg', function()
@@ -14,7 +15,7 @@ end, { nargs = '*' })
 
 vim.b.undo_ftplugin = table.concat({
 	vim.b.undo_ftplugin or '',
-	'setl keywordprg<',
+	'setl keywordprg< comments<',
 	'delcommand -buffer HelpKeywordPrg',
 	'setl tags< tagfunc<'
 }, '\n')

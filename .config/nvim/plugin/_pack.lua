@@ -20,6 +20,7 @@ pack.add {
 	github 'justinmk/vim-sneak',
 	github 'echasnovski/mini.icons',
 	github 'brianhuster/direx.nvim',
+	github 'brianhuster/unnest.nvim',
 	{
 		src = github 'nvim-treesitter/nvim-treesitter',
 		version = 'main',
@@ -216,13 +217,6 @@ exec(require 'mini.clue'.setup, {
 exec(require 'mini.icons'.setup)
 
 do
-	local previewer ---@type string
-	if vim.fn.executable('nvcat') == 1 then
-		previewer = [[nvcat -clean {}]]
-	elseif vim.fn.executable('bat') == 1 then
-		previewer =
-		[[bat --style=numbers --color=always --paging=always --wrap=never --theme=ansi --pager=never --decorations=never {}]]
-	end
 	exec(require 'direx.config'.set, {
 		iconfunc = function(p)
 			local get = require('mini.icons').get
@@ -230,10 +224,12 @@ do
 			icon = icon .. ' '
 			return { icon = icon, hl = hl }
 		end,
-		fzfprg = ("fzf --preview %s "):format(vim.fn.shellescape(previewer))
 	})
-	vim.keymap.set('n', '<C-p>', '<cmd>DirexFzf<CR>')
 end
+
+vim.keymap.set('n', '<C-p>', function()
+	vim.cmd.UnnestEdit [[nvim $(fzf --preview "nvcat -clean {}")]]
+end)
 
 exec(require 'mason'.setup, {})
 

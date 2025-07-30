@@ -1,7 +1,7 @@
 "silent language vi_vn.utf-8
 set mouse=nvc
 set number relativenumber
-set autoindent cindent
+set autoindent
 set shiftwidth=4 tabstop=4 noexpandtab
 set autowriteall
 set cursorline
