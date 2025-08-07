@@ -64,10 +64,11 @@ tnoremap <expr> <C-R> '<C-\><C-N>"'.nr2char(getchar()).'pi'
 
 nnoremap <C-k> K
 
-cnoremap <expr> <Left> pumvisible() ? '<C-e><Left>' : '<Left>'
-cnoremap <expr> <Right> pumvisible() ? '<C-e><Right>' : '<Right>'
-cnoremap <expr> <Up> pumvisible() ? '<C-b><Up>' : '<Up>'
-cnoremap <expr> <Down> pumvisible() ? '<C-b><Down>' : '<Down>'
+autocmd CmdlineChanged [:/\?] call wildtrigger()
+set wildmode=noselect:lastused,full wildoptions=pum
+
+cnoremap <Up>   <C-U><Up>
+cnoremap <Down> <C-U><Down>
 
 let did_install_default_menus = 1
 let did_install_syntax_menu = 1

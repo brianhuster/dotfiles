@@ -18,8 +18,8 @@ pack.add {
 	github 'tpope/vim-surround',
 	github 'echasnovski/mini.jump2d',
 	github 'justinmk/vim-sneak',
-	github 'echasnovski/mini.icons',
 	github 'brianhuster/direx.nvim',
+	github 'echasnovski/mini.icons',
 	github 'brianhuster/unnest.nvim',
 	{
 		src = github 'nvim-treesitter/nvim-treesitter',
