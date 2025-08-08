@@ -12,6 +12,27 @@ local github = function(name)
 	return "https://github.com/" .. name
 end
 
+vim.g['sneak#label'] = 1
+
+vim.g.firenvim_config = {
+	globalSettings = { alt = "all" },
+	localSettings = {
+		[".*"] = {
+			cmdline  = "neovim",
+			content  = "text",
+			priority = 0,
+			selector = "textarea",
+			takeover = "never"
+		}
+	}
+}
+
+vim.g.db_ui_use_nerd_fonts = 1 -- dadbod-db
+
+vim.g.lexima_map_escape = ''
+vim.g.lexima_enable_endwise_rules = 0
+vim.g.lexima_enable_basic_rules = 0
+
 pack.add {
 	github 'b0o/SchemaStore.nvim',
 	github 'tpope/vim-repeat', -- dep of vim-surround
@@ -79,27 +100,6 @@ exec(require 'mini.jump2d'.setup, {
 		start_jumping = '<Leader>j',
 	}
 })
-
-vim.g['sneak#label'] = 1
-
-vim.g.firenvim_config = {
-	globalSettings = { alt = "all" },
-	localSettings = {
-		[".*"] = {
-			cmdline  = "neovim",
-			content  = "text",
-			priority = 0,
-			selector = "textarea",
-			takeover = "never"
-		}
-	}
-}
-
-vim.g.db_ui_use_nerd_fonts = 1 -- dadbod-db
-
-vim.g.lexima_map_escape = ''
-vim.g.lexima_enable_endwise_rules = 0
-vim.g.lexima_enable_basic_rules = 0
 
 exec(require 'nvim-treesitter'.install, 'stable')
 exec(require 'nvim-treesitter'.install, 'unstable')

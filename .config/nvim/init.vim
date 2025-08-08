@@ -15,7 +15,6 @@ set completeopt=menuone,noselect,preview,popup
 set noswapfile
 set foldmethod=expr nofoldenable
 set smoothscroll
-set wildmode=noselect:full
 set confirm
 set scrolloff=10
 set spell spelllang=en spelloptions+=camel
@@ -64,11 +63,12 @@ tnoremap <expr> <C-R> '<C-\><C-N>"'.nr2char(getchar()).'pi'
 
 nnoremap <C-k> K
 
-autocmd CmdlineChanged [:/\?] call wildtrigger()
-set wildmode=noselect:lastused,full wildoptions=pum
-
-cnoremap <Up>   <C-U><Up>
-cnoremap <Down> <C-U><Down>
+" Only enable autocompletion for search commands. The main reason is that I
+" can't use <Up> and <Down> to go through history when using autocompletion.
+if exists('*wildtrigger')
+	set wildmode=noselect:lastused,full wildoptions=pum
+	autocmd CmdlineChanged [/\?] call wildtrigger()
+endif
 
 let did_install_default_menus = 1
 let did_install_syntax_menu = 1
