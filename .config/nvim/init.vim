@@ -175,7 +175,6 @@ if has('nvim')
 		"let &grepprg .= '--max-columns=100 '
 		let &grepprg .= '-j1 '
 	endif
-	set foldexpr=v:lua.vim.treesitter.foldexpr()
 	set exrc
 	lua if vim.loader then vim.loader.enable() end
 
@@ -187,6 +186,8 @@ if has('nvim')
 	if getfsize($NVIM_LOG_FILE) > pow(1024, 3)
 		call delete($NVIM_LOG_FILE)
 	endif
+
+	luafile <script>:h/nvim.lua
 endif
 
 packadd! nohlsearch

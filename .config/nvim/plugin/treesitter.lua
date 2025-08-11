@@ -1,3 +1,5 @@
+vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+
 vim.api.nvim_create_autocmd('FileType', {
 	callback = function()
 		local ft = vim.bo.ft
