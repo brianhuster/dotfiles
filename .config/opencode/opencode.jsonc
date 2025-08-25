@@ -1,0 +1,17 @@
+{
+	"$schema": "https://opencode.ai/config.json",
+	"theme": "system",
+	"autoupdate": true,
+	"mcp": {
+		"nvim-mcp": {
+			"type": "local",
+			"command": [
+				"nvim-mcp"
+			],
+			"enabled": true,
+			"environment": {
+				"MY_ENV_VAR": "my_env_var_value"
+			}
+		}
+	}
+}
