@@ -1,5 +1,12 @@
 local api = vim.api
 
+local function fibonaci(n)
+	if n <= 1 then
+		return n
+	end
+	return fibonaci(n - 1) + fibonaci(n - 2)
+end
+
 vim.lsp.config.lua_ls = {
 	cmd = { 'lua-language-server' },
 	filetypes = { 'lua' },
@@ -23,7 +30,27 @@ vim.lsp.config.lua_ls = {
 	},
 }
 
-vim.lsp.enable 'lua_ls'
+vim.lsp.enable {
+	"dockerls",
+	"bashls",
+	"clangd",
+	"cssls", "tailwindcss", "html", "ts_ls",
+	'jdtls',
+	"marksman",
+	"pylsp",
+	"vue_ls",
+	"vimls",
+	"gopls",
+	"copilot"
+}
+
+vim.keymap.set('i', '<M-CR>', function()
+	vim.lsp.inline_completion.get()
+end)
+
+vim.keymap.set('i', '<M-s>', function()
+	vim.lsp.inline_completion.select()
+end)
 
 api.nvim_create_autocmd('LspAttach', {
 	callback = function(args)
@@ -50,9 +77,7 @@ vim.diagnostic.config {
 }
 
 vim.lsp.inlay_hint.enable()
-
-
---- PLUGINS
+vim.lsp.inline_completion.enable()
 
 if not vim.pack then
 	return
@@ -130,12 +155,10 @@ pack.add {
 	github 'windwp/nvim-ts-autotag',
 	github 'cohama/lexima.vim',
 	github 'uga-rosa/ccc.nvim',
-	github 'github/copilot.vim',
 	{
 		src = github 'CopilotC-Nvim/CopilotChat.nvim',
 		build = 'make tiktoken'
 	},
-	github 'brianhuster/supermaven-nvim',
 	github 'HakonHarnes/img-clip.nvim', -- avante.nvim dep
 	github 'MunifTanjim/nui.nvim',   -- avante.nvim dep
 	{
@@ -203,18 +226,8 @@ vim.lsp.config.json_ls = {
 
 vim.lsp.enable {
 	"basics_ls",
-	"dockerls",
-	"bashls",
-	"clangd",
-	"cssls", "tailwindcss", "html", "ts_ls",
 	"jsonls",
-	'jdtls',
-	"marksman",
-	"pylsp",
-	"vue_ls",
-	"vimls",
-	"gopls",
-	'yamlls'
+	'yamlls',
 }
 
 exec(require 'mini.jump2d'.setup, {
@@ -365,32 +378,9 @@ exec(function()
 	require('dap.ext.vscode').json_decode = vim.fn.Json5Decode
 end)
 
-vim.keymap.set('i', '<M-CR>', 'copilot#Accept("\\<CR>")', {
-	expr = true,
-	replace_keycodes = false
-})
-vim.keymap.set('i', '<M-w>', '<Plug>(copilot-accept-word)', {
-	expr = true,
-	replace_keycodes = false
-})
-vim.keymap.set('i', '<M-l>', '<Plug>(copilot-accept-line)', {
-	expr = true,
-	replace_keycodes = false
-})
-vim.g.copilot_no_tab_map = true
-vim.cmd [[au BufEnter * let b:copilot_enabled = v:false]]
-
 exec(require 'CopilotChat'.setup, {
 	model = 'claude-3.5-sonnet'
 })
-
-exec(require 'supermaven-nvim'.setup, {
-	keymaps = {
-		accept_suggestion = "<M-CR>",
-		accept_word = "<M-w>",
-	},
-})
-exec(require 'supermaven-nvim.api'.use_free_version)
 
 exec(require 'avante'.setup, {
 	provider = "copilot",

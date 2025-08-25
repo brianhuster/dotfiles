@@ -28,8 +28,11 @@ endif
 au InsertLeavePre,TextChanged,TextChangedP * if &modifiable && !&readonly | silent! update | endif
 au FocusGained,BufEnter * checktime
 
-au BufEnter * if &buftype == 'terminal' | startinsert | setl nospell | endif
+au BufEnter * if &buftype == 'terminal' | setl nospell | endif
+au TabClosed * if &buftype == 'terminal' | startinsert | endif
 au BufEnter *.png,*.jpg,*.jpeg,*.gif,*.webp call s:OpenImgBuf(expand('<amatch>'))
+
+au TermResponse * if v:termresponse == "\e[>0;136;0c" | echo "Dark Background" | endif
 
 " Key mappings
 nnoremap t <cmd>call Terminal()<CR>
