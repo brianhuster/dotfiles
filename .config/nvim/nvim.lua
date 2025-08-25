@@ -1,12 +1,5 @@
 local api = vim.api
 
-local function fibonaci(n)
-	if n <= 1 then
-		return n
-	end
-	return fibonaci(n - 1) + fibonaci(n - 2)
-end
-
 vim.lsp.config.lua_ls = {
 	cmd = { 'lua-language-server' },
 	filetypes = { 'lua' },
@@ -28,20 +21,6 @@ vim.lsp.config.lua_ls = {
 			}
 		}
 	},
-}
-
-vim.lsp.enable {
-	"dockerls",
-	"bashls",
-	"clangd",
-	"cssls", "tailwindcss", "html", "ts_ls",
-	'jdtls',
-	"marksman",
-	"pylsp",
-	"vue_ls",
-	"vimls",
-	"gopls",
-	"copilot"
 }
 
 vim.keymap.set('i', '<M-CR>', function()
@@ -228,6 +207,17 @@ vim.lsp.enable {
 	"basics_ls",
 	"jsonls",
 	'yamlls',
+	"dockerls",
+	"bashls",
+	"clangd",
+	"cssls", "tailwindcss", "html", "ts_ls",
+	'jdtls',
+	"marksman",
+	"pylsp",
+	"vue_ls",
+	"vimls",
+	"gopls",
+	"copilot"
 }
 
 exec(require 'mini.jump2d'.setup, {
