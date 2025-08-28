@@ -23,6 +23,8 @@ vim.lsp.config.lua_ls = {
 	},
 }
 
+vim.lsp.enable("lua_ls")
+
 vim.keymap.set('i', '<M-CR>', function()
 	vim.lsp.inline_completion.get()
 end)
@@ -407,13 +409,15 @@ exec(require 'mcphub'.setup, {
 
 exec(require('codecompanion').setup, {
 	adapters = {
-		copilot = require("codecompanion.adapters").extend("copilot", {
-			schema = {
-				model = {
-					default = "claude-3.5-sonnet",
+		http = {
+			copilot = require("codecompanion.adapters").extend("copilot", {
+				schema = {
+					model = {
+						default = "claude-3.5-sonnet",
+					},
 				},
-			},
-		}),
+			})
+		}
 	},
 	strategies = {
 		chat = {

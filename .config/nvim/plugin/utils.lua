@@ -1,3 +1,4 @@
+local vim = vim
 local api = vim.api
 local command = api.nvim_create_user_command
 
@@ -9,3 +10,8 @@ command('GitDiffHead', function()
 	local path = vim.fs.relpath(git_root, api.nvim_buf_get_name(0))
 	vim.cmd(([[tabedit %% | diffthis | vertical new | diffthis | read! git show HEAD^:%s]]):format(path))
 end, { nargs = 0 })
+
+command("RestartSession", function()
+	vim.cmd("mksession!")
+	vim.cmd.restart(("source %s | call delete(v:this_session)"):format(vim.fn.fnameescape(vim.fs.abspath("Session.vim"))))
+end, { nargs = 0, desc = "Restart nvim and restore session" })
