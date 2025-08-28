@@ -1,3 +1,5 @@
+---@meta
+
 --- Parse a json5 string
 ---@param json string
 ---@return any

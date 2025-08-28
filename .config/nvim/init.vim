@@ -189,6 +189,8 @@ if has('nvim')
 	if getfsize($NVIM_LOG_FILE) > pow(1024, 3)
 		call delete($NVIM_LOG_FILE)
 	endif
+	" Prompt buffer
+	inoremap <C-j> <S-CR>
 
 	luafile <script>:h/nvim.lua
 endif
