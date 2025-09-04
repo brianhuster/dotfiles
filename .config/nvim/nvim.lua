@@ -1,4 +1,5 @@
 local api = vim.api
+local map = vim.keymap.set
 
 vim.lsp.config.lua_ls = {
 	cmd = { 'lua-language-server' },
@@ -25,11 +26,11 @@ vim.lsp.config.lua_ls = {
 
 vim.lsp.enable("lua_ls")
 
-vim.keymap.set('i', '<M-CR>', function()
+map('i', '<M-CR>', function()
 	vim.lsp.inline_completion.get()
 end)
 
-vim.keymap.set('i', '<M-s>', function()
+map('i', '<M-s>', function()
 	vim.lsp.inline_completion.select()
 end)
 
@@ -59,6 +60,8 @@ vim.diagnostic.config {
 
 vim.lsp.inlay_hint.enable()
 vim.lsp.inline_completion.enable()
+vim.lsp.linked_editing_range.enable()
+vim.lsp.on_type_formatting.enable()
 
 if not vim.pack then
 	return

@@ -110,9 +110,7 @@ class AcpClient {
 /**
 	* @param {import('neovim').NvimPlugin} plugin
 	*/
-function AcpPlugin (plugin) {
-	this.plugin = plugin
-
+export default function (plugin) {
 	const agentProcess = spawn("gemini", ["--experimental-acp"], {
 		stdio: ["pipe", "pipe", "inherit"],
 
@@ -144,19 +142,15 @@ function AcpPlugin (plugin) {
 	});
 
 	this.connection = connection
-	plugin.registerFunction('AcpNewSession', [this, AcpPlugin.prototype.newSession], { sync: true });
+	plugin.registerFunction('AcpNewSession', async () => {
+		const session = await connection.newSession({
+			cwd: process.cwd(),
+			mcpServers: [],
+		});
+		return session.sessionId;
+	}, { sync: true });
 	plugin.registerFunction('AcpPrompt', (args) => {
 		const prompt = args[0]
 		connection.prompt(prompt)
 	}, { sync: false });
 }
-
-AcpPlugin.prototype.newSession = async function() {
-	const session = await this.connection.newSession({
-		cwd: process.cwd(),
-		mcpServers: [],
-	});
-	return session.sessionId;
-}
-
-export default AcpPlugin

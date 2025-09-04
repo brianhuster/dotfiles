@@ -28,7 +28,7 @@ endif
 au InsertLeavePre,TextChanged,TextChangedP * if &modifiable && !&readonly | silent! update | endif
 au FocusGained,BufEnter * checktime
 
-au BufEnter * if &buftype == 'terminal' | setl nospell | endif
+au BufEnter * if &buftype == 'terminal' | setl nospell | startinsert | endif
 au TabClosed * if &buftype == 'terminal' | startinsert | endif
 au BufEnter *.png,*.jpg,*.jpeg,*.gif,*.webp call s:OpenImgBuf(expand('<amatch>'))
 
@@ -172,6 +172,8 @@ if $QT_IM_MODULE == 'ibus' || $QT_IM_MODULE == 'fcitx'
 else
 	set keymap=vietnamese-telex-user
 endif
+
+au FocusGained * if mode() ==# 'n' | call s:ImActivateFunc(0) | endif
 
 if has('nvim')
 	if &grepprg[:2] == 'rg '
