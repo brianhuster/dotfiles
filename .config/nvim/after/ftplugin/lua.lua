@@ -1,7 +1,7 @@
 if vim.fn.has('nvim-0.11') == 0 then
 	vim.bo.includeexpr = "v:lua.require'an.lua'.includeexpr(v:fname)"
 end
-vim.bo.keywordprg = ':LuaKeywordPrg'
+vim.bo.keywordprg = [[:lua require'an.lua'.keywordprg() --]]
 vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = 0 })
 
 local buf = vim.api.nvim_get_current_buf()

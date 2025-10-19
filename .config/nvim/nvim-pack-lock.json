@@ -1,0 +1,48 @@
+{
+  "plugins": {
+    "CopilotChat.nvim": [],
+    "SchemaStore.nvim": [],
+    "actually-doom.nvim": [],
+    "avante.nvim": {
+      "version": "'v0.0.25'"
+    },
+    "ccc.nvim": [],
+    "codecompanion.nvim": [],
+    "direx.nvim": [],
+    "fidget.nvim": [],
+    "firenvim": [],
+    "friendly-snippets": [],
+    "img-clip.nvim": [],
+    "lexima.vim": [],
+    "live-preview.nvim": [],
+    "mason.nvim": [],
+    "mcphub.nvim": [],
+    "mini.clue": [],
+    "mini.diff": [],
+    "mini.icons": [],
+    "mini.jump2d": [],
+    "nui.nvim": [],
+    "nvim-dap": [],
+    "nvim-dap-go": [],
+    "nvim-jdtls": [],
+    "nvim-lspconfig": [],
+    "nvim-treesitter": {
+      "version": "'main'"
+    },
+    "nvim-treesitter-context": [],
+    "nvim-treesitter-textobjects": {
+      "version": "'main'"
+    },
+    "nvim-ts-autotag": [],
+    "plenary.nvim": [],
+    "qfpeek.nvim": [],
+    "treesitter-endwise.nvim": [],
+    "unnest.nvim": [],
+    "vim-dadbod-completion": [],
+    "vim-repeat": [],
+    "vim-sneak": [],
+    "vim-surround": [],
+    "vimdoc-ja": [],
+    "which-key.nvim": []
+  }
+}

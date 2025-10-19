@@ -139,22 +139,7 @@ pack.add {
 	github 'windwp/nvim-ts-autotag',
 	github 'cohama/lexima.vim',
 	github 'uga-rosa/ccc.nvim',
-	{
-		src = github 'CopilotC-Nvim/CopilotChat.nvim',
-		build = 'make tiktoken'
-	},
-	github 'HakonHarnes/img-clip.nvim', -- avante.nvim dep
-	github 'MunifTanjim/nui.nvim',   -- avante.nvim dep
-	{
-		src = github 'yetone/avante.nvim',
-		build = 'make'
-	},
-	{
-		src = github 'ravitemer/mcphub.nvim',
-		build = 'npm i -g mcp-hub@latest'
-	},
 	github 'j-hui/fidget.nvim', -- codecompanion dep
-	github 'olimorris/codecompanion.nvim',
 	github 'seandewar/actually-doom.nvim',
 }
 
@@ -373,71 +358,71 @@ exec(function()
 	require('dap.ext.vscode').json_decode = vim.fn.Json5Decode
 end)
 
-exec(require 'CopilotChat'.setup, {
-	model = 'claude-3.5-sonnet'
-})
-
-exec(require 'avante'.setup, {
-	provider = "copilot",
-	providers = {
-		copilot = {
-			model = 'claude-3.5-sonnet'
-		}
-	},
-	system_prompt = function()
-		local hub = require("mcphub").get_hub_instance()
-		return hub:get_active_servers_prompt()
-	end,
-	-- The custom_tools type supports both a list and a function that returns a list. Using a function here prevents requiring mcphub before it's loaded
-	custom_tools = function()
-		return {
-			require("mcphub.extensions.avante").mcp_tool(),
-		}
-	end,
-})
-
-exec(require 'mcphub'.setup, {
-	extensions = {
-		avante = {
-			make_slash_commands = true, -- make /slash commands from MCP server prompts
-		},
-		config = vim.fn.expand("~/.config/mcphub/servers.json"),
-		codecompanion = {
-			show_result_in_chat = true, -- Show the mcp tool result in the chat buffer
-			make_vars = true,  -- make chat #variables from MCP server resources
-		}
-	}
-}
-)
-
-exec(require('codecompanion').setup, {
-	adapters = {
-		http = {
-			copilot = require("codecompanion.adapters").extend("copilot", {
-				schema = {
-					model = {
-						default = "claude-3.5-sonnet",
-					},
-				},
-			})
-		}
-	},
-	strategies = {
-		chat = {
-			tools = {
-				mcp = {
-					callback = function()
-						return require("mcphub.extensions.codecompanion")
-					end,
-					description = "Call tools and resources from the MCP Servers",
-					opts = {
-						requires_approval = true,
-					}
-				}
-			}
-		}
-	}
-})
+-- exec(require 'CopilotChat'.setup, {
+-- 	model = 'claude-3.5-sonnet'
+-- })
+--
+-- exec(require 'avante'.setup, {
+-- 	provider = "copilot",
+-- 	providers = {
+-- 		copilot = {
+-- 			model = 'claude-3.5-sonnet'
+-- 		}
+-- 	},
+-- 	system_prompt = function()
+-- 		local hub = require("mcphub").get_hub_instance()
+-- 		return hub:get_active_servers_prompt()
+-- 	end,
+-- 	-- The custom_tools type supports both a list and a function that returns a list. Using a function here prevents requiring mcphub before it's loaded
+-- 	custom_tools = function()
+-- 		return {
+-- 			require("mcphub.extensions.avante").mcp_tool(),
+-- 		}
+-- 	end,
+-- })
+--
+-- exec(require 'mcphub'.setup, {
+-- 	extensions = {
+-- 		avante = {
+-- 			make_slash_commands = true, -- make /slash commands from MCP server prompts
+-- 		},
+-- 		config = vim.fn.expand("~/.config/mcphub/servers.json"),
+-- 		codecompanion = {
+-- 			show_result_in_chat = true, -- Show the mcp tool result in the chat buffer
+-- 			make_vars = true,  -- make chat #variables from MCP server resources
+-- 		}
+-- 	}
+-- }
+-- )
+--
+-- exec(require('codecompanion').setup, {
+-- 	adapters = {
+-- 		http = {
+-- 			copilot = require("codecompanion.adapters").extend("copilot", {
+-- 				schema = {
+-- 					model = {
+-- 						default = "claude-3.5-sonnet",
+-- 					},
+-- 				},
+-- 			})
+-- 		}
+-- 	},
+-- 	strategies = {
+-- 		chat = {
+-- 			tools = {
+-- 				mcp = {
+-- 					callback = function()
+-- 						return require("mcphub.extensions.codecompanion")
+-- 					end,
+-- 					description = "Call tools and resources from the MCP Servers",
+-- 					opts = {
+-- 						requires_approval = true,
+-- 					}
+-- 				}
+-- 			}
+-- 		}
+-- 	}
+-- })
 
 autocmd('FileType', {
 	pattern = 'java', once = true,
