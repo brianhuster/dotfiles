@@ -34,6 +34,8 @@ map('i', '<M-s>', function()
 	vim.lsp.inline_completion.select()
 end)
 
+vim.keymap.set('i', '<M-x><M-n>', '<Plug>(nomplete)')
+
 api.nvim_create_autocmd('LspAttach', {
 	callback = function(args)
 		local client = vim.lsp.get_client_by_id(args.data.client_id)
@@ -99,6 +101,7 @@ vim.g.lexima_enable_endwise_rules = 0
 vim.g.lexima_enable_basic_rules = 0
 
 pack.add {
+	github 'brianhuster/nomplete.vim',
 	github 'b0o/SchemaStore.nvim',
 	github 'tpope/vim-repeat', -- dep of vim-surround
 	github 'tpope/vim-surround',

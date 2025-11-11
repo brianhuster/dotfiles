@@ -1,48 +1,138 @@
 {
   "plugins": {
-    "CopilotChat.nvim": [],
-    "SchemaStore.nvim": [],
-    "actually-doom.nvim": [],
-    "avante.nvim": {
-      "version": "'v0.0.25'"
+    "SchemaStore.nvim": {
+      "rev": "976b31e",
+      "src": "https://github.com/b0o/SchemaStore.nvim"
     },
-    "ccc.nvim": [],
-    "codecompanion.nvim": [],
-    "direx.nvim": [],
-    "fidget.nvim": [],
-    "firenvim": [],
-    "friendly-snippets": [],
-    "img-clip.nvim": [],
-    "lexima.vim": [],
-    "live-preview.nvim": [],
-    "mason.nvim": [],
-    "mcphub.nvim": [],
-    "mini.clue": [],
-    "mini.diff": [],
-    "mini.icons": [],
-    "mini.jump2d": [],
-    "nui.nvim": [],
-    "nvim-dap": [],
-    "nvim-dap-go": [],
-    "nvim-jdtls": [],
-    "nvim-lspconfig": [],
+    "actually-doom.nvim": {
+      "rev": "eea1845",
+      "src": "https://github.com/seandewar/actually-doom.nvim"
+    },
+    "ccc.nvim": {
+      "rev": "9d1a256",
+      "src": "https://github.com/uga-rosa/ccc.nvim"
+    },
+    "direx.nvim": {
+      "rev": "91d83f1",
+      "src": "https://github.com/brianhuster/direx.nvim"
+    },
+    "fidget.nvim": {
+      "rev": "e32b672",
+      "src": "https://github.com/j-hui/fidget.nvim"
+    },
+    "firenvim": {
+      "rev": "a18ef90",
+      "src": "https://github.com/glacambre/firenvim"
+    },
+    "friendly-snippets": {
+      "rev": "572f566",
+      "src": "https://github.com/rafamadriz/friendly-snippets"
+    },
+    "lexima.vim": {
+      "rev": "ab621e4",
+      "src": "https://github.com/cohama/lexima.vim"
+    },
+    "live-preview.nvim": {
+      "rev": "a1bb1b3",
+      "src": "https://github.com/brianhuster/live-preview.nvim"
+    },
+    "mason.nvim": {
+      "rev": "ad7146a",
+      "src": "https://github.com/williamboman/mason.nvim"
+    },
+    "mini.clue": {
+      "rev": "98716f2",
+      "src": "https://github.com/echasnovski/mini.clue"
+    },
+    "mini.diff": {
+      "rev": "fbb93ea",
+      "src": "https://github.com/echasnovski/mini.diff"
+    },
+    "mini.icons": {
+      "rev": "ff2e4f1",
+      "src": "https://github.com/echasnovski/mini.icons"
+    },
+    "mini.jump2d": {
+      "rev": "7a089cb",
+      "src": "https://github.com/echasnovski/mini.jump2d"
+    },
+    "nomplete.vim": {
+      "rev": "fa63fd4",
+      "src": "https://github.com/brianhuster/nomplete.vim"
+    },
+    "nvim-dap": {
+      "rev": "4c0e3a9",
+      "src": "https://github.com/mfussenegger/nvim-dap"
+    },
+    "nvim-dap-go": {
+      "rev": "b442115",
+      "src": "https://github.com/leoluz/nvim-dap-go"
+    },
+    "nvim-jdtls": {
+      "rev": "38d265e",
+      "src": "https://github.com/mfussenegger/nvim-jdtls"
+    },
+    "nvim-lspconfig": {
+      "rev": "2010fc6",
+      "src": "https://github.com/neovim/nvim-lspconfig"
+    },
     "nvim-treesitter": {
+      "rev": "f46e3a09",
+      "src": "https://github.com/nvim-treesitter/nvim-treesitter",
       "version": "'main'"
     },
-    "nvim-treesitter-context": [],
+    "nvim-treesitter-context": {
+      "rev": "660861b",
+      "src": "https://github.com/nvim-treesitter/nvim-treesitter-context"
+    },
     "nvim-treesitter-textobjects": {
+      "rev": "7024f86",
+      "src": "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
       "version": "'main'"
     },
-    "nvim-ts-autotag": [],
-    "plenary.nvim": [],
-    "qfpeek.nvim": [],
-    "treesitter-endwise.nvim": [],
-    "unnest.nvim": [],
-    "vim-dadbod-completion": [],
-    "vim-repeat": [],
-    "vim-sneak": [],
-    "vim-surround": [],
-    "vimdoc-ja": [],
-    "which-key.nvim": []
+    "nvim-ts-autotag": {
+      "rev": "c4ca798",
+      "src": "https://github.com/windwp/nvim-ts-autotag"
+    },
+    "plenary.nvim": {
+      "rev": "b9fd522",
+      "src": "https://github.com/nvim-lua/plenary.nvim"
+    },
+    "qfpeek.nvim": {
+      "rev": "ba71410",
+      "src": "https://github.com/brianhuster/qfpeek.nvim"
+    },
+    "treesitter-endwise.nvim": {
+      "rev": "b605a0f",
+      "src": "https://github.com/brianhuster/treesitter-endwise.nvim"
+    },
+    "unnest.nvim": {
+      "rev": "62790c8",
+      "src": "https://github.com/brianhuster/unnest.nvim"
+    },
+    "vim-dadbod-completion": {
+      "rev": "a8dac0b",
+      "src": "https://github.com/kristijanhusak/vim-dadbod-completion"
+    },
+    "vim-repeat": {
+      "rev": "6584602",
+      "src": "https://github.com/tpope/vim-repeat"
+    },
+    "vim-sneak": {
+      "rev": "18b1faf",
+      "src": "https://github.com/justinmk/vim-sneak"
+    },
+    "vim-surround": {
+      "rev": "3d188ed",
+      "src": "https://github.com/tpope/vim-surround"
+    },
+    "vimdoc-ja": {
+      "rev": "2f7d73d",
+      "src": "https://github.com/vim-jp/vimdoc-ja"
+    },
+    "which-key.nvim": {
+      "rev": "3aab214",
+      "src": "https://github.com/folke/which-key.nvim"
+    }
   }
 }

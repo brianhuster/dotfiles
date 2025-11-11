@@ -105,6 +105,10 @@ func! s:OpenImgBuf(file) abort
 	exe 'file' a:file
 endfunc
 
+if exists("g:vscode")
+	let g:clipboard = g:vscode_clipboard
+endif
+
 function! Terminal()
 	if &buftype == 'terminal'
 		startinsert
