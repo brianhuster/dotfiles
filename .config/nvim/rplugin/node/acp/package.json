@@ -1,9 +1,0 @@
-{
-  "dependencies": {
-    "@zed-industries/agent-client-protocol": "^0.1.2",
-    "neovim": "^5.3.0"
-  },
-  "devDependencies": {
-    "@types/node": "^24.3.0"
-  }
-}

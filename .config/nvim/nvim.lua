@@ -34,7 +34,7 @@ map('i', '<M-s>', function()
 	vim.lsp.inline_completion.select()
 end)
 
-vim.keymap.set('i', '<M-x><M-n>', '<Plug>(nomplete)')
+vim.keymap.set('i', '<M-n>', '<Plug>(nomplete)')
 
 api.nvim_create_autocmd('LspAttach', {
 	callback = function(args)
@@ -127,7 +127,6 @@ pack.add {
 	github 'brianhuster/live-preview.nvim',
 	github 'folke/which-key.nvim',
 	github 'echasnovski/mini.clue',
-	github 'vim-jp/vimdoc-ja',
 	github 'neovim/nvim-lspconfig',
 	github 'williamboman/mason.nvim',
 	github 'rafamadriz/friendly-snippets',
@@ -142,7 +141,6 @@ pack.add {
 	github 'windwp/nvim-ts-autotag',
 	github 'cohama/lexima.vim',
 	github 'uga-rosa/ccc.nvim',
-	github 'j-hui/fidget.nvim', -- codecompanion dep
 	github 'seandewar/actually-doom.nvim',
 }
 
@@ -358,7 +356,7 @@ exec(require('mini.diff').setup, {
 })
 
 exec(function()
-	require('dap.ext.vscode').json_decode = vim.fn.Json5Decode
+	require('dap.ext.vscode').json_decode = require('an.jsonc').decode
 end)
 
 -- exec(require 'CopilotChat'.setup, {

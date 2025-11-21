@@ -1,9 +1,0 @@
-{
-	"dependencies": {
-		"json5": "^2.2.3",
-		"neovim": "^5.3.0"
-	},
-	"devDependencies": {
-		"@types/node": "^22.14.1"
-	}
-}

@@ -1,7 +1,7 @@
 {
   "plugins": {
     "SchemaStore.nvim": {
-      "rev": "976b31e",
+      "rev": "1d0932e",
       "src": "https://github.com/b0o/SchemaStore.nvim"
     },
     "actually-doom.nvim": {
@@ -16,10 +16,6 @@
       "rev": "91d83f1",
       "src": "https://github.com/brianhuster/direx.nvim"
     },
-    "fidget.nvim": {
-      "rev": "e32b672",
-      "src": "https://github.com/j-hui/fidget.nvim"
-    },
     "firenvim": {
       "rev": "a18ef90",
       "src": "https://github.com/glacambre/firenvim"
@@ -33,15 +29,15 @@
       "src": "https://github.com/cohama/lexima.vim"
     },
     "live-preview.nvim": {
-      "rev": "a1bb1b3",
+      "rev": "0e7c0d6",
       "src": "https://github.com/brianhuster/live-preview.nvim"
     },
     "mason.nvim": {
-      "rev": "ad7146a",
+      "rev": "57e5a8a",
       "src": "https://github.com/williamboman/mason.nvim"
     },
     "mini.clue": {
-      "rev": "98716f2",
+      "rev": "015320e",
       "src": "https://github.com/echasnovski/mini.clue"
     },
     "mini.diff": {
@@ -57,11 +53,11 @@
       "src": "https://github.com/echasnovski/mini.jump2d"
     },
     "nomplete.vim": {
-      "rev": "fa63fd4",
+      "rev": "4c02c37",
       "src": "https://github.com/brianhuster/nomplete.vim"
     },
     "nvim-dap": {
-      "rev": "4c0e3a9",
+      "rev": "5860c7c",
       "src": "https://github.com/mfussenegger/nvim-dap"
     },
     "nvim-dap-go": {
@@ -73,11 +69,11 @@
       "src": "https://github.com/mfussenegger/nvim-jdtls"
     },
     "nvim-lspconfig": {
-      "rev": "2010fc6",
+      "rev": "e0fae25",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-treesitter": {
-      "rev": "f46e3a09",
+      "rev": "bb83a676",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
       "version": "'main'"
     },
@@ -86,7 +82,7 @@
       "src": "https://github.com/nvim-treesitter/nvim-treesitter-context"
     },
     "nvim-treesitter-textobjects": {
-      "rev": "7024f86",
+      "rev": "227165a",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
       "version": "'main'"
     },
@@ -107,7 +103,7 @@
       "src": "https://github.com/brianhuster/treesitter-endwise.nvim"
     },
     "unnest.nvim": {
-      "rev": "62790c8",
+      "rev": "4237a23",
       "src": "https://github.com/brianhuster/unnest.nvim"
     },
     "vim-dadbod-completion": {
@@ -119,16 +115,12 @@
       "src": "https://github.com/tpope/vim-repeat"
     },
     "vim-sneak": {
-      "rev": "18b1faf",
+      "rev": "ed9aff2",
       "src": "https://github.com/justinmk/vim-sneak"
     },
     "vim-surround": {
       "rev": "3d188ed",
       "src": "https://github.com/tpope/vim-surround"
-    },
-    "vimdoc-ja": {
-      "rev": "2f7d73d",
-      "src": "https://github.com/vim-jp/vimdoc-ja"
     },
     "which-key.nvim": {
       "rev": "3aab214",
