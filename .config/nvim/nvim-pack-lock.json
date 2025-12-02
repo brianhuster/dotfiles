@@ -1,7 +1,7 @@
 {
   "plugins": {
     "SchemaStore.nvim": {
-      "rev": "1d0932e",
+      "rev": "aa25399",
       "src": "https://github.com/b0o/SchemaStore.nvim"
     },
     "actually-doom.nvim": {
@@ -29,7 +29,7 @@
       "src": "https://github.com/cohama/lexima.vim"
     },
     "live-preview.nvim": {
-      "rev": "0e7c0d6",
+      "rev": "774964d",
       "src": "https://github.com/brianhuster/live-preview.nvim"
     },
     "mason.nvim": {
@@ -37,7 +37,7 @@
       "src": "https://github.com/williamboman/mason.nvim"
     },
     "mini.clue": {
-      "rev": "015320e",
+      "rev": "c465495",
       "src": "https://github.com/echasnovski/mini.clue"
     },
     "mini.diff": {
@@ -53,7 +53,7 @@
       "src": "https://github.com/echasnovski/mini.jump2d"
     },
     "nomplete.vim": {
-      "rev": "4c02c37",
+      "rev": "ed70222",
       "src": "https://github.com/brianhuster/nomplete.vim"
     },
     "nvim-dap": {
@@ -65,15 +65,15 @@
       "src": "https://github.com/leoluz/nvim-dap-go"
     },
     "nvim-jdtls": {
-      "rev": "38d265e",
+      "rev": "943e239",
       "src": "https://github.com/mfussenegger/nvim-jdtls"
     },
     "nvim-lspconfig": {
-      "rev": "e0fae25",
+      "rev": "f1237a8",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-treesitter": {
-      "rev": "bb83a676",
+      "rev": "c5871d9d",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
       "version": "'main'"
     },
@@ -98,6 +98,10 @@
       "rev": "ba71410",
       "src": "https://github.com/brianhuster/qfpeek.nvim"
     },
+    "translate.nvim": {
+      "rev": "1a841e56407ba02e919ed9af573dbe531404aebb",
+      "src": "https://github.com/uga-rosa/translate.nvim"
+    },
     "treesitter-endwise.nvim": {
       "rev": "b605a0f",
       "src": "https://github.com/brianhuster/treesitter-endwise.nvim"
@@ -115,7 +119,7 @@
       "src": "https://github.com/tpope/vim-repeat"
     },
     "vim-sneak": {
-      "rev": "ed9aff2",
+      "rev": "536dd6a",
       "src": "https://github.com/justinmk/vim-sneak"
     },
     "vim-surround": {

@@ -15,3 +15,12 @@ command("RestartSession", function()
 	vim.cmd("mksession!")
 	vim.cmd.restart(("source %s | call delete(v:this_session)"):format(vim.fn.fnameescape(vim.fs.abspath("Session.vim"))))
 end, { nargs = 0, desc = "Restart nvim and restore session" })
+
+command("Translate", function(opts)
+	require'an.translate'.translate_cmd(opts) end,
+	{
+		nargs = "*",
+		range = true,
+		complete = "custom,v:lua.require'an.translate'.translate_complete"
+	}
+)
