@@ -4,11 +4,11 @@ local M = {}
 ---@return table|nil Decoded table or nil on error
 function M.decode(jsonc_string)
 	local ts = vim.treesitter
-	local parser = ts.get_string_parser(jsonc_string, "jsonc")
+	local parser = ts.get_string_parser(jsonc_string, "json")
 	local tree = parser:parse()[1]
 	local root = tree:root()
 
-	local query = ts.query.parse("jsonc", [[
+	local query = ts.query.parse("json", [[
 		(comment) @comment
 		(ERROR) @error
 	]])
