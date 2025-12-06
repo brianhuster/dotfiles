@@ -170,7 +170,8 @@ pack.add {
 	github 'windwp/nvim-ts-autotag',
 	github 'cohama/lexima.vim',
 	github 'uga-rosa/ccc.nvim',
-	github 'seandewar/actually-doom.nvim',
+    github 'seandewar/actually-doom.nvim',
+	github 'brianhuster/eliza.nvim'
 }
 
 vim.lsp.config.basics_ls = {

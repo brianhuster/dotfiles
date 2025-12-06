@@ -4,11 +4,11 @@ local M = {}
 ---@return table|nil Decoded table or nil on error
 function M.decode(jsonc_string)
 	local ts = vim.treesitter
-	local parser = ts.get_string_parser(jsonc_string, "jsonc")
+	local parser = ts.get_string_parser(jsonc_string, "json")
 	local tree = parser:parse()[1]
 	local root = tree:root()
 
-	local query = ts.query.parse("jsonc", [[
+	local query = ts.query.parse("json", [[
 		(comment) @comment
 		(ERROR) @error
 	]])
@@ -23,7 +23,7 @@ function M.decode(jsonc_string)
 			end_col = end_col,
 		})
 	end
-	
+
 	table.sort(ranges_to_remove, function(a, b)
 		if a.start_row == b.start_row then
 			return a.start_col > b.start_col
