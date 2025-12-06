@@ -1,3 +1,32 @@
+local vim = vim
+
+if vim.loader then
+    vim.loader.enable()
+end
+
+vim.cmd [[
+	if exists("g:vscode")
+		let g:clipboard = g:vscode_clipboard
+	endif
+
+	if &grepprg[:2] == 'rg '
+		"let &grepprg .= '--max-columns=100 '
+		let &grepprg .= '-j1 '
+	endif
+	set exrc
+
+	let g:loaded_netrw = 1
+	let g:loaded_netrwPlugin = 1
+
+	au UIEnter * set clipboard=unnamedplus
+	au TermOpen * setl nonumber norelativenumber | startinsert
+	if getfsize($NVIM_LOG_FILE) > pow(1024, 3)
+		call delete($NVIM_LOG_FILE)
+	endif
+	" Prompt buffer
+	inoremap <CR> <S-CR>
+]]
+
 local api = vim.api
 local map = vim.keymap.set
 
@@ -358,72 +387,6 @@ exec(require('mini.diff').setup, {
 exec(function()
 	require('dap.ext.vscode').json_decode = require('an.jsonc').decode
 end)
-
--- exec(require 'CopilotChat'.setup, {
--- 	model = 'claude-3.5-sonnet'
--- })
---
--- exec(require 'avante'.setup, {
--- 	provider = "copilot",
--- 	providers = {
--- 		copilot = {
--- 			model = 'claude-3.5-sonnet'
--- 		}
--- 	},
--- 	system_prompt = function()
--- 		local hub = require("mcphub").get_hub_instance()
--- 		return hub:get_active_servers_prompt()
--- 	end,
--- 	-- The custom_tools type supports both a list and a function that returns a list. Using a function here prevents requiring mcphub before it's loaded
--- 	custom_tools = function()
--- 		return {
--- 			require("mcphub.extensions.avante").mcp_tool(),
--- 		}
--- 	end,
--- })
---
--- exec(require 'mcphub'.setup, {
--- 	extensions = {
--- 		avante = {
--- 			make_slash_commands = true, -- make /slash commands from MCP server prompts
--- 		},
--- 		config = vim.fn.expand("~/.config/mcphub/servers.json"),
--- 		codecompanion = {
--- 			show_result_in_chat = true, -- Show the mcp tool result in the chat buffer
--- 			make_vars = true,  -- make chat #variables from MCP server resources
--- 		}
--- 	}
--- }
--- )
---
--- exec(require('codecompanion').setup, {
--- 	adapters = {
--- 		http = {
--- 			copilot = require("codecompanion.adapters").extend("copilot", {
--- 				schema = {
--- 					model = {
--- 						default = "claude-3.5-sonnet",
--- 					},
--- 				},
--- 			})
--- 		}
--- 	},
--- 	strategies = {
--- 		chat = {
--- 			tools = {
--- 				mcp = {
--- 					callback = function()
--- 						return require("mcphub.extensions.codecompanion")
--- 					end,
--- 					description = "Call tools and resources from the MCP Servers",
--- 					opts = {
--- 						requires_approval = true,
--- 					}
--- 				}
--- 			}
--- 		}
--- 	}
--- })
 
 autocmd('FileType', {
 	pattern = 'java', once = true,

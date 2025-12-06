@@ -19,8 +19,8 @@ detailViewIconSize=16
 listViewIconSize=64
 
 [KPropertiesDialog]
-1920x1080 screen: Height=711
-1920x1080 screen: Width=599
+1920x1080 screen: Height=790
+1920x1080 screen: Width=643
 eDP-1 Height 1920x1080=616
 eDP-1 Width 1920x1080=438
 
@@ -32,3 +32,6 @@ eDP-1 YPosition 1920x1080=257
 
 [Notification Messages]
 ConfirmEmptyTrash=true
+
+[Search]
+Location=Everywhere

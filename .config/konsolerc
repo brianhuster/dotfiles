@@ -12,8 +12,8 @@ listViewIconSize=64
 
 [MainWindow]
 1280x800 screen: Window-Maximized=true
-1920x1080 screen: Height=403
-1920x1080 screen: Width=768
+1920x1080 screen: Height=632
+1920x1080 screen: Width=1037
 1920x1080 screen: Window-Maximized=true
 1920x1080 screen: XPosition=516
 1920x1080 screen: YPosition=173

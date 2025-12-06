@@ -39,8 +39,8 @@ plugin=org.kde.plasma.kickoff
 
 [Containments][473][Applets][474][Configuration]
 PreloadWeight=100
-popupHeight=673
-popupWidth=863
+popupHeight=766
+popupWidth=993
 
 [Containments][473][Applets][474][Configuration][Configuration/General]
 showAppsByName=true
@@ -63,7 +63,7 @@ DialogHeight=810
 DialogWidth=1080
 
 [Containments][473][Applets][476][Configuration][General]
-launchers=preferred://filemanager,applications:systemsettings.desktop
+launchers=applications:systemsettings.desktop,preferred://filemanager
 
 [Containments][473][Applets][477]
 immutability=1
@@ -85,7 +85,7 @@ immutability=1
 plugin=org.kde.plasma.digitalclock
 
 [Containments][473][Applets][491][Configuration]
-PreloadWeight=48
+PreloadWeight=53
 popupHeight=700
 popupWidth=616
 
@@ -122,7 +122,7 @@ plugin=org.kde.plasma.systemmonitor.cpu
 
 [Containments][473][Applets][498][Configuration]
 CurrentPreset=org.kde.plasma.systemmonitor
-PreloadWeight=76
+PreloadWeight=81
 
 [Containments][473][Applets][498][Configuration][Appearance]
 chartFace=org.kde.ksysguard.piechart
@@ -170,8 +170,8 @@ immutability=1
 lastScreen=0
 location=4
 plugin=org.kde.plasma.private.systemtray
-popupHeight=672
-popupWidth=672
+popupHeight=816
+popupWidth=816
 wallpaperplugin=org.kde.image
 
 [Containments][479][Applets][480]
@@ -196,7 +196,7 @@ immutability=1
 plugin=org.kde.kdeconnect
 
 [Containments][479][Applets][482][Configuration]
-PreloadWeight=18
+PreloadWeight=23
 
 [Containments][479][Applets][483]
 immutability=1
@@ -217,7 +217,7 @@ immutability=1
 plugin=org.kde.plasma.devicenotifier
 
 [Containments][479][Applets][485][Configuration]
-PreloadWeight=58
+PreloadWeight=88
 
 [Containments][479][Applets][486]
 immutability=1
@@ -276,7 +276,7 @@ immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][479][Applets][496][Configuration]
-PreloadWeight=100
+PreloadWeight=89
 
 [Containments][479][Applets][501]
 immutability=1
@@ -290,7 +290,7 @@ immutability=1
 plugin=org.kde.plasma.battery
 
 [Containments][479][Applets][516][Configuration]
-PreloadWeight=93
+PreloadWeight=100
 
 [Containments][479][ConfigDialog]
 DialogHeight=690

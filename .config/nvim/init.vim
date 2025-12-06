@@ -105,10 +105,6 @@ func! s:OpenImgBuf(file) abort
 	exe 'file' a:file
 endfunc
 
-if exists("g:vscode")
-	let g:clipboard = g:vscode_clipboard
-endif
-
 function! Terminal()
 	if &buftype == 'terminal'
 		startinsert
@@ -180,24 +176,6 @@ endif
 au FocusGained * if mode() ==# 'n' | call s:ImActivateFunc(0) | endif
 
 if has('nvim')
-	if &grepprg[:2] == 'rg '
-		"let &grepprg .= '--max-columns=100 '
-		let &grepprg .= '-j1 '
-	endif
-	set exrc
-	lua if vim.loader then vim.loader.enable() end
-
-	let g:loaded_netrw = 1
-	let g:loaded_netrwPlugin = 1
-
-	au UIEnter * set clipboard=unnamedplus
-	au TermOpen * setl nonumber norelativenumber | startinsert
-	if getfsize($NVIM_LOG_FILE) > pow(1024, 3)
-		call delete($NVIM_LOG_FILE)
-	endif
-	" Prompt buffer
-	inoremap <C-j> <S-CR>
-
 	luafile <script>:h/nvim.lua
 endif
 

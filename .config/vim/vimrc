@@ -15,16 +15,6 @@ packadd! comment
 packadd! matchit
 runtime! ftplugin/man.vim
 
-if !has('lua')
-	echoerr "This Vim is not compiled with Lua support."
-endif
-if !has('python3')
-	let &pythonthreedll = split(system('ldconfig -p | grep libpython3'))[0]
-	if !has('python3')
-		echoerr "This Vim is not compiled with Python3 support."
-	endif
-endif
-
 unlet! skip_defaults_vim
 source $VIMRUNTIME/defaults.vim
 
@@ -58,9 +48,12 @@ nnoremap [B <cmd>brewind<cr>
 nnoremap ]B <cmd>blast<cr>
 
 let s:file = expand('<sfile>')
+
+let s:nvim_config = '~/.config/nvim'
+execute 'set runtimepath^=' . s:nvim_config
+
 function! s:setup()
-	let nvim_config = '~/.config/nvim'
-	execute 'set runtimepath^=' . nvim_config
-	execute 'source' nvim_config . '/init.vim'
+	execute 'source' s:nvim_config . '/init.vim'
 endfunction
+
 autocmd VimEnter * call s:setup()
