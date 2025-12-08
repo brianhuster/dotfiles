@@ -24,7 +24,9 @@ vim.cmd [[
 		call delete($NVIM_LOG_FILE)
 	endif
 	" Prompt buffer
-	inoremap <CR> <S-CR>
+	au OptionSet buftype if v:option_new == 'prompt'
+		\|inoremap <buffer> <CR> <S-CR>
+		\|endif
 ]]
 
 local api = vim.api
