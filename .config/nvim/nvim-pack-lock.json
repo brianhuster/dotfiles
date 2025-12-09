@@ -8,6 +8,10 @@
       "rev": "eea1845",
       "src": "https://github.com/seandewar/actually-doom.nvim"
     },
+    "agent-chat.nvim": {
+      "rev": "94ed0392600cf3cba23b0706fff63a5de807b602",
+      "src": "https://github.com/brianhuster/agent-chat.nvim"
+    },
     "ccc.nvim": {
       "rev": "9d1a256",
       "src": "https://github.com/uga-rosa/ccc.nvim"

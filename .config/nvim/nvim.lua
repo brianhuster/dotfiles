@@ -9,6 +9,8 @@ vim.cmd [[
 		let g:clipboard = g:vscode_clipboard
 	endif
 
+	set rtp+=/media/brianhuster/D/Projects/agent-chat.nvim
+
 	if &grepprg[:2] == 'rg '
 		"let &grepprg .= '--max-columns=100 '
 		let &grepprg .= '-j1 '
@@ -107,8 +109,19 @@ local autocmd = vim.api.nvim_create_autocmd
 ---@param name string
 ---@return string
 local github = function(name)
-	return "https://github.com/" .. name
+    return "https://github.com/" .. name
 end
+
+vim.g.agent_chat = {
+    agents = {
+        gemini = {
+			cmd = { 'gemini', '--experimental' }
+		},
+        opencode = {
+			cmd = { 'opencode', 'acp' }
+		}
+	}
+}
 
 vim.g['sneak#label'] = 1
 
@@ -173,7 +186,6 @@ pack.add {
 	github 'cohama/lexima.vim',
 	github 'uga-rosa/ccc.nvim',
     github 'seandewar/actually-doom.nvim',
-	github 'brianhuster/eliza.nvim'
 }
 
 vim.lsp.config.basics_ls = {
