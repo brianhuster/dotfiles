@@ -115,13 +115,27 @@ local github = function(name)
     return "https://github.com/" .. name
 end
 
-vim.g.agent_chat = {
+vim.g.acp = {
     agents = {
         gemini = {
-			cmd = { 'gemini', '--experimental' }
+            cmd = { 'gemini', '--experimental-acp' },
+            mcp = true
 		},
         opencode = {
-			cmd = { 'opencode', 'acp' }
+            cmd = { 'opencode', 'acp' },
+            mcp = true
+        },
+        goose = {
+            cmd = { 'goose', 'acp' },
+            mcp = true
+		}
+    },
+    mcp = {
+        nvim = {
+			cmd = { 'nvim-mcp' },
+            env = {
+				NVIM = vim.v.servername
+			}
 		}
 	}
 }
@@ -159,7 +173,6 @@ pack.add {
 	github 'brianhuster/unnest.nvim',
 	{
 		src = github 'nvim-treesitter/nvim-treesitter',
-		version = 'main',
 		build = ':TSUpdate all'
 	},
 	github 'nvim-treesitter/nvim-treesitter-context',

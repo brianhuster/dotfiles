@@ -12,6 +12,10 @@
       "rev": "94ed0392600cf3cba23b0706fff63a5de807b602",
       "src": "https://github.com/brianhuster/agent-chat.nvim"
     },
+    "amazonq.nvim": {
+      "rev": "9f6d2278042f282feeb74a83a32f554a5ad0ae95",
+      "src": "https://github.com/awslabs/amazonq.nvim"
+    },
     "ccc.nvim": {
       "rev": "9d1a256",
       "src": "https://github.com/uga-rosa/ccc.nvim"
@@ -82,8 +86,7 @@
     },
     "nvim-treesitter": {
       "rev": "20db421f5fba0c23f6a7629af96ba6d4fc531677",
-      "src": "https://github.com/nvim-treesitter/nvim-treesitter",
-      "version": "'main'"
+      "src": "https://github.com/nvim-treesitter/nvim-treesitter"
     },
     "nvim-treesitter-context": {
       "rev": "64dd4cf3f6fd0ab17622c5ce15c91fc539c3f24a",
