@@ -29,6 +29,9 @@ vim.cmd [[
 	au OptionSet buftype if v:option_new == 'prompt'
 		\|inoremap <buffer> <CR> <S-CR>
 		\|endif
+
+	packadd nvim.difftool
+	packadd nvim.undotree
 ]]
 
 local api = vim.api
