@@ -25,10 +25,10 @@ vim.cmd [[
 	if getfsize($NVIM_LOG_FILE) > pow(1024, 3)
 		call delete($NVIM_LOG_FILE)
 	endif
-	" Prompt buffer
-	au OptionSet buftype if v:option_new == 'prompt'
-		\|inoremap <buffer> <CR> <S-CR>
-		\|endif
+
+	" Prompt buffer acp.nvim
+	au FileType acpchat inoremap <buffer> <CR> <S-CR>
+	au FileType acpchat nnoremap <buffer> <C-c> i<C-c><Esc>
 
 	packadd nvim.difftool
 	packadd nvim.undotree
