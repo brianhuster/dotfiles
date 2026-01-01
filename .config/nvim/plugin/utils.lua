@@ -16,11 +16,9 @@ command("RestartSession", function()
 	vim.cmd.restart(("source %s | call delete(v:this_session)"):format(vim.fn.fnameescape(vim.fs.abspath("Session.vim"))))
 end, { nargs = 0, desc = "Restart nvim and restore session" })
 
-command("Translate", function(opts)
-	require'an.translate'.translate_cmd(opts) end,
-	{
-		nargs = "*",
-		range = true,
-		complete = "custom,v:lua.require'an.translate'.translate_complete"
-	}
-)
+command("CopyLua", function(opts)
+    local expr = opts.args
+    local result = load("return " .. expr)()
+	local convert_func = type(result) == "table" and vim.inspect or tostring
+	vim.fn.setreg("+", convert_func(result))
+end, { nargs = 1, desc = "Copy result of a Lua expression to clipboard", complete = "lua" })
