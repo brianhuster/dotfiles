@@ -1,6 +1,6 @@
 local M = {}
 
----@alias an.pack.build function|string
+---@alias an.pack.build function|string[]
 
 ---@class an.pack.Spec: vim.pack.Spec
 ---@field build? an.pack.build
@@ -27,20 +27,14 @@ function M.add(pkgs)
 	M.exec(vim.pack.add, pkgs)
 end
 
----@param action function|string
+---@param action an.pack.build
 ---@param data { kind: 'install'|'update'|'delete', spec: vim.pack.Spec, path: string }
 local function build(action, data)
 	local t = type(action)
-	if t == 'nil' then
-		return
-	elseif t == 'function' then
+	if t == 'function' then
 		M.exec(action)
-	elseif t == 'string' and action:sub(1, 1) == ':' then
-		M.exec(vim.cmd --[[@as function]], action)
 	else
-		local o = vim.o
-		vim.system(
-			{ o.shell, o.shellcmdflag, action },
+        vim.system(action,
 			{ cwd = data.path },
 			vim.schedule_wrap(function(obj)
 				vim.notify(obj.stdout)
@@ -87,7 +81,21 @@ end, {
 
 command('PackDel', function(args)
 	local names = args.fargs
-	vim.pack.del(names)
-end, { nargs = 1, complete = "custom,v:lua.require'an.pack'.PackDel_compl" })
+	vim.pack.del(names, { force = args.bang })
+end, { nargs = 1, complete = "custom,v:lua.require'an.pack'.PackDel_compl", bang = true })
 
+command('PackClean', function(opts)
+	local plugins = vim.iter(vim.pack.get(nil, { info = false })):filter(
+	---@param pkg vim.pack.PlugData
+		function(pkg)
+			return not pkg.active
+		end):map(
+	---@param pkg vim.pack.PlugData
+		function(pkg)
+			return pkg.spec.name
+        end):totable()
+	for _, name in ipairs(plugins) do
+		vim.pack.del({ name }, { force = opts.bang })
+	end
+end, { desc = 'Clean unused packages' })
 return M

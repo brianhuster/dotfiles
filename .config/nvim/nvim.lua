@@ -173,7 +173,7 @@ pack.add {
 	github 'brianhuster/unnest.nvim',
 	{
 		src = github 'nvim-treesitter/nvim-treesitter',
-		build = ':TSUpdate all'
+		build = function() vim.cmd.TSUpdate("all") end,
 	},
 	github 'nvim-treesitter/nvim-treesitter-context',
 	{
@@ -182,7 +182,7 @@ pack.add {
 	},
 	{
 		src = github 'glacambre/firenvim',
-		build = ':call firenvim#install(0)'
+		build = function() vim.fn["firenvim#install"](0) end,
 	},
 	github 'brianhuster/live-preview.nvim',
 	github 'folke/which-key.nvim',
