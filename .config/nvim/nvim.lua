@@ -9,7 +9,7 @@ vim.cmd [[
 		let g:clipboard = g:vscode_clipboard
 	endif
 
-	set rtp+=/media/brianhuster/D/Projects/agent-chat.nvim
+	"set rtp+=/media/brianhuster/D/Projects/agent-chat.nvim
 
 	if &grepprg[:2] == 'rg '
 		"let &grepprg .= '--max-columns=100 '
@@ -26,9 +26,9 @@ vim.cmd [[
 		call delete($NVIM_LOG_FILE)
 	endif
 
-	" Prompt buffer acp.nvim
-	au FileType acpchat inoremap <buffer> <CR> <S-CR>
-	au FileType acpchat nnoremap <buffer> <C-c> i<C-c><Esc>
+	"" Prompt buffer acp.nvim
+	"au FileType acpchat inoremap <buffer> <CR> <S-CR>
+	"au FileType acpchat nnoremap <buffer> <C-c> i<C-c><Esc>
 
 	packadd nvim.difftool
 	packadd nvim.undotree
@@ -200,7 +200,8 @@ pack.add {
 	github 'brianhuster/treesitter-endwise.nvim',
 	github 'windwp/nvim-ts-autotag',
 	github 'cohama/lexima.vim',
-	github 'uga-rosa/ccc.nvim',
+    github 'uga-rosa/ccc.nvim',
+	github 'olimorris/codecompanion.nvim',
     github 'seandewar/actually-doom.nvim',
 }
 
@@ -279,6 +280,8 @@ exec(require 'mini.jump2d'.setup, {
 
 exec(require 'nvim-treesitter'.install, 'stable')
 exec(require 'nvim-treesitter'.install, 'unstable')
+
+exec(require 'codecompanion'.setup)
 
 exec(require 'treesitter-context'.setup, {
 	max_lines = 3
@@ -464,3 +467,47 @@ autocmd('FileType', {
 		}
 	end
 })
+
+local dap = require("dap")
+dap.adapters.gdb = {
+  type = "executable",
+  command = "gdb",
+  args = { "--interpreter=dap", "--eval-command", "set print pretty on" }
+}
+local dap = require("dap")
+dap.configurations.c = {
+  {
+    name = "Launch",
+    type = "gdb",
+    request = "launch",
+    program = function()
+      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+    end,
+    args = {}, -- provide arguments if needed
+    cwd = "${workspaceFolder}",
+    stopAtBeginningOfMainSubprogram = false,
+  },
+  {
+    name = "Select and attach to process",
+    type = "gdb",
+    request = "attach",
+    program = function()
+      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+    end,
+    pid = function()
+      local name = vim.fn.input('Executable name (filter): ')
+      return require("dap.utils").pick_process({ filter = name })
+    end,
+    cwd = '${workspaceFolder}'
+  },
+  {
+    name = 'Attach to gdbserver :1234',
+    type = 'gdb',
+    request = 'attach',
+    target = 'localhost:1234',
+    program = function()
+      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+    end,
+    cwd = '${workspaceFolder}'
+  }
+}
