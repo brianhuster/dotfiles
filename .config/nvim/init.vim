@@ -78,6 +78,8 @@ let did_install_syntax_menu = 1
 let g:loaded_perl_provider = 0
 let g:loaded_ruby_provider = 0
 
+let g:python_recommended_style = 0 " don't automatically enable PEP style
+
 autocmd QuickFixCmdPost [^l]* cwindow
 autocmd QuickFixCmdPost l* lwindow
 
