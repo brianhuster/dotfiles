@@ -10,7 +10,7 @@ function M.keywordprg()
 		require('an.lua').keywordprg()
 		vim.bo.iskeyword = temp_isk
 	else
-		vim.cmd.help(vim.fn.expand('<cword>'))
+        vim.cmd.help(vim.fn.expand('<cword>'))
 	end
 end
 

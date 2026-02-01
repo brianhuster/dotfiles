@@ -9,7 +9,7 @@ vim.cmd [[
 		let g:clipboard = g:vscode_clipboard
 	endif
 
-	"set rtp+=/media/brianhuster/D/Projects/agent-chat.nvim
+	set rtp+=/media/brianhuster/D/Projects/acp.nvim
 
 	if &grepprg[:2] == 'rg '
 		"let &grepprg .= '--max-columns=100 '
@@ -26,9 +26,9 @@ vim.cmd [[
 		call delete($NVIM_LOG_FILE)
 	endif
 
-	"" Prompt buffer acp.nvim
-	"au FileType acpchat inoremap <buffer> <CR> <S-CR>
-	"au FileType acpchat nnoremap <buffer> <C-c> i<C-c><Esc>
+	" Prompt buffer acp.nvim
+	au FileType acpchat inoremap <buffer> <CR> <S-CR>
+	au FileType acpchat nnoremap <buffer> <C-c> i<C-c><Esc>
 
 	packadd nvim.difftool
 	packadd nvim.undotree
@@ -96,7 +96,6 @@ vim.diagnostic.config {
 	underline = true
 }
 
-vim.lsp.inlay_hint.enable()
 vim.lsp.inline_completion.enable()
 vim.lsp.linked_editing_range.enable()
 vim.lsp.on_type_formatting.enable()
@@ -114,31 +113,6 @@ local autocmd = vim.api.nvim_create_autocmd
 local github = function(name)
     return "https://github.com/" .. name
 end
-
-vim.g.acp = {
-    agents = {
-        gemini = {
-            cmd = { 'gemini', '--experimental-acp' },
-            mcp = true
-		},
-        opencode = {
-            cmd = { 'opencode', 'acp' },
-            mcp = true
-        },
-        goose = {
-            cmd = { 'goose', 'acp' },
-            mcp = true
-		}
-    },
-    mcp = {
-        nvim = {
-			cmd = { 'nvim-mcp' },
-            env = {
-				NVIM = vim.v.servername
-			}
-		}
-	}
-}
 
 vim.g['sneak#label'] = 1
 
@@ -201,7 +175,6 @@ pack.add {
 	github 'windwp/nvim-ts-autotag',
 	github 'cohama/lexima.vim',
     github 'uga-rosa/ccc.nvim',
-	github 'olimorris/codecompanion.nvim',
     github 'seandewar/actually-doom.nvim',
 }
 
@@ -280,8 +253,6 @@ exec(require 'mini.jump2d'.setup, {
 
 exec(require 'nvim-treesitter'.install, 'stable')
 exec(require 'nvim-treesitter'.install, 'unstable')
-
-exec(require 'codecompanion'.setup)
 
 exec(require 'treesitter-context'.setup, {
 	max_lines = 3
@@ -510,4 +481,33 @@ dap.configurations.c = {
     end,
     cwd = '${workspaceFolder}'
   }
+}
+
+require 'acp'.config {
+    agents = {
+        gemini = {
+            cmd = { 'gemini', '--experimental-acp' },
+            mcp = true
+		},
+        opencode = {
+            cmd = { 'opencode', 'acp' },
+            mcp = true
+        },
+        goose = {
+            cmd = { 'goose', 'acp' },
+            mcp = true
+        },
+        copilot = {
+			cmd = { 'copilot', '--acp' },
+			mcp = true
+		}
+    },
+    mcp = {
+        nvim = {
+			cmd = { 'nvim-mcp' },
+            env = {
+				NVIM = vim.v.servername
+			}
+		}
+	}
 }
