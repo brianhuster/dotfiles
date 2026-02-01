@@ -201,7 +201,6 @@ pack.add {
 	github 'windwp/nvim-ts-autotag',
 	github 'cohama/lexima.vim',
     github 'uga-rosa/ccc.nvim',
-	github 'olimorris/codecompanion.nvim',
     github 'seandewar/actually-doom.nvim',
 }
 
@@ -280,8 +279,6 @@ exec(require 'mini.jump2d'.setup, {
 
 exec(require 'nvim-treesitter'.install, 'stable')
 exec(require 'nvim-treesitter'.install, 'unstable')
-
-exec(require 'codecompanion'.setup)
 
 exec(require 'treesitter-context'.setup, {
 	max_lines = 3
