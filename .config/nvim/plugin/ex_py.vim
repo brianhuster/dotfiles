@@ -68,9 +68,9 @@ else
 	vim.api.nvim_create_user_command('Py', function(opts)
 		if opts.line1 and opts.line2 then
 			local lines = vim.api.nvim_buf_get_lines(0, opts.line1 - 1, opts.line2, false)
-			opts.args = vim.text.indent(table.concat(lines, "\n"), 0)
+			opts.args = vim.text.indent(0, table.concat(lines, "\n"))
 		end
-		vim.call('s:ExPy', opts.args)
-	end, { nargs = 1, complete = "custom,s:ExPyComplete", range = true })
+		vim.cmd(("python3 << EOF\n%s\nEOF"):format(opts.args))
+	end, { nargs = "?", complete = "custom,s:ExPyComplete", range = true })
 EOF
 endif

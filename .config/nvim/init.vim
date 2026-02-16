@@ -34,6 +34,8 @@ au BufEnter *.png,*.jpg,*.jpeg,*.gif,*.webp call s:OpenImgBuf(expand('<amatch>')
 
 au TermResponse * if v:termresponse == "\e[>0;136;0c" | echo "Dark Background" | endif
 
+set winborder=rounded
+
 " Key mappings
 nnoremap t <cmd>call Terminal()<CR>
 xnoremap t <cmd>call Terminal()<CR>

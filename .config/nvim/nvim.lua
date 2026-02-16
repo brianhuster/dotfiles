@@ -176,6 +176,11 @@ pack.add {
 	github 'cohama/lexima.vim',
     github 'uga-rosa/ccc.nvim',
     github 'seandewar/actually-doom.nvim',
+	github 'junegunn/fzf'
+}
+
+vim.lsp.config.pylsp = {
+    cmd = { 'uv', 'run', 'pylsp' }
 }
 
 vim.lsp.config.basics_ls = {
@@ -500,6 +505,12 @@ require 'acp'.config {
         copilot = {
 			cmd = { 'copilot', '--acp' },
 			mcp = true
+		},
+        gemma = {
+			cmd = { "ollama-acp", "--model=gemma3:1b" },
+        },
+        translategemma = {
+			cmd = { "ollama-acp", "--model=translategemma:4b" },
 		}
     },
     mcp = {

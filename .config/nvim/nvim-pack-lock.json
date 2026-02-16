@@ -1,7 +1,7 @@
 {
   "plugins": {
     "SchemaStore.nvim": {
-      "rev": "636519034e360b686d3e131353393382388ee5b5",
+      "rev": "2abb594d69a43c0a48a11b30bb0ef17ad90dceea",
       "src": "https://github.com/b0o/SchemaStore.nvim"
     },
     "actually-doom.nvim": {
@@ -23,6 +23,10 @@
     "friendly-snippets": {
       "rev": "6cd7280adead7f586db6fccbd15d2cac7e2188b9",
       "src": "https://github.com/rafamadriz/friendly-snippets"
+    },
+    "fzf": {
+      "rev": "0e859a18ed399dc4d9d15be6e462f6c4b4e02358",
+      "src": "https://github.com/junegunn/fzf"
     },
     "lexima.vim": {
       "rev": "ab621e4",
@@ -57,7 +61,7 @@
       "src": "https://github.com/brianhuster/nomplete.vim"
     },
     "nvim-dap": {
-      "rev": "e47878dcf1ccc30136b30d19ab19fe76946d61cd",
+      "rev": "db321947bb289a2d4d76a32e76e4d2bd6103d7df",
       "src": "https://github.com/mfussenegger/nvim-dap"
     },
     "nvim-dap-go": {
@@ -65,15 +69,15 @@
       "src": "https://github.com/leoluz/nvim-dap-go"
     },
     "nvim-jdtls": {
-      "rev": "291dad797b5427ca0c9b7e0dd261279c7c3823e1",
+      "rev": "77ccaeb422f8c81b647605da5ddb4a7f725cda90",
       "src": "https://github.com/mfussenegger/nvim-jdtls"
     },
     "nvim-lspconfig": {
-      "rev": "0480b120318ec8bab27b530ffab6ee76a8c4d806",
+      "rev": "44acfe887d4056f704ccc4f17513ed41c9e2b2e6",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-treesitter": {
-      "rev": "70a9fecaf5aeae70c765d4c51a8038165a91aa06",
+      "rev": "9f2dad22ef8bb14fd1e0a3aa8859cdc88170668b",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter"
     },
     "nvim-treesitter-context": {
@@ -94,7 +98,7 @@
       "src": "https://github.com/nvim-lua/plenary.nvim"
     },
     "qfpeek.nvim": {
-      "rev": "ba71410",
+      "rev": "fda9ec8d688ec94aa92c28d0bb53a058836d623a",
       "src": "https://github.com/brianhuster/qfpeek.nvim"
     },
     "treesitter-endwise.nvim": {
@@ -102,7 +106,7 @@
       "src": "https://github.com/brianhuster/treesitter-endwise.nvim"
     },
     "unnest.nvim": {
-      "rev": "cae9c79092a5a1294fa163086b9e93393985115f",
+      "rev": "a862fbd6a0c415ad7741f84089492f31dbb7963c",
       "src": "https://github.com/brianhuster/unnest.nvim"
     },
     "vim-dadbod-completion": {
