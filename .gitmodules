@@ -1,0 +1,15 @@
+[submodule ".config/nvim/pack/mine/opt/acp.nvim"]
+	path = .config/nvim/pack/mine/opt/acp.nvim
+	url = https://github.com/brianhuster/acp.nvim
+[submodule ".config/nvim/pack/mine/opt/direx.nvim"]
+	path = .config/nvim/pack/mine/opt/direx.nvim
+	url = https://github.com/brianhuster/direx.nvim
+[submodule ".config/nvim/pack/mine/opt/live-preview.nvim"]
+	path = .config/nvim/pack/mine/opt/live-preview.nvim
+	url = https://github.com/brianhuster/live-preview.nvim
+[submodule ".config/nvim/pack/mine/opt/qfpeek.nvim"]
+	path = .config/nvim/pack/mine/opt/qfpeek.nvim
+	url = https://github.com/brianhuster/qfpeek.nvim
+[submodule ".config/nvim/pack/mine/opt/unnest.nvim"]
+	path = .config/nvim/pack/mine/opt/unnest.nvim
+	url = https://github.com/brianhuster/unnest.nvim
