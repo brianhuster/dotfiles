@@ -30,8 +30,15 @@ vim.cmd [[
 	au FileType acpchat inoremap <buffer> <CR> <S-CR>
 	au FileType acpchat nnoremap <buffer> <C-c> i<C-c><Esc>
 
-	packadd nvim.difftool
-	packadd nvim.undotree
+	packadd! nvim.difftool
+	packadd! nvim.undotree
+
+	" My plugins
+	packadd! acp.nvim
+	packadd! direx.nvim
+	packadd! live-preview.nvim
+	packadd! qfpeek.nvim
+	packadd! unnest.nvim
 ]]
 
 local api = vim.api
@@ -136,15 +143,12 @@ vim.g.lexima_enable_endwise_rules = 0
 vim.g.lexima_enable_basic_rules = 0
 
 pack.add {
-	github 'brianhuster/nomplete.vim',
 	github 'b0o/SchemaStore.nvim',
 	github 'tpope/vim-repeat', -- dep of vim-surround
 	github 'tpope/vim-surround',
 	github 'echasnovski/mini.jump2d',
 	github 'justinmk/vim-sneak',
-	github 'brianhuster/direx.nvim',
 	github 'echasnovski/mini.icons',
-	github 'brianhuster/unnest.nvim',
 	{
 		src = github 'nvim-treesitter/nvim-treesitter',
 		build = function() vim.cmd.TSUpdate("all") end,
@@ -158,7 +162,6 @@ pack.add {
 		src = github 'glacambre/firenvim',
 		build = function() vim.fn["firenvim#install"](0) end,
 	},
-	github 'brianhuster/live-preview.nvim',
 	github 'folke/which-key.nvim',
 	github 'echasnovski/mini.clue',
 	github 'neovim/nvim-lspconfig',
@@ -168,7 +171,6 @@ pack.add {
 	github 'mfussenegger/nvim-jdtls',
 	github 'nvim-lua/plenary.nvim', -- dep of many plugins
 	github 'echasnovski/mini.diff',
-	github 'brianhuster/qfpeek.nvim',
 	github 'mfussenegger/nvim-dap',
 	github 'leoluz/nvim-dap-go',
 	github 'brianhuster/treesitter-endwise.nvim',
