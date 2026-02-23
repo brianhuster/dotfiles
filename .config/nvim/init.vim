@@ -10,7 +10,6 @@ set backupcopy=yes
 set ignorecase smartcase
 let g:mapleader=" "
 let g:vim_indent_cont = shiftwidth() " Continuational line indentation in Vimscript file
-set messagesopt=hit-enter,wait:5000,history:10000
 set completeopt=menuone,noselect,preview,popup
 set noswapfile
 set foldmethod=expr nofoldenable
@@ -21,9 +20,17 @@ set spell spelllang=en spelloptions+=camel
 let &spellfile = fnamemodify($MYVIMRC, ':p:h') . '/spell/en.utf-8.add'
 let g:did_install_default_menus = 1
 let g:did_install_syntax_menu = 1
-if has('nvim-0.11')
-	let &statusline .= '%{%v:lua.vim.lsp.status()%}'
-endif
+
+au CmdlineEnter : let s:file_caches = []
+
+function! FindFuncRg(cmdarg, cmdcomplete) abort
+	if empty(s:file_caches)
+		let s:file_caches = systemlist("rg --path-separator / --files")
+	endif
+	return empty(a:cmdarg) ? s:file_caches : matchfuzzy(s:file_caches, a:cmdarg)
+endfunction
+
+set findfunc=FindFuncRg
 
 au InsertLeavePre,TextChanged,TextChangedP * if &modifiable && !&readonly | silent! update | endif
 au FocusGained,BufEnter * checktime
@@ -33,8 +40,6 @@ au TabClosed * if &buftype == 'terminal' | startinsert | endif
 au BufEnter *.png,*.jpg,*.jpeg,*.gif,*.webp call s:OpenImgBuf(expand('<amatch>'))
 
 au TermResponse * if v:termresponse == "\e[>0;136;0c" | echo "Dark Background" | endif
-
-set winborder=rounded
 
 " Key mappings
 nnoremap t <cmd>call Terminal()<CR>

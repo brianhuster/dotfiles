@@ -53,24 +53,16 @@ function! s:ExPyComplete(ArgLead, CmdLine, CursorPos) abort
 	return py3eval('ex_python_complete()')
 endfunction
 
-function! s:ExPy(src) abort
+function! s:ExPy(src, range, line1, line2) abort
 	let src = a:src
+	if has("nvim-0.12") && a:range > 0
+		let src = getline(a:line1, a:line2)->join("\n")
+		let src = v:lua.vim.text.indent(0, lines)
+	endif
 	if src[0] == '='
 		let src = 'print(' . src[1:] . ')'
 	endif
 	exe 'python3' src
 endfunction
 
-if !has("nvim")
-	command! -nargs=1 -complete=custom,s:ExPyComplete Py :call s:ExPy(<q-args>)
-else
-	lua << EOF
-	vim.api.nvim_create_user_command('Py', function(opts)
-		if opts.line1 and opts.line2 then
-			local lines = vim.api.nvim_buf_get_lines(0, opts.line1 - 1, opts.line2, false)
-			opts.args = vim.text.indent(0, table.concat(lines, "\n"))
-		end
-		vim.cmd(("python3 << EOF\n%s\nEOF"):format(opts.args))
-	end, { nargs = "?", complete = "custom,s:ExPyComplete", range = true })
-EOF
-endif
+command! -nargs=1 -range -complete=custom,s:ExPyComplete Py :call s:ExPy(<q-args>, <range>, <line1>, <line2>)

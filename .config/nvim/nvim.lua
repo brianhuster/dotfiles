@@ -4,12 +4,12 @@ if vim.loader then
     vim.loader.enable()
 end
 
+vim.o.winborder = "rounded"
+
 vim.cmd [[
 	if exists("g:vscode")
 		let g:clipboard = g:vscode_clipboard
 	endif
-
-	set rtp+=/media/brianhuster/D/Projects/acp.nvim
 
 	if &grepprg[:2] == 'rg '
 		"let &grepprg .= '--max-columns=100 '
@@ -44,6 +44,9 @@ vim.cmd [[
 local api = vim.api
 local map = vim.keymap.set
 
+local my_plugins_glob = vim.fn.stdpath("config") .. "/pack/*/*/*"
+local my_plugins = vim.fn.glob(my_plugins_glob, true, true)
+
 vim.lsp.config.lua_ls = {
 	cmd = { 'lua-language-server' },
 	filetypes = { 'lua' },
@@ -54,13 +57,14 @@ vim.lsp.config.lua_ls = {
 				version = 'LuaJIT',
 				path = {
 					'lua/?.lua',
-					'lua/?/init.lua'
+                    'lua/?/init.lua',
 				},
 			},
 			workspace = {
 				checkThirdParty = false,
 				library = {
-					vim.env.VIMRUNTIME,
+                    vim.env.VIMRUNTIME,
+					unpack(my_plugins)
 				}
 			}
 		}
@@ -517,10 +521,11 @@ require 'acp'.config {
     },
     mcp = {
         nvim = {
-			cmd = { 'nvim-mcp' },
+			cmd = require("acp").get_mcp_server_cmd(),
             env = {
 				NVIM = vim.v.servername
 			}
 		}
-	}
+	},
+	debug = true
 }
