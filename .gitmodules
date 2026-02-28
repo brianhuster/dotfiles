@@ -13,3 +13,6 @@
 [submodule ".config/nvim/pack/mine/opt/unnest.nvim"]
 	path = .config/nvim/pack/mine/opt/unnest.nvim
 	url = https://github.com/brianhuster/unnest.nvim
+[submodule ".config/nvim/pack/mine/opt/nvim-mcp"]
+	path = .config/nvim/pack/mine/opt/nvim-mcp
+	url = https://github.com/brianhuster/nvim-mcp

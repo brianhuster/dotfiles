@@ -35,6 +35,7 @@ vim.cmd [[
 
 	" My plugins
 	packadd! acp.nvim
+	packadd! nvim-mcp
 	packadd! direx.nvim
 	packadd! live-preview.nvim
 	packadd! qfpeek.nvim
@@ -521,7 +522,7 @@ require 'acp'.config {
     },
     mcp = {
         nvim = {
-			cmd = require("acp").get_mcp_server_cmd(),
+			cmd = { "nvim", "-l", require("nvim-mcp").get_path_to_server() },
             env = {
 				NVIM = vim.v.servername
 			}
