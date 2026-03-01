@@ -22,3 +22,6 @@
 [submodule "/home/brianhuster/.config/nvim/pack/mine/opt/sudo.vim"]
 	path = /home/brianhuster/.config/nvim/pack/mine/opt/sudo.vim
 	url = https://github.com/brianhuster/sudo.vim
+[submodule ".config/nvim/pack/mine/opt/sudo.vim"]
+	path = .config/nvim/pack/mine/opt/sudo.vim
+	url = https://github.com/brianhuster/sudo.vim
