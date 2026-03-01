@@ -56,6 +56,10 @@
       "rev": "3cac3679b6fecbdfeeffaa0a6e23f43c8f0df29f",
       "src": "https://github.com/echasnovski/mini.jump2d"
     },
+    "neural-open.nvim": {
+      "rev": "9fe707fe6e5e3c2904c77cd9c581c88a878de30d",
+      "src": "https://github.com/dtormoen/neural-open.nvim"
+    },
     "nomplete.vim": {
       "rev": "55f856ca7381329d74c01a330df2cd3bd3b738d2",
       "src": "https://github.com/brianhuster/nomplete.vim"
@@ -100,6 +104,10 @@
     "qfpeek.nvim": {
       "rev": "fda9ec8d688ec94aa92c28d0bb53a058836d623a",
       "src": "https://github.com/brianhuster/qfpeek.nvim"
+    },
+    "snacks.nvim": {
+      "rev": "9912042fc8bca2209105526ac7534e9a0c2071b2",
+      "src": "https://github.com/folke/snacks.nvim"
     },
     "treesitter-endwise.nvim": {
       "rev": "b605a0f",

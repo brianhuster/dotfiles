@@ -31,6 +31,7 @@ function! FindFuncRg(cmdarg, cmdcomplete) abort
 endfunction
 
 set findfunc=FindFuncRg
+set grepprg=rg\ --vimgrep\ -j1
 
 au InsertLeavePre,TextChanged,TextChangedP * if &modifiable && !&readonly | silent! update | endif
 au FocusGained,BufEnter * checktime
@@ -38,8 +39,6 @@ au FocusGained,BufEnter * checktime
 au BufEnter * if &buftype == 'terminal' | setl nospell | startinsert | endif
 au TabClosed * if &buftype == 'terminal' | startinsert | endif
 au BufEnter *.png,*.jpg,*.jpeg,*.gif,*.webp call s:OpenImgBuf(expand('<amatch>'))
-
-au TermResponse * if v:termresponse == "\e[>0;136;0c" | echo "Dark Background" | endif
 
 " Key mappings
 nnoremap t <cmd>call Terminal()<CR>
@@ -100,7 +99,7 @@ endfunction
 
 au TextYankPost * if v:event.operator == 'y' | call s:YankShift() | endif
 
-let s:scripts_dir = expand('<sfile>:p:h') .. '/scripts'
+let s:scripts_dir = expand('<sfile>:p:h') .. '/bin'
 let $PATH = $"{s:scripts_dir}:{$PATH}"
 let $SUDO_ASKPASS = s:scripts_dir .. '/askpass'
 command! SudoWrite :silent! w !sudo tee %
@@ -169,15 +168,10 @@ endif
 
 if $QT_IM_MODULE == 'ibus' || $QT_IM_MODULE == 'fcitx'
 	call s:ImActivateFunc(0)
-	if has('nvim')
-		augroup imHandler
-			autocmd InsertEnter,ExitPre * call s:ImActivateFunc(1)
-			autocmd InsertLeave * call s:ImActivateFunc(0)
-		augroup END
-	else
-		set imactivatefunc=s:ImActivateFunc
-		set iminsert=2
-	endif
+	augroup imHandler
+		autocmd InsertEnter,ExitPre * call s:ImActivateFunc(1)
+		autocmd InsertLeave * call s:ImActivateFunc(0)
+	augroup END
 else
 	set keymap=vietnamese-telex-user
 endif

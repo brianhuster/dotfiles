@@ -11,10 +11,6 @@ vim.cmd [[
 		let g:clipboard = g:vscode_clipboard
 	endif
 
-	if &grepprg[:2] == 'rg '
-		"let &grepprg .= '--max-columns=100 '
-		let &grepprg .= '-j1 '
-	endif
 	set exrc
 
 	let g:loaded_netrw = 1
@@ -40,6 +36,7 @@ vim.cmd [[
 	packadd! live-preview.nvim
 	packadd! qfpeek.nvim
 	packadd! unnest.nvim
+	packadd! nvim-brain
 ]]
 
 local api = vim.api

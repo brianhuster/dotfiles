@@ -25,3 +25,6 @@
 [submodule ".config/nvim/pack/mine/opt/sudo.vim"]
 	path = .config/nvim/pack/mine/opt/sudo.vim
 	url = https://github.com/brianhuster/sudo.vim
+[submodule ".config/nvim/pack/mine/opt/nvim-brain"]
+	path = .config/nvim/pack/mine/opt/nvim-brain
+	url = https://github.com/mnielsen/neural-networks-and-deep-learning.git
