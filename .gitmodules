@@ -16,3 +16,9 @@
 [submodule ".config/nvim/pack/mine/opt/nvim-mcp"]
 	path = .config/nvim/pack/mine/opt/nvim-mcp
 	url = https://github.com/brianhuster/nvim-mcp
+[submodule "/home/brianhuster/.config/nvim/pack/mine/opt/nvim-mcp"]
+	path = /home/brianhuster/.config/nvim/pack/mine/opt/nvim-mcp
+	url = https://github.com/brianhuster/nvim-mcp
+[submodule "/home/brianhuster/.config/nvim/pack/mine/opt/sudo.vim"]
+	path = /home/brianhuster/.config/nvim/pack/mine/opt/sudo.vim
+	url = https://github.com/brianhuster/sudo.vim
