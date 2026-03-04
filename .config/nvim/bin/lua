@@ -1,0 +1,158 @@
+#!/usr/bin/env -S nvim -l
+
+--- This is a emulator of the `lua5.1` CLI
+--- (https://www.lua.org/manual/5.1/manual.html#6), but using Neovim's Lua
+--- runtime. It supports all non-interactive features of the `lua5.1` CLI, but
+--- interactive mode is not supported (as the result, `-i` flag is also not
+--- supported).
+---
+--- Credit to https://github.com/mfussenegger/nlua as the first Nvim-based Lua
+--- CLI emulator
+---
+--- @Note that any comments marked with `---@manpage` are directly from the
+--- manpage of `lua5.1` CLI
+
+local uv = vim.uv
+local isatty = uv.guess_handle(0) == "tty"
+
+--- Lua is single thread, so we cannot catch SIGINT when the main thread is
+--- busy. So we need another thread to catch SIGINT and exit the process.
+uv.new_thread({}, function()
+	-- From `:h lua-loop-threading`, "each thread has its own separate Lua
+	-- interpreter state, with no access to Lua globals on the main thread". So
+	-- we cannot use the existing `uv` variable
+	local thread_uv = vim.uv
+
+    local sig = assert(thread_uv.new_signal())
+
+    thread_uv.signal_start(sig, "sigint", function()
+        os.exit(1)
+    end)
+
+    thread_uv.run()
+end)
+
+--- Issue https://github.com/neovim/neovim/issues/37187
+function print(...)
+    local args = { ... }
+    for i, v in ipairs(args) do
+        args[i] = tostring(v)
+    end
+    io.stdout:write(table.concat(args, "\t") .. "\n")
+end
+
+--- Exec a string of Lua code and print result
+---@param str string
+local function execstr(str)
+	local fn, err = loadstring(str)
+	if fn then
+		local result = fn()
+		if result then
+			print(result)
+		end
+		return result
+	elseif err then
+		io.stderr:write(err)
+	end
+end
+
+--- Exec a Lua file and print result
+--- @param filename string
+--- @param ... any arguments to pass to the Lua file
+local function exec_file(filename, ...)
+    local fn, err = loadfile(filename)
+    if fn then
+        local result = fn(...)
+        if result then
+            print(result)
+        end
+        return result
+    elseif err then
+        io.stderr:write(err)
+    end
+end
+
+local help = ([=[usage: %s [options] [script [args]].
+Available options are:
+  -e stat  execute string 'stat'
+  -l name  require library 'name'
+  -v       show version information
+  --       stop handling options
+  -        execute stdin and stop handling options]=]):format(_G.arg[0])
+
+--- This table is only for options with argument, so `-v` is not included
+local options = {
+    e = execstr,
+	---@param name string
+	l = function(name)
+		return execstr(string.format("require('%s')", name))
+	end,
+}
+
+---@manpage
+-- At the very start, before even handling the command line, lua executes the
+-- contents of the environment variable LUA_INIT, if it is de‐ fined.  If the
+-- value of LUA_INIT is of the form '@filename', then filename is executed.
+-- Otherwise, the string is assumed to be a  Lua statement and is executed.
+local lua_init = os.getenv("LUA_INIT")
+if lua_init then
+	if lua_init:sub(1, 1) == "@" then
+		exec_file(lua_init:sub(2))
+	else
+		execstr(lua_init)
+	end
+end
+
+local args = vim.deepcopy(_G.arg)
+_G.arg = nil
+
+---@manpage
+---If no arguments are given, then -v -i is assumed when the standard input is
+---a terminal; otherwise, - is assumed.
+if not args[1] then
+    if not isatty then
+        args[1] = "-"
+    else
+        args[1] = "-v"
+        args[2] = "-i"
+    end
+end
+
+local i = 1
+local len_args = #args
+while i <= len_args do
+	local value = args[i]
+	i = i + 1
+	if value:sub(1, 1) == "-" then
+        local opt = value:sub(2, 2)
+        if options[opt] then
+			-- This is very weird, but in lua5.1, `-la` is the same as `-l a`
+			local opt_value = value:sub(3)
+			if opt_value == "" then
+				opt_value = args[i]
+				i = i + 1
+			end
+            options[opt](opt_value)
+        elseif opt == "v" then
+            print("NVIM " .. tostring(vim.version()))
+			print(jit and jit.version or _VERSION)
+		elseif opt == "-" then -- flag `--`
+			break
+		elseif opt == "" then -- flag `-`
+			execstr(io.read("*a"))
+			break
+        else -- Invalid option
+            print(help)
+			os.exit(1)
+		end
+	else
+		_G.arg = { unpack(args, i) }
+		local j = 0
+		while i - 1 >= j do
+            _G.arg[-j] = args[i - 1 - j]
+			j = j + 1
+		end
+		exec_file(value, unpack(args, i))
+		break
+	end
+end

@@ -101,9 +101,7 @@ au TextYankPost * if v:event.operator == 'y' | call s:YankShift() | endif
 
 let s:scripts_dir = expand('<sfile>:p:h') .. '/bin'
 let $PATH = $"{s:scripts_dir}:{$PATH}"
-let $SUDO_ASKPASS = s:scripts_dir .. '/askpass'
-command! SudoWrite :silent! w !sudo tee %
-command! SudoRead :silent! r !sudo cat %
+let $LUA_BINDIR = s:scripts_dir
 
 command! GitBlameLine echo system($"git blame -L {line('.')},+1 {shellescape(expand('%'))}")
 
@@ -186,3 +184,5 @@ packadd! nohlsearch
 
 let g:termdebug_config = #{use_prompt: 1}
 packadd! termdebug
+
+packadd! sudo.vim

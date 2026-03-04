@@ -1,4 +1,3 @@
-#!/usr/bin/env -S nvim -l
 local fn = vim.fn
 local in_file = fn.stdpath('config') .. '/keymap/vietnamese-telex-user.txt'
 local out_file = fn.fnamemodify(in_file, ':r') .. '.vim'
