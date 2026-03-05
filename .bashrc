@@ -127,9 +127,6 @@ if [ -z $NVIM ] && [ "$TERM_PROGRAM" != "vscode" ]; then
 	set -o vi
 fi
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 # Install Ruby Gems to ~/gems
 export GEM_HOME="$HOME/gems"
 export OLLAMA_MODELS="$D/.ollama/models"
@@ -144,3 +141,5 @@ alias n8n-docker="sudo docker run -it -p 5678:5678 \
     -v n8n_data:/home/node/.n8n \
     docker.n8n.io/n8nio/n8n \
     start --tunnel"
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash

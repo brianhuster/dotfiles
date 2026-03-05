@@ -100,8 +100,11 @@ endfunction
 au TextYankPost * if v:event.operator == 'y' | call s:YankShift() | endif
 
 let s:scripts_dir = expand('<sfile>:p:h') .. '/bin'
-let $PATH = $"{s:scripts_dir}:{$PATH}"
+let $PATH = $"{s:scripts_dir}::{$PATH}"
 let $LUA_BINDIR = s:scripts_dir
+
+" Prepend mise shims to PATH
+let $PATH = $HOME . '/.local/share/mise/shims:' . $PATH
 
 command! GitBlameLine echo system($"git blame -L {line('.')},+1 {shellescape(expand('%'))}")
 

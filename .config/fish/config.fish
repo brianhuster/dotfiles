@@ -30,7 +30,6 @@ set -gx PATH $PATH \
     $D/Android/Sdk/platform-tools \
     $D/Android/Sdk/tools \
     ~/.local/share/nvim/mason/bin/
-	~/.nvm/
 set -gx ANDROID_HOME $D/Android/Sdk
 set -gx ANDROID_USER_HOME /media/brianhuster/D/.android/
 
@@ -39,4 +38,14 @@ function n8n
         -v n8n_data:/home/node/.n8n \
         docker.n8n.io/n8nio/n8n \
         start --tunnel
+end
+
+function fish_command_not_found
+	if type -q command-not-found
+		command-not-found $argv[1]
+	else if type -q /usr/lib/command-not-found
+		/usr/lib/command-not-found $argv[1]
+	else
+		__fish_default_command_not_found_handler $argv[1]
+	end
 end
