@@ -34,18 +34,8 @@ set -gx ANDROID_HOME $D/Android/Sdk
 set -gx ANDROID_USER_HOME /media/brianhuster/D/.android/
 
 function n8n
-    docker run -it -p 5678:5678 \
-        -v n8n_data:/home/node/.n8n \
-        docker.n8n.io/n8nio/n8n \
-        start --tunnel
-end
-
-function fish_command_not_found
-	if type -q command-not-found
-		command-not-found $argv[1]
-	else if type -q /usr/lib/command-not-found
-		/usr/lib/command-not-found $argv[1]
-	else
-		__fish_default_command_not_found_handler $argv[1]
-	end
+	docker run -it -p 5678:5678 \
+		-v n8n_data:/home/node/.n8n \
+		docker.n8n.io/n8nio/n8n \
+		start --tunnel
 end

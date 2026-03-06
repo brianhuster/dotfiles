@@ -1,3 +1,6 @@
+
+
+
 function fish_command_not_found
 	if type -q command-not-found
 		command-not-found $argv[1]

@@ -39,6 +39,15 @@ vim.cmd [[
 	packadd! nvim-brain
 ]]
 
+vim.api.nvim_create_autocmd("VimEnter", {
+	callback = function()
+        local win_list = vim.api.nvim_list_wins()
+		for _, win in ipairs(win_list) do
+			print(vim.api.nvim_buf_get_name(vim.api.nvim_win_get_buf(win)))
+		end
+	end
+})
+
 local api = vim.api
 local map = vim.keymap.set
 
