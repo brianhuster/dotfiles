@@ -51,9 +51,6 @@ let s:file = expand('<sfile>')
 
 let s:nvim_config = '~/.config/nvim'
 execute 'set runtimepath^=' . s:nvim_config
+execute 'set runtimepath+=' . s:nvim_config . '/after'
 
-function! s:setup()
-	execute 'source' s:nvim_config . '/init.vim'
-endfunction
-
-autocmd VimEnter * call s:setup()
+autocmd VimEnter * execute 'source' s:nvim_config . '/init.vim'
