@@ -35,7 +35,10 @@ except ImportError:
 		i = 0
 		completion = ""
 		while True:
-			candidate = completer.complete(text, i)
+			try:
+				candidate = completer.complete(text, i)
+			except Exception:
+				break
 			if candidate is None:
 				break
 			completion += '\n' + prefix + candidate
@@ -49,7 +52,6 @@ function! s:ExPyComplete(ArgLead, CmdLine, CursorPos) abort
 		call s:Setup()
 		let s:SetupDone = 1
 	endif
-	echomsg a:CmdLine
 	return py3eval('ex_python_complete()')
 endfunction
 

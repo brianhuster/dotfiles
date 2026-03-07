@@ -187,5 +187,3 @@ packadd! nohlsearch
 
 let g:termdebug_config = #{use_prompt: 1}
 packadd! termdebug
-
-packadd! sudo.vim
