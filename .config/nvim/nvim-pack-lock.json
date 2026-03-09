@@ -12,10 +12,6 @@
       "rev": "9d1a256",
       "src": "https://github.com/uga-rosa/ccc.nvim"
     },
-    "direx.nvim": {
-      "rev": "91d83f1",
-      "src": "https://github.com/brianhuster/direx.nvim"
-    },
     "firenvim": {
       "rev": "a18ef90",
       "src": "https://github.com/glacambre/firenvim"
@@ -31,10 +27,6 @@
     "lexima.vim": {
       "rev": "ab621e4",
       "src": "https://github.com/cohama/lexima.vim"
-    },
-    "live-preview.nvim": {
-      "rev": "4bbcbe79948b2726f00b5217277abd1e2651e699",
-      "src": "https://github.com/brianhuster/live-preview.nvim"
     },
     "mason.nvim": {
       "rev": "44d1e90e1f66e077268191e3ee9d2ac97cc18e65",
@@ -55,14 +47,6 @@
     "mini.jump2d": {
       "rev": "5a37ec9d1faab7c90e8a85bba83d97ea359b6d84",
       "src": "https://github.com/echasnovski/mini.jump2d"
-    },
-    "neural-open.nvim": {
-      "rev": "3fad4ba7bbeae092a4d27f83f3863b5f3f94a5f3",
-      "src": "https://github.com/dtormoen/neural-open.nvim"
-    },
-    "nomplete.vim": {
-      "rev": "55f856ca7381329d74c01a330df2cd3bd3b738d2",
-      "src": "https://github.com/brianhuster/nomplete.vim"
     },
     "nvim-dap": {
       "rev": "b516f20b487b0ac6a281e376dfac1d16b5040041",
@@ -101,21 +85,9 @@
       "rev": "b9fd522",
       "src": "https://github.com/nvim-lua/plenary.nvim"
     },
-    "qfpeek.nvim": {
-      "rev": "f60ba63db7f7db4c2d9636a782cc2be60cb24ca3",
-      "src": "https://github.com/brianhuster/qfpeek.nvim"
-    },
-    "snacks.nvim": {
-      "rev": "9912042fc8bca2209105526ac7534e9a0c2071b2",
-      "src": "https://github.com/folke/snacks.nvim"
-    },
     "treesitter-endwise.nvim": {
       "rev": "b605a0f",
       "src": "https://github.com/brianhuster/treesitter-endwise.nvim"
-    },
-    "unnest.nvim": {
-      "rev": "a862fbd6a0c415ad7741f84089492f31dbb7963c",
-      "src": "https://github.com/brianhuster/unnest.nvim"
     },
     "vim-dadbod-completion": {
       "rev": "a8dac0b",

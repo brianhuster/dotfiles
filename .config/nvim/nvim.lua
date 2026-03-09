@@ -154,7 +154,6 @@ vim.g.lexima_enable_endwise_rules = 0
 vim.g.lexima_enable_basic_rules = 0
 
 pack.add {
-	"https://github.com/dstein64/vim-startuptime",
 	github 'b0o/SchemaStore.nvim',
 	github 'tpope/vim-repeat', -- dep of vim-surround
 	github 'tpope/vim-surround',

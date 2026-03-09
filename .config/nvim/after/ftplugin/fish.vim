@@ -1,17 +1,32 @@
-setl iskeyword+=.,-,/
-setl formatprg=fish_indent
-setl omnifunc=s:Complete
-setl define=\\v^\\s*function>
+setl iskeyword+=.,-
+let &l:define = '\v^\s*function>'
 setl suffixesadd+=.fish
 
-for path in system("fish", "echo $fish_function_path")->split()
-	exe 'setl path+=' . path
-endfor
+let b:match_words = '\<\%(else\s\+\)\@<!if\>\|\<\%(begin\|function\|switch\|while\|for\)\>' .
+                  \ ':\<else\s\+if\>\|\<else\>\|\<case\>' .
+                  \ ':\<end\>'
 
-let b:match_words = escape('<%(begin|function|if|switch|while|for)>:<end>', '<>%|)')
+if !exists('s:UndoFtplugin')
+	function! s:UndoFtplugin() abort
+		setl define< include< iskeyword< suffixesadd< formatprg< omnifunc< path< keywordprg< suffixesadd<
+	endfunction
+endif
 
 let b:undo_ftplugin = exists('b:undo_ftplugin') && type(b:undo_ftplugin) == v:t_string ? b:undo_ftplugin : ''
-			\ . '\n setl define< include< iskeyword< suffixesadd< formatprg< omnifunc< path< keywordprg< suffixesadd<'
+	\ . $'| call {expand("<sid>")}UndoFtplugin()'
+
+if !executable('fish')
+	finish
+endif
+
+setl formatprg=fish_indent
+setl omnifunc=s:Complete
+
+" https://github.com/dag/vim-fish just split by space, but a path could
+" contains space
+for path in systemlist("fish", 'string join \n $fish_function_path')
+	exe 'setl path+=' . path
+endfor
 
 setl keywordprg=:FishMan
 
@@ -25,13 +40,7 @@ if !exists('s:Complete')
 		if empty(a:base)
 			return []
 		endif
-		let results = []
-		let completions = systemlist('fish 2> /dev/null', 'complete -C ' . shellescape(a:base))
 		let cmd = substitute(a:base, '\v\S+$', '', '')
-		for line in completions
-			let tokens = split(line, '\t')
-			call add(results, #{word: cmd..tokens[0], abbr: tokens[0], menu: get(tokens, 1, '')})
-		endfor
-		return results
+		return an#fish#Complete(a:base)->map({ _, item -> #{word: cmd..item.word, abbr: item.word, menu: item.desc} })
 	endfunc
 endif

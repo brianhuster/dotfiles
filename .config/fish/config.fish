@@ -23,13 +23,14 @@ end
 
 set -x OLLAMA_MODELS "/media/brianhuster/D/.ollama/models"
 set -x D /media/brianhuster/D
-set -gx PATH $PATH \
+set -gx PATH \
     $D/.android-studio/bin \
     /usr/local/go/bin ~/go/bin \
     $D/Android/Sdk/emulator \
     $D/Android/Sdk/platform-tools \
     $D/Android/Sdk/tools \
-    ~/.local/share/nvim/mason/bin/
+    ~/.local/share/nvim/mason/bin/ \
+	~/.local/share/mise/shims $PATH
 set -gx ANDROID_HOME $D/Android/Sdk
 set -gx ANDROID_USER_HOME /media/brianhuster/D/.android/
 
