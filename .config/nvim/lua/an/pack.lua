@@ -17,6 +17,8 @@ M.exec = function(func, ...)
 	end
 end
 
+print(vim.fn.expand("<script>"))
+
 ---@param pkgs (string|an.pack.Spec)[]
 function M.add(pkgs)
 	for _, pkg in ipairs(pkgs) do

@@ -2,9 +2,10 @@ setl iskeyword+=.,-
 let &l:define = '\v^\s*function>'
 setl suffixesadd+=.fish
 
-let b:match_words = '\<\%(else\s\+\)\@<!if\>\|\<\%(begin\|function\|switch\|while\|for\)\>' .
-                  \ ':\<else\s\+if\>\|\<else\>\|\<case\>' .
-                  \ ':\<end\>'
+let b:match_words =
+	\ '\<\%(else\s\+\)\@<!if\>:\<else\%(\s\+if\)\?\>:\<end\>,' .
+	\ '\<switch\>:\<case\>:\<end\>,' .
+	\ '\<\(begin\|function\|while\|for\)\>:\<end\>'
 
 if !exists('s:UndoFtplugin')
 	function! s:UndoFtplugin() abort
@@ -25,7 +26,7 @@ setl omnifunc=s:Complete
 " https://github.com/dag/vim-fish just split by space, but a path could
 " contains space
 for path in systemlist("fish", 'string join \n $fish_function_path')
-	exe 'setl path+=' . path
+	exe 'setl path+=' . path->escape(' \')
 endfor
 
 setl keywordprg=:FishMan

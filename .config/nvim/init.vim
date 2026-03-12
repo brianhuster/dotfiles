@@ -41,6 +41,8 @@ au TabClosed * if &buftype == 'terminal' | startinsert | endif
 au BufEnter *.png,*.jpg,*.jpeg,*.gif,*.webp call s:OpenImgBuf(expand('<amatch>'))
 
 " Key mappings
+nnoremap q: <Nop>
+
 nnoremap t <cmd>call Terminal()<CR>
 xnoremap t <cmd>call Terminal()<CR>
 tnoremap <Esc> <C-\><C-n>

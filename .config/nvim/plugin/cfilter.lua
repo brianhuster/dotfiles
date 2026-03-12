@@ -12,17 +12,17 @@ end
 ---@param searchpat string
 ---@return string
 local function get_search_pat(searchpat)
-  local firstchar = searchpat:sub(1, 1)
-  local lastchar = searchpat:sub(-1)
-  local pat = searchpat
-  if firstchar == lastchar and (firstchar == '/' or firstchar == '"' or firstchar == "'") then
-    pat = searchpat:sub(2, -2)
-    if pat == '' then
-      -- Use the last search pattern
-      pat = vim.fn.getreg('/')
+    local firstchar = searchpat:sub(1, 1)
+    local lastchar = searchpat:sub(-1)
+    local pat = searchpat
+    if firstchar == lastchar and (firstchar == '/' or firstchar == '"' or firstchar == "'") then
+        pat = searchpat:sub(2, -2)
+        if pat == '' then
+            -- Use the last search pattern
+            pat = vim.fn.getreg('/')
+        end
     end
-  end
-  return pat
+    return pat
 end
 
 ---@param items table[]

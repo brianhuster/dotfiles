@@ -11,6 +11,11 @@ vim.cmd [[
 		let g:clipboard = g:vscode_clipboard
 	endif
 
+	if has('nvim-0.12')
+		set complete-=t complete+=o
+		set autocomplete
+	end
+
 	set exrc
 
 	let g:loaded_netrw = 1
@@ -39,22 +44,13 @@ vim.cmd [[
 	packadd! nvim-brain
 ]]
 
-vim.api.nvim_create_autocmd("VimEnter", {
-	callback = function()
-        local win_list = vim.api.nvim_list_wins()
-		for _, win in ipairs(win_list) do
-			print(vim.api.nvim_buf_get_name(vim.api.nvim_win_get_buf(win)))
-		end
-	end
-})
-
-local api = vim.api
+local api, lsp = vim.api, vim.lsp
 local map = vim.keymap.set
 
 local my_plugins_glob = vim.fn.stdpath("config") .. "/pack/*/*/*"
 local my_plugins = vim.fn.glob(my_plugins_glob, true, true)
 
-vim.lsp.config.lua_ls = {
+lsp.config.lua_ls = {
 	cmd = { 'lua-language-server' },
 	filetypes = { 'lua' },
 	root_markers = { 'lua' },
@@ -78,32 +74,32 @@ vim.lsp.config.lua_ls = {
 	},
 }
 
-vim.lsp.enable("lua_ls")
+lsp.enable("lua_ls")
 
-map('i', '<M-CR>', function()
-	vim.lsp.inline_completion.get()
-end)
+map('i', '<M-CR>', function() lsp.inline_completion.get() end)
 
-map('i', '<M-s>', function()
-	vim.lsp.inline_completion.select()
-end)
+map('i', '<M-s>', function() lsp.inline_completion.select() end)
 
-vim.keymap.set('i', '<M-n>', '<Plug>(nomplete)')
+map('i', '<M-n>', '<Plug>(nomplete)')
 
 api.nvim_create_autocmd('LspAttach', {
 	callback = function(args)
-		local client = vim.lsp.get_client_by_id(args.data.client_id)
+		local client = lsp.get_client_by_id(args.data.client_id)
 		if not client then return end
-		if client:supports_method('textDocument/completion') then
-			vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
+		if vim.fn.has("nvim-0.12") == 0 and client:supports_method('textDocument/completion') then
+			lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
 		end
-		if vim.lsp.document_color and client:supports_method('textDocument/documentColor') then
-			vim.lsp.document_color.enable(true, args.buf, { style = 'virtual' })
+		if lsp.document_color and client:supports_method('textDocument/documentColor') then
+			lsp.document_color.enable(true, args.buf, { style = 'virtual' })
 		end
 	end,
 })
 
-vim.keymap.set('n', 'grs', function() vim.lsp.buf.workspace_symbol() end, { desc = 'Select LSP workspace symbol' })
+map('n', 'grs', function() lsp.buf.workspace_symbol() end, { desc = 'Select LSP workspace symbol' })
+map('n', 'grd', function()
+	lsp.buf.workspace_diagnostics()
+	vim.diagnostic.setqflist()
+end, { desc = 'Request LSP workspace diagnostics and add them to quickfix list' })
 
 vim.cmd "au LspProgress * redrawstatus"
 
@@ -114,9 +110,10 @@ vim.diagnostic.config {
 	underline = true
 }
 
-vim.lsp.inline_completion.enable()
-vim.lsp.linked_editing_range.enable()
-vim.lsp.on_type_formatting.enable()
+lsp.inline_completion.enable()
+lsp.linked_editing_range.enable()
+lsp.on_type_formatting.enable()
+lsp.codelens.enable()
 
 if not vim.pack then
 	return
@@ -192,11 +189,11 @@ pack.add {
 	github 'junegunn/fzf'
 }
 
-vim.lsp.config.pylsp = {
+lsp.config.pylsp = {
     cmd = { 'uv', 'run', 'pylsp' }
 }
 
-vim.lsp.config.basics_ls = {
+lsp.config.basics_ls = {
 	cmd = { "basics-language-server" },
 	settings = {
 		buffer = {
@@ -212,7 +209,7 @@ vim.lsp.config.basics_ls = {
 	}
 }
 
-vim.lsp.config.yaml_ls = {
+lsp.config.yaml_ls = {
 	cmd = { 'yaml-language-server', '--stdio' },
 	filetypes = { 'yaml', 'yaml.docker-compose', 'yaml.gitlab' },
 	root_markers = { '.git' },
@@ -231,7 +228,7 @@ vim.lsp.config.yaml_ls = {
 	},
 }
 
-vim.lsp.config.json_ls = {
+lsp.config.json_ls = {
 	cmd = { 'vscode-json-language-server', '--stdio' },
 	filetypes = { 'json', 'jsonc' },
 	init_options = {
@@ -246,7 +243,7 @@ vim.lsp.config.json_ls = {
 	},
 }
 
-vim.lsp.enable {
+lsp.enable {
 	"basics_ls",
 	"jsonls",
 	'yamlls',
@@ -275,7 +272,7 @@ exec(require 'nvim-treesitter'.install, 'unstable')
 exec(require 'treesitter-context'.setup, {
 	max_lines = 3
 })
-vim.keymap.set("n", "[c", function()
+map("n", "[c", function()
 	require("treesitter-context").go_to_context(vim.v.count1)
 end, { silent = true })
 

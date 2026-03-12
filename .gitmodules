@@ -4,9 +4,6 @@
 [submodule ".config/nvim/pack/mine/opt/direx.nvim"]
 	path = .config/nvim/pack/mine/opt/direx.nvim
 	url = https://github.com/brianhuster/direx.nvim
-[submodule ".config/nvim/pack/mine/opt/live-preview.nvim"]
-	path = .config/nvim/pack/mine/opt/live-preview.nvim
-	url = https://github.com/brianhuster/live-preview.nvim
 [submodule ".config/nvim/pack/mine/opt/qfpeek.nvim"]
 	path = .config/nvim/pack/mine/opt/qfpeek.nvim
 	url = https://github.com/brianhuster/qfpeek.nvim
@@ -28,3 +25,6 @@
 [submodule ".config/nvim/pack/mine/opt/nvim-brain"]
 	path = .config/nvim/pack/mine/opt/nvim-brain
 	url = https://github.com/mnielsen/neural-networks-and-deep-learning.git
+[submodule "/home/brianhuster/.config/nvim/pack/mine/opt/live-preview.nvim"]
+	path = /home/brianhuster/.config/nvim/pack/mine/opt/live-preview.nvim
+	url = https://github.com/brianhuster/live-preview.nvim
