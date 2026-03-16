@@ -11,12 +11,9 @@ vim.cmd [[
 		let g:clipboard = g:vscode_clipboard
 	endif
 
-	if has('nvim-0.12')
-		set complete-=t complete+=o
-		set autocomplete
-	end
-
 	set exrc
+	set complete^=Fv:lua.vim.lsp.omnifunc
+	set completeopt+=noselect
 
 	let g:loaded_netrw = 1
 	let g:loaded_netrwPlugin = 1
@@ -42,6 +39,8 @@ vim.cmd [[
 	packadd! qfpeek.nvim
 	packadd! unnest.nvim
 	packadd! nvim-brain
+
+	nmap <C-p> <cmd>exe "term nvim --server $NVIM --remote $(fzf --preview 'nvcat -clean -n {}')" \| au TermClose <buffer> exe "bdel" expand("<abuf>")<CR>
 ]]
 
 local api, lsp = vim.api, vim.lsp
@@ -95,13 +94,14 @@ api.nvim_create_autocmd('LspAttach', {
 	end,
 })
 
-map('n', 'grs', function() lsp.buf.workspace_symbol() end, { desc = 'Select LSP workspace symbol' })
+map('n', 'gr/', function() lsp.buf.workspace_symbol() end, { desc = 'Select LSP workspace symbol' })
 map('n', 'grd', function()
 	lsp.buf.workspace_diagnostics()
 	vim.diagnostic.setqflist()
 end, { desc = 'Request LSP workspace diagnostics and add them to quickfix list' })
 
 vim.cmd "au LspProgress * redrawstatus"
+vim.opt.statusline:append "%{v:lua.vim.lsp.status()}"
 
 vim.diagnostic.config {
 	virtual_lines = {
@@ -186,7 +186,6 @@ pack.add {
 	github 'cohama/lexima.vim',
     github 'uga-rosa/ccc.nvim',
     github 'seandewar/actually-doom.nvim',
-	github 'junegunn/fzf'
 }
 
 lsp.config.pylsp = {
@@ -194,7 +193,7 @@ lsp.config.pylsp = {
 }
 
 lsp.config.basics_ls = {
-	cmd = { "basics-language-server" },
+    cmd = { "basics-language-server" },
 	settings = {
 		buffer = {
 			enable = false
@@ -391,10 +390,6 @@ do
 		end,
 	})
 end
-
-vim.keymap.set('n', '<C-p>', function()
-	vim.cmd.UnnestEdit [[nvim $(fzf --preview "nvcat -clean {}")]]
-end)
 
 exec(require 'mason'.setup, {})
 

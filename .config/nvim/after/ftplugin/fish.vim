@@ -3,9 +3,9 @@ let &l:define = '\v^\s*function>'
 setl suffixesadd+=.fish
 
 let b:match_words =
-	\ '\<\%(else\s\+\)\@<!if\>:\<else\%(\s\+if\)\?\>:\<end\>,' .
-	\ '\<switch\>:\<case\>:\<end\>,' .
-	\ '\<\(begin\|function\|while\|for\)\>:\<end\>'
+	\ '\<\%(else\s\+\)\@<!if\>\|\<\%(switch\|begin\|function\|while\|for\)\>'
+	\ .. ':\<else\%(\s\+if\)\?\>\|\<case\>'
+	\ .. ':\<end\>'
 
 if !exists('s:UndoFtplugin')
 	function! s:UndoFtplugin() abort

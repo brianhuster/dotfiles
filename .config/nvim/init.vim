@@ -10,7 +10,6 @@ set backupcopy=yes
 set ignorecase smartcase
 let g:mapleader=" "
 let g:vim_indent_cont = shiftwidth() " Continuational line indentation in Vimscript file
-set completeopt=menuone,noselect,preview,popup
 set noswapfile
 set foldmethod=expr nofoldenable
 set smoothscroll
@@ -79,6 +78,10 @@ nnoremap <C-k> K
 if exists('*wildtrigger')
 	set wildmode=noselect:lastused,full wildoptions=pum
 	autocmd CmdlineChanged [/\?] call wildtrigger()
+endif
+
+if exists('&autocomplete')
+	set autocomplete
 endif
 
 let did_install_default_menus = 1

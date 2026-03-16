@@ -53,4 +53,4 @@ let s:nvim_config = '~/.config/nvim'
 execute 'set runtimepath^=' . s:nvim_config
 execute 'set runtimepath+=' . s:nvim_config . '/after'
 
-autocmd VimEnter * execute 'source' s:nvim_config . '/init.vim'
+execute 'source' s:nvim_config . '/init.vim'
