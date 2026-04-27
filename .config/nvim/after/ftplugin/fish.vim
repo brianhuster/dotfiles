@@ -7,6 +7,8 @@ let b:match_words =
 	\ .. ':\<else\%(\s\+if\)\?\>\|\<case\>'
 	\ .. ':\<end\>'
 
+let b:match_skip = "S:keyword"
+
 if !exists('s:UndoFtplugin')
 	function! s:UndoFtplugin() abort
 		setl define< include< iskeyword< suffixesadd< formatprg< omnifunc< path< keywordprg< suffixesadd<

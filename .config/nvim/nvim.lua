@@ -88,9 +88,6 @@ api.nvim_create_autocmd('LspAttach', {
 		if vim.fn.has("nvim-0.12") == 0 and client:supports_method('textDocument/completion') then
 			lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
 		end
-		if lsp.document_color and client:supports_method('textDocument/documentColor') then
-			lsp.document_color.enable(true, args.buf, { style = 'virtual' })
-		end
 	end,
 })
 
@@ -114,6 +111,7 @@ lsp.inline_completion.enable()
 lsp.linked_editing_range.enable()
 lsp.on_type_formatting.enable()
 lsp.codelens.enable()
+lsp.document_color.enable()
 
 if not vim.pack then
 	return
@@ -512,11 +510,8 @@ require 'acp'.config {
 			mcp = true
 		},
         gemma = {
-			cmd = { "ollama-acp", "--model=gemma3:1b" },
+			cmd = { "ollama-acp", "--model=gemma4:e2b" },
         },
-        translategemma = {
-			cmd = { "ollama-acp", "--model=translategemma:4b" },
-		}
     },
     mcp = {
         nvim = {
